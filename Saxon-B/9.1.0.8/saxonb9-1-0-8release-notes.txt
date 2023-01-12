@@ -1,0 +1,22 @@
+
+Saxon 9.1.0.8 fixes the following bugs:
+
+2885500  	 Chronic performance during query/stylesheet type checking
+2877114  	 In XSLT, type="xxx" overwrites the element name
+2864240  	 ModuleURIResolver handling main module
+2859861  	 NPE calling overloaded extension function in saxon:evaluate
+2859247  	 Internal Error when variable used with Unary Minus operator
+2859187  	 XHTML meta element added in wrong namespace
+2859151  	 (N to M) in XPath 1.0 compatibility mode
+2859139  	 ReceivingContentHandler reused incorrectly
+2859123  	 xsl:copy when context item is undefined
+2837199  	 Variable reference in xsl:number count or from pattern
+2836862  	 The rules= parameter of collation URI doesn't work
+2834099      writeSequence() does not allow a null properties object
+2829831  	 JAXP XPathFactory doesn't recognize Saxon OM API
+2822068      Missing namespaces after identity transform from DOM
+2819671      Value of position() not maintained when navigating DOMSource
+2815678      XQuery parser crash with FOR expr in attribute content
+
+
+

@@ -1,0 +1,228 @@
+Release Notes for Saxon-HE 9.2
+==============================
+
+Saxon-HE (home edition) replaces Saxon-B as the open source version of the Saxon XSLT and XQuery processor.
+
+Saxon-HE 9.2.1.5 is the latest maintenance release of Saxon-HE 9.2. It is available for both the Java 
+and .NET platforms.
+
+For the Java platform, download file saxonhe9-2-1-5j.zip
+
+For the .NET platform, download file saxonhe9-2-1-5n.zip
+
+The file saxon-resources9-2-0-2.zip contains documentation, sample files, test drivers and other
+miscellaneous resources. It is common to both platforms. It also includes source code for the original
+release 9.2.0.2; for the current maintenance release, an updated copy of the source code is available
+in file saxon9-2-1-2source.zip. Source code (including latest patches) is also available via Subversion.
+
+Release 9.2.1.5 (8 October 2010)
+--------------------------------
+
+This release corresponds to revision 571 in the Sourceforge repository for Saxon-HE source code, 
+and to revision 67 in the private Subversion repository for Saxon-EE source code.
+
+This release fixes the following problems:
+
+ 3081642 	XQStaticContext: copying doesn't copy namespaces 
+ 3072791 	round(float(-0.1)) returns a double
+ 3072122 	xsl:namespace name="{$var}" 
+ 3065976 	IndependentContext.copy() doesn't copy function library 
+ 3065864 	format-date() country argument ignored in Saxon-HE 
+ 3065410 	DOMResult: top level text nodes 
+ 3059990 	Limit on sequence length 
+ 3053854 	XQJ: getInt() and getShort() wrongly cast to byte 
+ 3048962 	XQJ: bindObject(XMLGregorianCalendar) 
+ 3046701 	Redefining a group containing group references 
+ 3046546 	Some XSD errors are poorly reported 
+ 3046204 	Document projection gives CCE with dynamic doc() call 
+ 3046198 	Document projection gives NPE if query has external variable 
+ 3043783 	Saxon fails to initialize in some class loading environments 
+ 2986420 	Spurious XUST0001 when XQuery Update used with tracing 
+
+
+Releases 9.2.1.3 and 9.2.1.4
+----------------------------
+
+These were private builds for specific customers issued to allow particular patches to be tested.
+
+Release 9.2.1.2 (9 August 2010)
+-------------------------------
+
+The following bugs are fixed (see the bugs tracker on SourceForge for details):
+
+ 3041849 	In the .NET API, XdmNode.Parent throws InvalidCastException 
+ 3041829 	XQueryCompiler.compileLibrary(File f)
+ 3033435 	Incorrect optimization of apply-templates mode="#current"
+ 3027576 	MessageWarner crashes on close() if no messages written
+ 3026439 	Optimizer loop-lifting bug with document switching
+ 3024504 	Saxon doesn't close the license file after use
+ 3021068 	XHTML output method
+ 3021024 	round-half-to-even() producing negative zero
+ 3020723 	xsl:number unusual numbering sequences out by one
+ 3018037 	NPE with arithmetic in 1.0 mode
+ 3016018 	Methods/Properties not declared virtual in .NET API
+ 3012591 	Incorrect optimization of name()='x' under Saxon-EE
+ 3008672 	XQueryCompiler and StaticQueryContext are not reusable
+ 3005340 	XQConnection.getStaticContext() doesn't make a copy
+ 3002638 	ErrorListener on IdentityTransformer
+ 2997529 	Jar file for SQL extension omitted from PE distribution
+ 2995298 	DocumentBuilderImpl.setEntityResolver() has no effect
+ 2993527 	format-date() outputs [Language:en] on non-English Locale
+ 2992628 	install-gac.cmd script for Saxon-EE is incomplete
+ 2859490 	Spurious type error when xsl:element name="" is not a string
+ 
+For bugs that remain open, search the SourceForge bug tracker looking for Group = v9.2, Resolution = Later. 
+
+
+Release 9.2.1.1 (26 April 2010)
+-------------------------------
+
+The version number has been incremented from 9.2.0.x to 9.2.1.x because as well as patching Saxon bugs, 
+this version includes build changes. These affect the .NET platform only.
+
+Specifically, Saxon 9.2.1.1 uses IKVM 0.42.0.3, whereas earlier releases used a Saxon-specific build of 
+IKVM numbered 0.40.0.2. The main reason for this is that the IKVM.OpenJDKDLLs in the 0.40.0.2 contained
+unsatisfied dependencies on DLLs that were not included in the build. The calls giving rise to these dependencies
+are never executed, but there are some environments where unsatisfied dependencies give rise to failures
+even if this is the case. With the new build, it is still the case that there are references to DLLs not
+included in the standard download; but on the rare occasions where this causes difficulties, the problem
+can be solved by downloading the IKVM runtime directly from here:
+
+https://sourceforge.net/projects/ikvm/files/ikvm/0.42.0.3/ikvmbin-0.42.0.3.zip/download
+
+In addition to this change, the following bugs are fixed (see the bugs tracker on SourceForge for details):
+
+ 2988790 	current() used in xsl:number/@count: Internal error  
+ 2986685 	Inconsistent NamePool not detected in XPath API
+ 2986420 	Spurious XUST0001 when XQuery Update used with tracing 
+ 2986125 	mode="#current" within a function
+ 2986119 	Spurious error XTRE1500 (Write and read same document) 
+ 2984604 	DOMSource wrapping element with redefined namespace 
+ 2984409 	Compiling stylesheets for Saxon-HE
+ 2984037 	Saxon on .NET only reports first validation error 
+ 2982680 	Update with no-inherit loses too many namespaces 
+ 2982015 	current() used in predicates in a union pattern 
+ 2980277 	xsl:value-of generates multiple text nodes
+ 2974433 	Parsing errors in saxon:parse not sent to ErrorListener  
+ 2972578 	Formatting very small negative numbers
+ 2972519 	Validation against schema-for-schemas
+ 2970599 	Literal text nodes in stylesheet not traced
+ 2967055 	xs:decimal('-.0') fails
+ 2961611 	NPE during schema processing with xs:dayTimeDuration 
+ 2959570 	ArrayIndexOutOfBounds exception in TinyTree
+ 2956660 	Configuration file passed to Validate command is rejected
+ 2956607 	rename creates duplicate namespace declarations
+ 2956558 	rename gives spurious error: conflicting namespace
+
+
+Release 9.2.0.6 (16 February 1010)
+----------------------------------
+
+9.2.0.6 was released primarily to fix a build error in 9.2.0.5 which affected Saxon-PE and Saxon-EE on .NET (only).
+It also fixes the following (see the bugs tracker for details):
+
+ 2952924 	9.2.0.5 build of EE/PE on .NET
+ 2952812 	--feature:option does not work
+ 2952193 	Line number -1 in .NET (from XmlReader)
+ 2949746 	substring() ArrayIndexOutOfBoundsException
+ 2947722 	Option -strip:all affects xsl:text in stylesheets
+ 
+Release 9.2.0.5 (27 January 2010)
+--------------------------------- 
+
+Bugs fixed in 9.2.0.5 (relative to 9.2.0.3) are as follows. See the bugs tracker for details.
+
+ 2940977 	resolve-uri('', 'uri#fragment') incorrect
+ 2940961 	Poor performance with many stylesheet functions
+ 2940957 	NullPointerException in TreeReceiver
+ 2939631 	Incorrect type inferencing for xsl:copy and xsl:copy-of
+ 2934589 	Problems with TINY_TREE_CONDENSED
+ 2926288 	NullPointerException with xsl:choose optimization
+ 2925771 	Excessive memory used with lots of small documents
+ 2924869 	concat() evaluated in push mode
+ 2922259 	Base URI should default to current directory on .NET
+ 2922201 	Namespace URIs for dynamic Java extension functions
+ 2919535 	Integrated extension functions on .NET: SequenceType problem
+ 2916197 	xsl:result-document with compiled stylesheets
+ 2914760 	Unwanted warning messages re licensing
+ 2912888 	Optimizer bug causing internal error
+ 2912730 	Configuring localized numberers
+ 2912103 	Clearing the schema cache
+ 2910430 	Calling Static Methods in a Java Class does not work 
+ 2910299 	Failed to load configuration defined in edition.properties
+ 2910180 	Validate from command line only reports the first error
+ 2909665 	Inserting attributes with new namespaces into elements
+ 2909078 	Unknown namecode during XSD validation with xml:lang
+ 2907426 	JAXP XPath API: calling conventions for external functions
+ 2907418 	Schema-aware XPath using JAXP API 
+ 2906651 	format-number(0.0, '#')
+ 2905943 	s9api XdmNode.getBaseURI() throws NPE if no known base URI
+ 2903009 	ClassCastException following function inlining
+ 2898462 	saxon:continue and shadowed variables
+ 2898131 	DOMSource only accepts Document and Element nodes
+ 2893539 	Optimization bug with filter applied to stylesheet parameter
+ 2893201 	QName.fromClarkName() truncates URI
+ 2892201 	Bad optimization for X[position() = N to last()]
+ 2889635 	Non-schema-aware query produces typed output
+ 2885500 	Chronic performance during query/stylesheet type checking
+
+9.2.0.4 was an internal build made available to selected customers; it was not published on SourceForge.
+
+Release 9.2.0.3 (22 October 2009)
+---------------------------------   
+
+Bugs fixed in 9.2.0.3 (relative to 9.2.0.2) are as follows. See the bugs tracker for details.
+
+ 2883779  	TransformerFactoryImpl in Saxon-PE/EE
+ 2880461 	Unresolved SimpleTypeDefinition in schema
+ 2879248 	XdmAtomicValue() constructor for built-in types fails
+ 2878207 	concat() failure in tracing/debugging mode
+ 2877046 	xs:decimal rejects value .000
+ 2877000 	Missing namespaces in .NET DOM constructed programmatically
+ 2870091 	Non-primitive built-in types in XSLT
+ 2870002 	resolve-QName() fails when given empty sequence
+ 2864240 	ModuleURIResolver handling main module
+ 2860967 	Incorrect version for .NET assembly 
+ 2860136 	PullSource not available in Saxon-HE
+ 2859878 	Second attempt to read bad document is not recoverable
+ 2859831 	Invalid top-level XSLT element is ignored
+ 2859510 	Tracing (-T option) does not work with XQuery Updates 
+ 2859490 	Spurious type error when xsl:element name="" is not a string
+ 2859247 	Internal Error when variable used with Unary Minus operator 
+ 2859187 	XHTML meta element added in wrong namespace 
+ 2859151 	(N to M) in XPath 1.0 compatibility mode 
+ 2859139 	ReceivingContentHandler reused incorrectly
+ 2859123 	xsl:copy when context item is undefined 	
+ 2849653 	new Saxon processor not support exsl:node-set() function
+ 2843479 	Stack trace does not show applyTemplates calls 	
+ 2843438 	Errors in XQuery attribute constructor reported twice 	
+ 2843432 	Line number in XQuery diagnostics incorrect 	
+ 2842683 	CompileStylesheet with integrated extension functions 
+ 2842672 	Diagnostics with extension functions defined in config file 
+ 2842160 	Incomplete trace information with -T option 
+ 2842136 	Line=0 in diagnostics for patterns
+ 2839606 	Poor diagnostics for license key problems 
+ 2837292 	format-date() for non-English outputs [Language:en] 
+ 2836862 	The rules= parameter of collation URI doesn't work
+ 2836584 	Integrated Extension Functions with zero arguments 
+ 2834589 	Constructed element nodes have wrong base URI 
+ 2834099 	In XQJ writeSequence(), properties must not be null
+ 
+Release 9.2.0.2 (5 August 2009)
+------------------------------- 
+
+9.2.0.2 was the first publicly-available build of Saxon 9.2. (Version 9.2.0.1 was a beta release made
+available to selected users). 
+
+Saxon-HE is not 100% backwards compatible with Saxon-B. Some advanced features have been dropped. These
+include most notably:
+
+* All Saxon extension functions and extension elements (including the SQL extension)
+
+* The ability to call Java methods "reflexively" by dynamic loading (but a new mechanism for
+  "integrated extension functions" is available in its place.
+  
+Users requiring these facilities should either upgrade to the commercial Saxon-PE (professional edition)
+product available from http://www.saxonica.com/, or stick with the last release of Saxon-B,
+namely Saxon-B 9.1.0.8. There are no plans to upgrade or maintain Saxon-B, but it will remain available
+on SourceForge indefinitely.
