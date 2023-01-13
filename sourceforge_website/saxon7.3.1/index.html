@@ -1,0 +1,281 @@
+<html>
+
+<head>
+<title>About SAXON</title>
+<link rel="stylesheet" type="text/css" href="saxon-style.css">
+</head>
+
+<body>
+
+<h1>About SAXON</h1>
+
+<p class="subhead"><b>version 7.3.1</b></p>
+
+<hr>
+
+<p>&nbsp;</p>
+
+<table width="100%">
+  <thead>
+  <tr>
+    <td width="50%" colspan="2" class="head"><b>Contents</b></td>
+  </tr>
+  <tr>
+    <td class="subhead">On this page</td>
+    <td class="subhead">On other pages</td>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td VALIGN="top" class="body"><a HREF="#Scope">What is Saxon?</a><br />
+    <a HREF="#Installation">Installation</a><br />
+    <a HREF="#Support">Technical Support</a><br />
+    <a HREF="#Historical">Historical Note</a><br></td>
+    
+    <td VALIGN="top" class="body">
+    <a HREF="conditions.html">Conditions of Use</a><br>
+    <a href="changes.html">Changes in this release</a><br>
+    <a href="using-xsl.html">Using XSL Stylesheets</a><br>
+    <a href="xsl-elements.html">XSL Elements</a><br>
+    <a href="expressions.html">XPath 2.0 Expression syntax</a><br>
+    <a href="functions.html">XPath 2.0 Functions</a><br>    
+    <a href="patterns.html">XSLT Pattern syntax</a><br>
+    <a href="conformance.html">Standards Conformance</a><br>
+    <a href="extensions.html">Saxon Extensions</a><br>
+    <a href="sql-extension.html">The SQL Extension</a><br>
+    <a href="extensibility.html">Extensibility mechanisms</a><br>
+    <a href="api-guide.html">Java API Overview</a><br>
+    <a href="samples.html">Sample applications</a><br>
+  </tr>
+  </tbody>
+</table>
+
+<p><i>Please note: a copy of the documentation on this site is also included in the download file.
+On occasions the on-line version may be more up-to-date. The download file also includes full
+API documentation, which is not present on the web site: see the doc/api directory.</i></p>
+
+<table width="100%">
+<tr><td bgcolor="#ff8888" align="center"><b>A D V E R T I S E M E N T</b></td></tr>
+<td bgcolor="#ffff00" align="center">For comprehensive information about using XSLT<br>
+see my book<br>
+<b>XSLT Programmers Reference</b><br>
+Published by <a href="http://www.wrox.com/Consumer/Store/Details.asp?ISBN=1861005067">Wrox Press</a><br>
+</td></tr></table>
+
+<p><b>Release 7.3.1 is a maintenance release, fixing one or two bugs and introducing
+performance improvements over release 7.3</b></p>
+
+<p>Release 7.3 was the fourth installment of my experimental implementation of the new
+<a href="http://www.w3.org/TR/xpath20">XPath 2.0</a> and
+<a href="http://www.w3.org/TR/xslt20">XSLT 2.0</a> specifications. 
+It implements many of the facilities introduced in the drafts of 15 November 2002.
+It is not recommended for production use, since neither the specifications
+nor the code are yet stable. The preferred version for production use is
+<a href="http://saxon.sf.net/saxon6.5.2/">Saxon 6.5.2</a>.</b></p>
+
+<div style="border: solid thin; background-color: lime; padding: 1em">
+<p>Saxon 7.x requires Java JDK 1.4</p>
+</div>
+
+<hr>
+<a NAME="Scope">
+
+<h2>What is Saxon?</h2>
+</a>
+
+<p>The Saxon package is a collection of tools for processing XML documents. The main components
+are: </p>
+
+<ul>
+<li>An XSLT processor, which implements the 
+Version 1.0 XSLT and XPath Recommendations from the World Wide Web Consortium, found at
+ <a href="http://www.w3.org/TR/xslt">
+http://www.w3.org/TR/xslt</a> and
+ <a href="http://www.w3.org/TR/xpath">
+http://www.w3.org/TR/xpath</a>
+with a number of powerful extensions.</code>.</li>
+
+<li>A Java library, which supports a similar processing model to XSLT, but allows full programming
+ capability, which you need if you want to perform complex processing of the data or to access
+ external services such as a relational database</li>
+
+</ul>
+
+<p>So you can use Saxon by writing XSLT stylesheets, 
+by writing Java applications, or by any combination of the two.</p>
+
+<p>Saxon implements the XSLT 1.0 recommendation, including XPath 1.0, in its entirety.
+Saxon 7.3 also implements many features defined in the XSLT 2.0 and XPath 2.0
+working drafts, in particular:</p>
+
+<ul>
+  <li>Support for multiple output files using <code>xsl:result-document</code></li>
+
+  <li>Full processing capability on temporary trees (previously known as result tree
+  fragments)</li>
+  
+  <li>Support for sequences of nodes and simple values</li>
+  
+  <li>Grouping facilities</li>
+  
+  <li>Regular expression processing</li>
+  
+  <li>Support for the new XPath expressions <code>if</code>, <code>for</code>, 
+  <code>some</code> and <code>every</code></li>
+  
+  <li>Support for named collating sequences</li>
+  
+  <li>Many new functions and operators</li>
+  
+  <li>Support for new data types, such as dates, times, and durations</li>
+  
+</ul>
+
+<p>Saxon does not yet implement all of XSLT 2.0 or XPath 2.0. The most notable
+omission is support for XML Schema data typing. Most of the important built-in types are supported,
+but not user-defined types.</p> 
+
+<p>In addition, Saxon provides an extensive library 
+of <a href="extensions.html">extension elements and extension functions</a>,
+ all implemented in conformance with the XSLT Recommendation to ensure that 
+portable stylesheets can be written. These include the <a href="http://www.exslt.org/">EXSLT</a>
+extension libraries <b>common</b>, <b>sets</b>, <b>math</b>, and <b>dates-and-times</b>.
+Many of these extensions were pioneered in Saxon and have since become available
+in other products.</p>
+
+<p>As a Java class library, Saxon gives you the ability to use the XSLT rule-based approach to
+document processing, but with the flexibility of the full Java language. You can declare
+handler classes to match particular patterns in the document, and can process arbitrary
+sets of nodes selected using XPath expressions. This provides a high-level query capability which
+you can mix with purely navigational access.</p>
+
+<p>Saxon also provides an API allowing a Java application to execute XPath expressions and
+process the results. This is modelled on the proposed DOM Level 3 API, but adapted to the
+requirements of XPath 2.0.</p>
+
+
+<hr>
+
+<h2><a NAME="Historical">Historical Note</a></h2>
+
+<p>Saxon is essentially a one-man project: I have done almost all the development myself,
+except for a small number of routines which I "borrowed" from other open source products,
+and a few add-ons contributed by users.</p>
+
+<p>I originally wrote Saxon to support an internal project in <a HREF="http://www.icl.com">ICL</a>,
+and ICL continued to sponsor development of Saxon until my departure from the company 
+in January 2001. However, it was never a supported ICL product. My new employers,
+<a href="http://www.softwareag.com">Software AG</a>, are continuing
+to sponsor the development of Saxon, but again without making it a corporate product.
+There is no remaining connection with ICL. 
+As always, the software is available entirely without support or warranty, and with
+no commitments to any future releases.</p>
+
+<p>The name Saxon was chosen because originally it was a layer on top of SAX. Also, it originally used
+the Ælfred parser (among others); Ælfred of course was a Saxon king...</p>
+
+<p><small>I have been asked to point out that the product has no connection with a company
+called <strong>Saxon Software</strong>. </small></p>
+
+<hr>
+<p>Please read the <a href="conditions.html">Conditions of Use</a>.</p>
+
+<hr>
+<a NAME="Support"><h2>Technical Support</h2></a>
+
+<p>Saxon comes with no warranty and no formal technical support service.</p>
+
+<p>If you have questions, however, you can usually get an answer by raising them on the Saxon
+discussion list at <a href="http://lists.sourceforge.net/lists/listinfo/saxon-help">http://lists.sourceforge.net/lists/listinfo/saxon-help</a>.</p>
+
+<p>Once registered, you can post messages to <a href="mailto:saxon-help@lists.sourceforge.net">saxon-help@lists.sourceforge.net</a>.</p>
+
+<p>If you hit something that looks like a bug, please check the known errors on
+<a href="http://sourceforge.net/projects/saxon">the Saxon project pages at SourceForge</a>.
+Also check the list archives.</p>
+
+<p>If the query relates to the XSLT/XPath language rather than Saxon itself, it is better to use
+ the <a href="http://www.mulberrytech.com/xsl/xsl-list/">XSL-list</a>: check first that the query
+ isn't already covered in the FAQ. Other useful sites for XSLT information are
+ <a href="http://www.xslt.com/">www.xslt.com</a>, 
+ <a href="http://www.xmlsoftware.com">www.xmlsoftware.com</a> and
+  <a href="http://www.jenitennison.com/">www.jenitennison.com</a>.</p>
+
+<hr>
+
+<A name="Installation"><h2>Installation</h2></a>
+
+<p><span class="highlight">Existing users please see the file <a href=changes.html>changes.html</a> for
+details of incompatible changes in this release.</span></p>
+
+<p>The full Saxon distribution includes source and object code,
+ documentation, and <a HREF="samples.html">sample applications</a>.</p>
+
+<p>Saxon can be used either from the command line, or from a Java application, using the
+JAXP 1.1 API defined by the Java Community Process. Object code is issued as a JAR file, <b>saxon7.jar</b>, which you must include on your class path.
+
+<p>Saxon no longer includes a built-in XML parser: by default it uses the XML parser supplied with
+the Java VM. But you can use it with a different XML
+parser if you wish. To do this from the command line, specify the required parser using the
+-x or -y options; from the Java API, set the name of the parser class as an attribute of
+the TransformerFactory object.</p>
+
+<p>User documentation, covering both the XSLT and Java interfaces, is included in the download in the form
+ of extensive javadoc specifications. Be sure to read the package summaries, which give an overview
+ in the form of a user guide.
+In addition there is an <a href="api-guide.html">introductory overview</a>.</p>
+
+
+<h3>Prerequisites</b>:</h3>
+
+<p>The following software must be installed separately, it is not included with the Saxon download.</p>
+
+<ul>
+  <li>a Java development environment. Saxon 7.3 requires JDK 1.4; this
+  means it will no longer work with the Microsoft Java VM.</li>
+    
+  <li><i>The integration with the Apache FOP processor is dropped at this release. The
+  FOP API has changed yet again between versions 0.20.3 and 0.20.4, and it is simply
+  too much hassle to track the changes.</i></li> 
+
+  <li>Saxon has an option to work with a source tree constructed using
+   <a href="http://www.jdom.org/">JDOM</a>. Saxon 7.3 is validated with
+   JDOM version 0.8; it may not work with earlier releases.</li> 
+</ul>
+
+<p>Saxon has been tested successfully in the past with a wide variety of parsers including
+ Xerces, Lark, SUN Project X, Crimson, Piccolo, Oracle XML, xerces, xml4j, and xp. Use of a SAX2-compliant
+ parser is preferred, as SAX1 does not allow XML comments to be passed to the application.
+ However, Saxon works with either. All the relevant classes must be installed on your Java CLASSPATH.</p>
+ 
+ <p><i>Saxon doesn't work with the XML parser in Resin, because the Resin parser fails
+ (in numerous ways) to conform to the SAX2 specification. The version tested was 2.1.1.</i></p>
+ 
+
+<p>An interactive debugger for Saxon has been written by
+ <a href="mailto:edwin@pannenleiter.de">Edwin Glaser</a>. It is still at an
+ early stage of development. The software can be downloaded from
+  <a href="http://tbug.sourceforge.net"/>http://tbug.sourceforge.net</a>. It is
+  issued in tar/gzip format, but it can be unpacked on a Windows machine using WinZIP.</p>
+
+<p>Because Saxon is run from the command line, you might find it useful (under Microsoft Windows)
+ to have a text editor
+with better command-line support than the standard DOS window. I use <b>Programmer's File Editor (PFE)</b>,
+a free product available from a number of download sites, 
+<a href="http://cdnet.softseek.com/Programming/Editors/Review_22841_index.html">listed here</a>,
+and also <b>UltraEdit</b>, shareware available from <a href="http://www.ultraedit.com/">www.ultraedit.com</a></p>
+
+<h3>Download</h3>
+
+<p>An index of all currently-available versions of Saxon is on the home page at SourceForge: see
+<a HREF="http://saxon.sf.net/">http://saxon.sf.net/</a></p>
+
+<hr>
+
+<p align="center"><a HREF="mailto:michael.h.kay@ntlworld.com">Michael H. Kay</a> <br>
+10 December 2002</p>
+
+<p align="center">Personal home page: <a href="http://homepage.ntlworld.com/michael.h.kay">http://homepage.ntlworld.com/michael.h.kay</a></p>
+
+</body>
+</html>

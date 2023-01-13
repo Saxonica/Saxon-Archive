@@ -1,0 +1,243 @@
+<html>
+
+<head>
+  <title>Saxon: the XPath API</title>
+  <link rel="stylesheet" type="text/css" href="saxon-style.css">
+</head>
+
+
+<body>
+<div align=right><a href="index.html">Saxon home page</a></div>
+<h1>Saxon: the XPath API</h1>
+
+<hr>
+
+<table width="100%">
+  <tr>
+    <td class="head"><b>Contents</b></td>
+  </tr>
+  <tr>
+    <td VALIGN="top" class="body"><a HREF="#Scope">Introduction</a><br>
+
+    <a HREF="#Expressions">Using XPath Expressions</a><br>
+    <a HREF="#NodeInfo">The NodeInfo Object</a>
+    <a HREF="#Parser">Building the Source Document</a><br>
+    </td>
+
+  </tr>
+</table>
+
+<hr>
+<a NAME="Scope"><h2>Introduction</h2></a>
+
+<p><b>This document describes how to use Saxon as a Java class library, without making any use
+of XSLT stylesheets. If you want to know how to control stylesheet processing from a Java
+application, see <a href="using-xsl.html">using-xsl.html</a>.</b></p>
+
+<p>The first section below describes Saxon's XPath API. This allows a Java application to execute
+XPath expressions against a source document, and manipulate the results. No stylesheet is involved.</p>
+
+<p>Subsequent sections describe more intimate APIs that are available in Saxon.</p>
+
+<p>In addition to the APIs described here, Saxon's JavaDoc documentation describes all the public classes
+and methods that are available for advanced users. These are all subject to change from one release to
+the next.</p>
+
+
+<a NAME="Expressions">
+<h2>Using XPath Expressions</h2>
+</a>
+
+<p>A new API has been introduced for executing XPath expressions. The API is loosely modelled
+on the proposed DOM Level 3 API for XPath. For full documentation, see the Javadoc description of package
+<code>net.sf.saxon.xpath</code>. A sample application using this API is available: it is called <code>XPathExample.java</code>,
+and can be found in the <code>samples/java</code> directory. To run this application, see the instructions
+in <a href="samples.html#xpath-example">samples.html</a>.</p>
+
+<p>This API is based on the class <code>net.sf.saxon.xpath.XPathEvaluator</code>. This class provides a few
+simple configuration interfaces to set the source document, the static context, and the context node,
+plus a number of methods for evaluating XPath expressions.</p>
+
+<p>The <code>XPathEvaluator</code> must be initialized with a source document, which can be supplied
+as a JAXP <code>Source</code> object. Any kind of <code>Source</code> object recognized by Saxon is
+allowed (including, for example, a JDOM source). This can be supplied either in the constructor for the
+<code>XPathEvaluator</code>, or through the <code>setSource</code> method. The <code>setSource</code> 
+method returns a <code>net.sf.saxon.om.DocumentInfo</code> object representing the root of the
+tree for the document: this is useful if you want to use some of the more advanced features of the 
+Saxon API, but you can ignore it if you don't need it.</p>
+
+<p>There are two methods for direct evaluation of XPath expressions,
+<code>evaluate()</code> which returns a List containing the result of the expression (which in general is a sequence),
+and <code>evaluateSingle()</code> which returns the first item in the result (this is appropriate where it is known
+that the result will be single-valued). The results are returned as <code>NodeInfo</code> objects in the case of nodes,
+or as objects of the most appropriate Java class in the case of atomic values: for example, Boolean, Double,
+or String in the case of the traditional XPath 1.0 data types.</p>
+
+<p>XPath itself provides no sorting capability. You can therefore specify a sort order in which you want
+the results of an expression returned. This is done by nominating another expression, via the <code>setSortKey</code>
+method: this second expression is applied to each item in the result sequence, and its value determines
+the position of that item in the sorted result order.</p>
+
+<p>You can call methods directly on the <code>NodeInfo</code> object to get information about a node: for
+example <code>getDisplayName()</code> gets the name of the node in a form suitable for display, and
+<code>getStringValue()</code> gets the string value of the node, as defined in the XPath data model. You
+can also use the node as the context node for evaluation of subsequent expressions, by calling the
+method <code>setContextNode</code> on the <code>XPathEvaluator</code> object.</p>
+
+<p>It is also possible to prepare an XPath expression for subsequent execution, using the 
+<code>createExpression()</code> method
+on the <code>XPathEvaluator</code> class. This is worthwhile where the same expression is to be executed repeatedly.
+The compiled expression is represented by an instance of the class
+ <code>net.sf.saxon.xpath.XPathExpression</code>,
+and it can be executed repeatedly, with different context nodes. However, the compiled expression is bound
+to one particular source document (this is to ensure that the same NamePool is used).</p>
+
+<p>A compiled expression can reference XPath variables; the values of these variables must be supplied
+before the expression is evaluated, and can be different each time it is evaluated. To do this you will
+need access to the <code>StandaloneContext</code> object used by the <code>XPathEvaluator</code>: you
+can get this by calling <code>getStaticContext</code> and casting the result to a <code>StandaloneContext</code>.
+ Before compiling
+an expression that uses variables, the variables it uses must be declared using the <code>declareVariable()</code> method
+on the <code>StandaloneContext</code> class. This method returns a <code>Variable</code> object, whose
+<code>setValue()</code> method can be used to set a value for the variable before the expression is
+evaluated.</p>
+
+<p>The <code>StandaloneContext</code> object is also needed if the XPath expression uses namespaces (which
+it will need to, if the source document itself uses namespaces). Before compiling or evaluating an
+XPath expression that uses namespace prefixes, the namespace must be declared. You can do this explicitly
+ using the <code>declareNamespace()</code> method on the <code>StandaloneContext</code> object. 
+ Alternatively, you can use the <code>setNamespaces()</code> method, which declares all the namespaces
+ that are in-scope for a given node in the source document.
+ Certain namespaces are predeclared with their conventional prefixes: the XSLT namespace (xsl),
+the XML namespace (xml), the XML Schema namespace (xs), and the Saxon namespace (saxon). </p>
+
+<p>All the core XPath functions are available, with the exception of the <code>document</code> function.
+The XSLT-specific functions, such as <code>key</code> and <code>generate-id</code>, are not available.
+You can call Java extension functions by binding a namespace to the Java class (for example, 
+<code>java:java.lang.Double</code>). You can also call Saxon and EXSLT extension functions using their
+normal namespace - with the exception of a small number of Saxon extension functions, such as
+ <code>saxon:evaluate</code> and <code>saxon:serialize</code>, which work only in an XSLT context.</p>
+
+
+<p>The design principle of this API is to minimize the number of Saxon classes that need to be used.
+Apart from the <code>NodeInfo</code> interface, which is needed when manipulating Saxon trees, only the four classes
+XPathProcessor, XPathExpression, StandaloneContext, and XPathException are needed. 
+For convenience, these classes are all in the <code>net.sf.saxon.xpath</code> package.</p>
+
+
+
+<a NAME="NodeInfo">
+<h2>The NodeInfo Object</h2>
+</a>
+
+<p>The <b>NodeInfo</b> object represents a node of an XML document. It has a subclass <code>DocumentInfo</code> to
+represent the root node, but all other nodes are represented by <code>NodeInfo</code> itself. These follow the
+XPath data model closely.</p>
+
+<p><i>In earlier releases, NodeInfo extended the DOM interface <code>Node</code>. This is no longer the case;
+it was changed to make it easier to integrate Saxon with other XML tree representations such as JDOM.
+However, the main Saxon implementations of the <code>NodeInfo</code> interface continue to also implement the DOM 
+<code>Node</code> interface, so you can still use DOM methods by casting the concrete node object to a DOM class.</i></p>
+
+<p>The NodeInfo object provides the application with
+information about the node. The most commonly-used methods include:</p>
+
+<table>
+  <tr>
+    <td VALIGN="TOP">getItemType()</td>
+    <td>gets a short identifying the node type (for example, element or attribute). The values are
+     consistent with those used in the DOM, and are referenced by constants in the class
+     <code>net.sf.saxon.value.Type</code></td>
+  </tr>
+  <tr>
+    <td VALIGN="TOP" WIDTH="30%">getDisplayName(), getLocalName(), getPrefix(), getURI()</td>
+    <td>These methods get the name of the element, or its various parts. The getDisplayName()
+    method returns the QName as used in the original source XML.</td>
+  </tr>
+  <tr>
+    <td VALIGN="TOP">getAttributeValue()</td>
+    <td>get the value of a specified attribute, as a String.</td>
+  </tr>
+  <tr>
+    <td VALIGN="TOP">getStringValue()</td>
+    <td>get the string value of a node, as defined in the XPath data model</td>
+  </tr>
+  <tr>
+    <td VALIGN="TOP">getParent()</td>
+    <td>get the NodeInfo representing the parent element, (which will be a <code>DocumentInfo</code> object
+     if this is the outermost element).</td>
+  </tr>
+  <tr>
+    <td VALIGN="TOP">getEnumeration()</td>
+    <td>returns an SequenceIterator object that can be used to iterate over the nodes on any of the
+    XPath axes. The first argument is an integer identifying the axis; the second is a <code>NodeTest</code> (a
+    simple form of pattern) which can be used to filter the nodes on the axis. Supply <code>AnyNodeTest.getInstance()</code>
+    if you want all the nodes on the axis. (For most applications, it is probably simpler to navigate
+    from a node by compiling an XPath expression, and executing it with the correct starting node as
+    the context node).</td>
+  </tr>
+</table>
+
+
+<a NAME="Parser">
+<h2>Building the Source Document</h2>
+</a>
+
+<p>The first thing the application must do is to build the source document, in the form of a tree.
+The simplest approach is to use the sequence:</p> 
+
+<p>
+<table border="1" width="100%" class="code">
+  <tr>
+    <td width="100%" bgcolor="#00FFFF"><pre><code>
+        String systemId = new File(sourceFile).toURL().toString();
+        DocumentInfo doc = new XPathEvaluator().setSource(
+                             new SAXSource(new InputSource(systemId)));
+    <code></pre></td>
+  </tr></table></p>
+
+<p>Alternatively, you can use the JAXP 1.1 interface. For example:</p>
+
+<p>
+<table border="1" width="100%" class="code">
+  <tr>
+    <td width="100%" bgcolor="#00FFFF"><pre><code>
+        System.setProperty("javax.xml.parsers.DocumentBuilderFactory",
+             "net.sf.saxon.om.DocumentBuilderFactoryImpl");
+        DocumentBuilderFactory dfactory =
+            DocumentBuilderFactory.newInstance();
+
+        dfactory.setNamespaceAware(true);
+
+        DocumentBuilder docBuilder = dfactory.newDocumentBuilder();
+        
+        String systemId = new File(sourceFile).toURL().toString();
+        Node doc = docBuilder.parse(new InputSource(systemId));
+    <code></pre></td>
+  </tr></table></p>
+  
+
+<p>You can define the parser to be used by supplying a parser within the <code>SAXSource</code> object
+supplied to the <code>Builder.build()</code> method. If you don't supply a parser, Saxon will select one
+using the JAXP mechanisms, specifically, the system property <code>javax.xml.parsers.DocumentBuilderFactory</code>.
+</p>
+
+<p>If you want to use different parsers depending on the URI of the document being read,
+you can achieve this by writing a <code>URIResolver</code> that nominates the parser to be used for each
+input file.</p>
+
+<a NAME="Controller">
+<h2>Event-based Processing: the Controller</h2>
+</a>
+
+<p><i>The ability to register node handlers with the Controller is withdrawn at this release.</i></p>
+
+
+
+<hr>
+
+
+<p align="center"><i>Michael H. Kay<br>
+28 April 2003</i></p>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<html>
+
+<head>
+
+<title>Limitations in Saxon 6.5.5</title>
+
+<body leftmargin="150" bgcolor="#ddeeff"><font face="Arial, Helvetica, sans-serif">
+<div align=right><a href="index.html">SAXON home page</a></div>
+
+<p><b><font FACE="Arial, Helvetica, sans-serif" color="#FF0080" size="7">
+Limitations</font></b></p>
+
+<p>This page lists areas where Saxon 6.5.5 is known to be non-conformant with
+W3C specifications.</p>
+
+<p>Since Saxon 6.5.5 is now stable and generally reliable, there are no plans to remove 
+these limitations.</p>
+
+<h2>XSLT 1.0 conformance</h2>
+
+
+<ol>
+<li><p>The characters used in the <code>xsl:decimal-format</code> element and the
+picture string of <code>format-number</code> must have Unicode code points
+less than 65536. (This is arguably in conformance with the specification, since XSLT 1.0 refers to
+the specification of the <code>DecimalFormat</code> class in JDK 1.1, which has the same
+limitation.)</p></li>
+
+<li><p>The picture string of
+<code>format-number</code> behaves as implemented in the Java 
+<code>DecimalFormat</code> class for the JDK version in use, whereas
+the XSLT specification mandates that it should behave as specified in JDK 1.1.</p></li>
+
+<li><p>The "alphanumeric" characters recognized in the format picture of <code>xsl:number</code>
+are limited to characters whose Unicode code points are less than 65536. The effect of using
+characters above this range in the format picture is undefined.</p></li>
+
+<li><p>When the format-token supplied to <code>xsl:number</code> is x391 or x3b1, that is,
+upper or lower case Greek, the representations of the numbers 13-18 are incorrect.</p></li>
+<!-- Source code fixed. Present in all releases up to 8.8. See bug 1561028 -->
+
+<li><p>When the <code>version</code> attribute is set to <code>1.1</code>, Saxon
+recognizes certain constructs that were defined in the draft XSLT 1.1 specification;
+XSLT 1.0 requires that such constructs are treated as errors.</p></li>
+
+<li><p>An erratum to the XSLT 1.0 specification states that <code>xsl:copy</code> and <code>xsl:copy-of</code>
+may be used to add a namespace node to a newly constructed element. This works correctly in Saxon, provided
+that the name of the namespace node does not clash with the namespace prefix that Saxon has allocated to the
+element for serialization purposes. (In principle, this namespace prefix should not be present in the result
+tree, and should therefore be incapable of causing a conflict.) More details: see bug 
+<a href="http://sourceforge.net/tracker/index.php?func=detail&aid=637117&group_id=29872&atid=397617">637117</a>.</p></li>
+
+<li><p>According to the W3C specification,
+global variables should be evaluated with the context node set to the root node of the
+principal source document. However, when one global variable G contains a forwards reference to another
+global variable H, Saxon evaluates H using the dynamic context of the variable reference.
+This means that if G contains an <code>xsl:for-each</code> instruction that changes the context,
+and the reference to H occurs within the <code>xsl:for-each</code> loop, then H is evaluated
+with the wrong context. This bug is present in all Saxon versions up to and including 6.5.5.
+<!-- Source code fixed --></p></li>
+
+<li><p>When characters are used in a comment or processing instruction that cannot be
+represented using the encoding chosen in <code>xsl:output</code>, the specification states
+that an error should be signaled. Saxon however replaces the character with a substitute 
+character and completes the transformation successfully. If the comment or processing instruction
+precedes the first element, and the output method is defaulted, then the leading comments and
+processing instructions are incorrectly output as a text node containing escaped markup (which means
+the output will not be well-formed). <!-- Source code fixed; test-cases output-xml910 to 912 --></p></li>
+
+<li><p>When a node-set is supplied as the first argument to the <code>document()</code> function, and
+two nodes in this node-set refer to the same target document, the result of the <code>document()</code>
+function will contain the same document node more than once: duplicates are not eliminated.
+<!-- Not fixed. Test case mdocs38. --></p></li>
+
+<li><p>When the argument to the <code>function-available()</code> function is not a string literal,
+    that is, when it is computed at run-time, the function may return false in cases where it should return
+    true. Specifically, this happens when the string used at run-time has not been interned, which will be the
+case for example if it is obtained as the string value of a node in a source document.
+<!-- Not fixed. Calls on ExpressionParser.isFunctionAvailable() need to intern the supplied string. --></p></li>
+
+<li><p>A null pointer exception occurs if the <code>xsl:stylesheet</code> element has a child element
+also called <code>xsl:stylesheet</code>.
+<!-- Not fixed. Test case errorcode0010a. Present in releases up to 9.3 --></p></li>
+
+<li><p>A null pointer exception occurs under some circumstances if a predicate in a match pattern contains
+a call on the function <code>starts-with()</code> with the wrong number of arguments.
+<!-- Not fixed. Reported on saxon-help list 24 Sep 2012. Crash is at:
+
+at com.icl.saxon.functions.StartsWith.getDependencies(StartsWith.java:74)
+	at com.icl.saxon.expr.Expression.usesCurrent(Expression.java:193)
+	at com.icl.saxon.expr.ExpressionParser.parseFilters(ExpressionParser.java:976) --></p></li>
+
+</ol>
+
+<h2>XML 1.0 Conformance</h2>
+
+<p>The default parser is a version of &AElig;lfred. There is one known non-conformance in
+the version of the AElfred parser provided with the Saxon product: it does not enforce the
+constraint that the contents of a general entity must be well-formed. Note, however, that this
+parser does not perform XML validation.</p>
+
+
+<hr>
+<p align="center">Michael H. Kay<br>
+24 September 2012</p>
+</body>
+</html>

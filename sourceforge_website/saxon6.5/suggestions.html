@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<HTML><HEAD><TITLE>SAXON: Enhancement Suggestions</TITLE>
+
+<META content="text/html; charset=iso-8859-1" http-equiv=Content-Type>
+</HEAD>
+<BODY bgColor=#ddeeff leftMargin=150><FONT face="Arial, Helvetica, sans-serif">
+<div align=right><a href="index.html">SAXON home page</a></div>
+<H1><BIG><FONT color=#ff0080>SAXON: Enhancement Suggestions</FONT></BIG></H1>
+
+<p>This page acts as a register of suggestions or ideas for future enhancements
+to Saxon, or notes of current restrictions. There is no implication that any of these
+will ever be implemented, although any developer who wants to take any of them on is
+welcome to contact me.</p>
+
+<p>To add your own suggestions to the list, email
+ <a href="mailto:michael.h.kay@ntlworld.com">Michael Kay</a>. Ideas will
+ only be added if I consider the enhancement desirable, and even then
+ there is no promise of action.</p>
+
+
+<TABLE>
+  <TR>
+    <td width="10%"><b>Number</b></td>
+    <td width="70%"><b>Enhancement</b></td>
+    <td><b>Status</b></TR>
+  <TR>
+    <td valign="top">1</td>
+    <TD vAlign="top">Norm Walsh suggests that as the Saxon transform operates as a SAX2
+    filter, any user-supplied entity resolver ought to be used to resolve the URIs in
+    (for example) the document() function, or xsl:include and xsl:import</TD>
+    <TD valign="top">Superseded by JAXP URIResolver</TD></TR>
+  <TR>
+    <td valign="top">2</td>
+    <TD vAlign="top">As the Saxon transform operates as a SAX2
+    filter, any user-supplied SAX error handler ought to be notified of errors occurring
+    during the transformation</TD>
+    <TD valign="top">Superseded by JAXP ErrorListener</TD></TR>
+  <TR>
+    <td valign="top">3</td>
+    <TD vAlign="top">An output writer supplied to receive output of the transformation ought
+    to be closed by the user, not by Saxon.</TD>
+    <TD valign="top">I think this is OK in Saxon 6.1</TD></TR>
+  <TR>
+    <td valign="top">4</td>
+    <TD vAlign="top">Implement JavaScript extension functions</TD>
+    <TD valign="top">Not urgent</TD></TR>
+  <TR>
+    <td valign="top">5</td>
+    <TD vAlign="top">Implement a COM interface</TD>
+    <TD valign="top">Requested by a number of users.</TD></TR>   
+  <TR>
+    <td valign="top">6</td>
+    <TD vAlign="top">Change xsl:document to generate the output file relative to the base URI rather than
+    the current directory.</TD>
+    <TD valign="top">Will follow XSLT 1.1</TD></TR>
+  <TR>
+    <td valign="top">7</td>
+    <TD vAlign="top">Provide extension functions to invoke regular expressions.</TD>
+    <TD valign="top">Not urgent.</TD></TR>
+  <TR>
+    <td valign="top">8</td>
+    <TD vAlign="top">Restriction: if the same document is kept in memory, and several transforms
+    are applied using it as input, there may be conflicts if the space-stripping rules in the different stylesheets are incompatible.</TD>
+    <TD valign="top">Some improvements in Saxon 6.3.</TD></TR>    
+  <TR>
+    <td valign="top">9</td>
+    <TD vAlign="top">Implement a richer set of international collating and numbering rules</TD>
+    <TD valign="top">Not urgent. Some progress made on numbering.</TD></TR>    
+  <TR>
+    <td valign="top">10</td>
+    <TD vAlign="top">Add an extension that allows creation of entity declarations in the internal
+    DTD subset of the result document (the specific request was for unparsed entity declarations).</TD>
+    <TD valign="top">Done, saxon:doctype.</TD></TR>    
+  <TR>
+    <td valign="top">11</td>
+    <TD vAlign="top">Implement, and invoke, the JAXP javax.xml.parsers interfaces to obtain
+    a SAX parser</TD>
+    <TD valign="top">Done in Saxon 6.3</TD></TR>    
+  <TR>
+    <td valign="top">12</td>
+    <TD vAlign="top">Allow an extension element to be implemented by a named template,
+    so that instead of lots of xsl:with-param elements you can specify parameters
+    as name="value" attributes.</TD>
+    <TD valign="top">Not urgent.</TD></TR>
+  <TR>
+    <td valign="top">13</td>
+    <TD vAlign="top">Fit the Java-only Saxon API into the JAXP framework, that is, make
+    the assembled collection of rules a Templates object from which a Transformer can be
+    generated.</TD>
+    <TD valign="top">Considering it.</TD></TR>
+  <TR>
+    <td valign="top">14</td>
+    <TD vAlign="top">Make the PreparedStyleSheet object, and everything it owns,
+    serializable. This gives benefits in an Enterprise JavaBeans environment.</TD>
+    <TD valign="top">Useful, but too much effort, difficult to test.</TD></TR>
+  <TR>
+    <td valign="top">15</td>
+    <TD vAlign="top">Provide a SAX filter to do XInclude processing, and allow this
+    to be run between the parsing and transformation stages.</TD>
+    <TD valign="top">Anyone prepared to do it?</TD></TR></TR>
+  <TR>
+    <td valign="top">16</td>
+    <TD vAlign="top">Replace saxon:preview with a SAX filter that does document splitting,
+    applying a transformation to each subtree of the split document, and possibly another
+    filter to optionally merge the result trees of these transformations.</TD>
+    <TD valign="top">Not urgent.</TD></TR></TR>
+</TABLE>
+
+<hr>
+
+<P align=center>Michael H. Kay<BR>3 May 2001</P>
+</FONT></BODY></HTML>

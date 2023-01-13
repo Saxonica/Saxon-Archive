@@ -1,0 +1,140 @@
+<html>
+
+<head>
+
+<title>The &AElig;lfred XML Parser</title>
+</head>
+
+<body leftmargin="150" bgcolor="#ddeeff"><font face="Arial, Helvetica, sans-serif">
+
+<h1><big><font color="#FF0080"><big>The &AElig;lfred XML Parser</big></font></big></h1>
+<p align="right"><big><big><font color="#FF0080">version 7.0</font></big></big></p>
+
+<p>This page describes the Saxon version of the &AElig;lfred XML Parser.</p>
+
+<p>This was distributed
+with releases of Saxon until Saxon version 7.1. Saxon versions from 7.2 onwards no longer include a built-in XML parser. This decision was
+taken because Saxon is now dependent on JDK 1.4, which includes its own XML parser, and therefore
+the original reason for bundling a parser with Saxon has disappeared.</p>
+
+<p>Nevertheless, the &AElig;lfred parser offered some advantages over the Crimson parser
+included with JDK 1.4, and it is therefore now available as a free-standing download.</p>
+
+<p>This version branched some while ago from the version developed by David Brownell (see
+<a href="http://www.gnu.org/software/classpathx/jaxp/apidoc/gnu/xml/aelfred2/package-summary.html">here</a>),
+which is now packaged in the GNU XML library. David Brownell's version has added considerably
+more functionality (such as validation) and has grown correspondingly larger.</p>
+
+<p>The parser implements SAX2 and JAXP 1.1 parser interfaces. It has no DOM support, and no
+support for validation: in fact, it is about as stripped-down as an XML parser can get.</p>
+
+<hr>
+
+<h2>Download</h2>
+
+<p>Follow this link to <a href="http://prdownloads.sourceforge.net/saxon/aelfred7_0.zip">download</a>
+the software.</p>
+
+<p>The download includes the JAR file <code>saxon-aelfred.jar</code>, a ZIP file containing the source code,
+and this documentation.</p>
+
+<h2>Technical Details</h2>
+
+<p>The SAX2 interface is available through class <code>net.sf.saxon.aelfred.SAXDriver</code>, which
+implements the interface <code>org.xml.sax.XMLReader</code>.</p>
+
+<p>The JAXP 1.1 interface is available through class <code>net.sf.saxon.aelfred.SAXParserFactoryImpl</code>,
+which implements the interface <code>javax.xml.parsers.SAXParserFactory</code>.
+
+<p>The SAX2 and JAXP libraries are not included in the package; these must be installed separately.
+They are available automatically if you use JDK 1.4.</p>
+
+<p>The package can be used independently of Saxon.</p>
+
+<p>The JAR file includes no manifest, so placing the JAR file on your classpath will not make
+this the default JAXP parser. To invoke this parser via JAXP, you must explicitly set the
+system property <code>javax.xml.parsers.SAXParserFactory</code> to the value
+<code>net.sf.saxon.aelfred.SAXParserFactoryImpl</code>.</p>
+
+<p>&AElig;lfred supports the following character encodings:</p>
+
+<pre>
+ISO-8859-1, 8859_1, ISO8859_1
+US-ASCII, ASCII 
+UTF-8, UTF8
+ISO-10646-UCS-2, UTF-16, UTF-16BE, UTF-16LE
+</pre>
+
+<h2>Terms and Conditions</h2>
+
+<p>&AElig;lfred was originally developed by David Megginson at Microstar (which no longer exists), and placed
+more or less in the public domain.</p>
+
+<p>This is a modified version of the &AElig;lfred XML parser from
+Microstar. I have taken a few of David Brownell's updates, repackaged it,
+  and fixed a few bugs. All cahnges are clearly documented in the source code.</p>
+
+<p>The result is distributed under the terms of Microstar's original terms and conditions, 
+which are as follows:</p>
+
+<table><tr><td width=100></td><td>
+<p>AElfred, Version 1.2<br>
+Microstar's Java-Based XML Parser<br>
+Copyright (c) 1997, 1998 by Microstar Software Ltd.<br>
+Home Page: http://www.microstar.com/XML/</p>
+
+<p>AElfred is free for both commercial and non-commercial use and
+redistribution, provided that Microstar's copyright and disclaimer are
+retained intact.  You are free to modify AElfred for your own use and
+to redistribute AElfred with your modifications, provided that the
+modifications are clearly documented.</p>
+
+
+<p><u>DISCLAIMER</u></p>
+
+
+<p>This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+merchantability or fitness for a particular purpose.  Please use it AT
+YOUR OWN RISK.</p>
+
+
+
+</td><td width=100></td></tr></table>
+
+<p>David Brownell added the following statement: </p>
+<code><pre>
+
+/*
+ * Copyright (c) 1999-2000 by David Brownell.  All Rights Reserved.
+ *
+ * This program is open source software; you may use, copy, modify, and
+ * redistribute it under the terms of the LICENSE with which it was
+ * originally distributed.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * LICENSE for more details.
+ */
+</pre></code> 
+
+<p>The version included with Saxon is David Brownell's code of 26 Feb 2000,
+modified as follows:</p>
+
+<ul>
+<li>Changed the package name to net.sf.saxon.aelfred to prevent any accidental confusion with the
+ original Microstar code or with David Brownell's version.</li>
+<li>Fixed several bugs: (1) a bug in namespace handling (where an attribute xxx:name precedes the xmlns:xxx
+ declaration) (2) poor diagnostics when end of file occurs prematurely </li>
+<li>Subsetting the code to include only the XML non-validating parser and SAX driver, with appropriate
+changes to the setFeature() and getFeature() methods.</li>
+<li>Some further changes made by David Brownell up to June 2001 have been incorporated.</li>
+</ul>
+
+<hr>
+
+<p align="center"><i>Michael H. Kay<br>
+28 November 2002</i> </p>
+</body>
+</html>

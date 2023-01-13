@@ -1,0 +1,2232 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE functions [
+  <!ATTLIST xsl:stylesheet id ID #REQUIRED>
+]>
+<?xml-stylesheet href="functions.xml#ss" type="text/xsl"?>
+
+<!-- status of function implementations in Saxon 7.x. Note: some XSLT functions are not currently listed. -->
+<conformance>
+<functions>
+<function>
+    <signature>fn:abs(numeric? $srcval) => numeric?</signature>
+    <name>fn:abs</name>
+    <arg name="srcval" type="numeric" occurs="?"/>
+    <result type="numeric" occurs="?"/>
+    <status>Implemented in Saxon 7.6.1.</status>
+    <description>Returns the absolute value of a given number.
+    Returns the same type as the supplied argument.</description>
+</function>
+<function>
+    <signature>op:add-dayTimeDuration-to-date( date $srcval1, dayTimeDuration $srcval2) => date</signature>
+    <name>op:add-dayTimeDuration-to-date</name>
+    <arg name="srcval1" type="xs:date"/>
+    <arg name="srcval2" type="xdt:dayTimeDuration"/>
+    <result type="xs:date"/>
+    <status>y</status>
+    <notes>Implemented in Saxon 7.9</notes>    
+</function>
+<function>    
+    <signature>op:add-dayTimeDuration-to-dateTime( dateTime $srcval1, dayTimeDuration $srcval2) => dateTime</signature>
+    <name>op:add-dayTimeDuration-to-dateTime</name>
+    <arg name="srcval1" type="xs:dateTime"/>
+    <arg name="srcval2" type="xdt:dayTimeDuration"/>
+    <result type="xs:dateTime"/>
+    <status>y</status>
+    <notes>Implemented in Saxon 7.9</notes>    
+</function>
+<function>
+    <signature>op:add-dayTimeDuration-to-time( time $srcval1, dayTimeDuration $srcval2) => time</signature>
+    <name>op:add-dayTimeDuration-to-time</name>
+    <arg name="srcval1" type="xs:time"/>
+    <arg name="srcval2" type="xdt:dayTimeDuration"/>
+    <result type="xs:time"/>
+    <status>y</status>
+    <notes>Implemented in Saxon 7.9</notes>    
+</function>
+<function>
+    <signature>op:add-dayTimeDurations( dayTimeDuration $srcval1, dayTimeDuration $srcval2) => dayTimeDuration</signature>
+    <name>op:add-dayTimeDurations</name>
+    <arg name="srcval1" type="xdt:dayTimeDuration"/>
+    <arg name="srcval2" type="xdt:dayTimeDuration"/>
+    <result type="xdt:dayTimeDuration"/>
+    <status>y</status>
+    <notes>Implemented in Saxon 7.9</notes>    
+</function>
+<function>
+    <signature>op:add-yearMonthDuration-to-date( date $srcval1, yearMonthDuration $srcval2) => date</signature>
+    <name>op:add-yearMonthDuration-to-date</name>
+    <arg name="srcval1" type="xs:date"/>
+    <arg name="srcval2" type="xdt:yearMonthDuration"/>
+    <result type="xs:date"/>
+    <status>y</status>
+    <notes>Implemented in Saxon 7.9</notes>    
+</function>
+<function>
+    <signature>op:add-yearMonthDuration-to-dateTime( dateTime $srcval1, yearMonthDuration $srcval2) => dateTime</signature>
+    <name>op:add-yearMonthDuration-to-dateTime</name>
+    <arg name="srcval1" type="xs:dateTime"/>
+    <arg name="srcval2" type="xdt:yearMonthDuration"/>
+    <result type="xs:dateTime"/>
+    <status>y</status>
+    <notes>Implemented in Saxon 7.9</notes>    
+</function>
+<function>
+    <signature>op:add-yearMonthDurations( yearMonthDuration $srcval1, yearMonthDuration $srcval2) => yearMonthDuration</signature>
+    <name>op:add-yearMonthDurations</name>
+    <arg name="srcval1" type="xdt:yearMonthDuration"/>
+    <arg name="srcval2" type="xdt:yearMonthDuration"/>
+    <result type="xdt:yearMonthDuration"/>
+    <status>y</status>
+    <notes>Implemented in Saxon 7.9</notes>
+</function>
+<function>
+    <signature>fn:adjust-date-to-timezone($srcval as date?) => date?</signature>
+    <name>fn:adjust-date-to-timezone</name>
+    <arg name="srcval" type="xs:date" occurs="?"/>
+    <result type="xs:date" occurs="?"/>
+    <status>Implemented in Saxon 7.8</status>
+    <description></description>
+</function>
+<function>
+    <signature>fn:adjust-date-to-timezone($srcval as date?, $timezone as dayTimeDuration) => date?</signature>
+    <name>fn:adjust-date-to-timezone</name>
+    <arg name="srcval" type="xs:date" occurs="?"/>
+    <arg name="timezone" type="xdt:dayTimeDuration"/>
+    <result type="xs:date" occurs="?"/>
+    <status>Implemented in Saxon 7.8</status>
+    <description></description>
+</function>
+<function>
+    <signature>fn:adjust-dateTime-to-timezone($srcval as dateTime?) => dateTime?</signature>
+    <name>fn:adjust-dateTime-to-timezone</name>
+    <arg name="srcval" type="xs:dateTime" occurs="?"/>
+    <result type="xs:dateTime" occurs="?"/>
+    <status>Implemented in Saxon 7.8</status>
+    <description></description>
+</function>
+<function>
+    <signature>fn:adjust-dateTime-to-timezone($srcval as dateTime?, $timezone as dayTimeDuration) => dateTime?</signature>
+    <name>fn:adjust-dateTime-to-timezone</name>
+    <arg name="srcval" type="xs:dateTime" occurs="?"/>
+    <arg name="timezone" type="xdt:dayTimeDuration"/>
+    <result type="xs:dateTime" occurs="?"/>
+    <status>Implemented in Saxon 7.8</status>
+    <description></description>
+</function>
+<function>
+    <signature>fn:adjust-time-to-timezone($srcval as time?) => time?</signature>
+    <name>fn:adjust-time-to-timezone</name>
+    <arg name="srcval" type="xs:time" occurs="?"/>
+    <result type="xs:time" occurs="?"/>
+    <status>Implemented in Saxon 7.8</status>
+    <description></description>
+</function>
+<function>
+    <signature>fn:adjust-time-to-timezone($srcval as time?, $timezone as dayTimeDuration) => time?</signature>
+    <name>fn:adjust-time-to-timezone</name>
+    <arg name="srcval" type="xs:time" occurs="?"/>
+    <arg name="timezone" type="xdt:dayTimeDuration"/>
+    <result type="xs:time" occurs="?"/>
+    <status>Implemented in Saxon 7.8</status>
+    <description></description>
+</function>
+<function>
+    <signature>op:anyURI-equal(anyURI $srcval1, anyURI $srcval2) => boolean</signature>
+    <name>op:anyURI-equal</name>
+    <arg name="srcval1" type="xs:anyURI"/>
+    <arg name="srcval2" type="xs:anyURI"/>
+    <result type="xs:boolean"/>
+    <status>y</status>
+    <description>Compares two anyURI values for equality</description>
+</function>
+<function>
+    <signature>fn:avg(anyAtomicType* $srcval) => anyAtomicType?</signature>
+    <name>fn:avg</name>
+    <arg name="srcval" type="xdt:anyAtomicType" occurs="*"/>
+    <result type="xdt:anyAtomicType" occurs="?"/>
+    <status>Implemented. Changed in 7.4 to return the same type as the argument, when appropriate.
+    (For a set of integers, the result is a double). Not yet implemented for 
+    other addable types, e.g. duration.</status>
+    <description>Returns the average of a set of numbers</description>
+</function>
+<function>
+    <signature>fn:base-uri() => string?</signature>
+    <name>fn:base-uri</name>
+    <result type="xs:string" occurs="?"/>
+    <status>y</status>
+    <description>Returns the base URI of the static context</description>
+    <tests><test>reluri12</test><test>reluri13</test></tests>
+</function>
+<function>
+    <signature>fn:base-uri(node $srcval) => string?</signature>
+    <name>fn:base-uri</name>
+    <arg name="srcval" type="node()"/>
+    <result type="xs:string" occurs="?"/>
+    <status>y</status>
+    <description>Returns the base URI of a given node</description>
+    <tests><test>saxon54</test></tests>
+</function>
+<function>
+    <signature>op:base64Binary-equal( base64Binary $value1, base64Binary $value2) => boolean</signature>
+    <name>op:base64-binary-equal</name>
+    <arg name="srcval1" type="xs:base64Binary"/>
+    <arg name="srcval2" type="xs:base64Binary"/>
+    <result type="xs:boolean"/>
+    <status>y</status>
+</function>
+<function>
+    <signature>fn:boolean(item* $srcval) => boolean</signature>
+    <name>fn:boolean</name>
+    <arg name="srcval" type="item()" occurs="*"/>
+    <result type="xs:boolean"/>
+    <status>y</status>
+    <description>Obtains the effective boolean value of any expression</description>
+</function>
+<function>
+    <signature>op:boolean-equal(boolean $value1, boolean $value2) => boolean</signature>
+    <name>op:boolean-equal</name>
+    <arg name="srcval1" type="xs:boolean"/>
+    <arg name="srcval2" type="xs:boolean"/>
+    <result type="xs:boolean"/>
+    <status>y</status>
+</function>
+<function>
+    <signature>op:boolean-greater-than( boolean $srcval1, boolean $srcval2) => boolean</signature>
+    <name>op:boolean-greater-than</name>
+    <arg name="srcval1" type="xs:boolean"/>
+    <arg name="srcval2" type="xs:boolean"/>
+    <result type="xs:boolean"/>
+    <status>y</status>
+</function>
+<function>
+    <signature>op:boolean-less-than( boolean $srcval1, boolean $srcval2) => boolean</signature>
+    <name>op:boolean-less-than</name>
+    <arg name="srcval1" type="xs:boolean"/>
+    <arg name="srcval2" type="xs:boolean"/>
+    <result type="xs:boolean"/>
+    <status>y</status>
+</function>
+<function>
+    <signature>fn:ceiling(numeric? $srcval) => numeric?</signature>
+    <name>fn:ceiling</name>
+    <arg name="srcval" type="numeric" occurs="?"/>
+    <result type="numeric" occurs="?"/>
+    <status>Implemented. Changed in 7.4 to return the same type as the supplied argument.</status>
+    <description>Rounds a value towards positive infinity</description>
+</function>
+<function>
+    <signature>fn:codepoints-to-string(integer* codes) => string</signature>
+    <name>fn:codepoints-to-string</name>
+    <arg name="codes" type="xs:integer" occurs="*"/>
+    <result type="xs:string"/>
+    <status>Implemented. The error checking is incomplete (there is no check that the integers in the
+    supplied sequence are legal XML characters).</status>
+    <description>Converts a sequence of integers representing Unicode characters to the corresponding string</description>
+</function>
+<function>
+    <signature>fn:collection(string $srcval) => node*</signature>
+    <name>fn:collection</name>
+    <arg name="srcval" type="xs:string"/>
+    <result type="node()" occurs="*"/>
+    <status>Implemented. In the Saxon implementation, the argument is interpreted as the URI
+    of an XML catalogue document containing the URIs of the documents that make up the collection. An
+    example of a catalogue is:<code>
+    
+    <pre><![CDATA[<collection>
+  <doc href="doc1.xml"/>
+  <doc href="doc2.xml"/>
+  <doc href="doc3.xml"/>
+</collection>]]>
+</pre></code>
+    
+    
+    </status>
+    <description>Loads an external collection of nodes identified by the URI of the collection</description>
+</function>
+<function>
+    <signature>fn:compare(string? $comparand1, string? $comparand2) => integer?</signature>
+    <name>fn:compare</name>
+    <arg name="comparand1" type="xs:string" occurs="?"/>
+    <arg name="comparand2" type="xs:string" occurs="?"/>
+    <result type="xs:integer" occurs="?"/>    
+    <status>y</status>
+    <description>Compares two strings using the default collation</description>
+</function>
+<function>
+    <signature>fn:compare(string? $comparand1, string? $comparand2, string $collation) => integer?</signature>
+    <name>fn:compare</name>
+    <arg name="comparand1" type="xs:string" occurs="?"/>
+    <arg name="comparand2" type="xs:string" occurs="?"/>
+    <arg name="collation" type="xs:string"/>
+    <result type="xs:integer" occurs="?"/>    
+    <status>y</status>
+    <description>Compares two strings using a specified collation</description>
+    <see-also>extensions.html#saxon:collation</see-also>
+</function>
+<function>
+    <signature>fn:concat(string $arg1, ...) => string</signature>
+    <name>fn:concat</name>
+    <arg name="arg1" type="xs:string" repeated="yes"/>
+    <result type="xs:string"/>    
+    <status>y</status>
+    <description>Concatenates the string-values of the arguments into a single string</description>
+</function>
+<function>
+    <signature>op:concatenate(item* $seq1, item* $seq2) => item*</signature>
+    <name>op:concatenate</name>
+    <arg name="seq1" type="item()" occurs="*"/>
+    <arg name="seq2" type="item()" occurs="*"/>
+    <result type="item()" occurs="*"/>
+    <status>y</status>
+</function>
+<function>
+    <signature>fn:contains(string? $operand1, string? $operand2) => boolean?</signature>
+    <name>fn:contains</name>
+    <arg name="operand1" type="xs:string" occurs="?"/>
+    <arg name="operand2" type="xs:string" occurs="?"/>
+    <result type="xs:boolean" occurs="?"/>    
+    <status>y</status>
+    <description>Returns true if the second string is a substring of the first</description>
+</function>
+<function>
+    <signature>fn:contains(string? $operand1, string? $operand2, string $collation) => boolean?</signature>
+    <name>fn:contains</name>
+    <arg name="operand1" type="xs:string" occurs="?"/>
+    <arg name="operand2" type="xs:string" occurs="?"/>
+    <arg name="collation" type="xs:string"/>
+    <result type="xs:boolean" occurs="?"/>    
+    <status>y</status>
+    <tests><test>str127</test></tests>
+</function>
+<function>
+    <signature>fn:context-item() => item?</signature>
+    <name>fn:context-item</name>
+    <result type="item()" occurs="?"/>
+    <status>Removed in Saxon 7.8</status>
+</function>
+<function>
+    <signature>fn:count(item* $srcval) => integer</signature>
+    <name>fn:count</name>
+    <arg name="srcval" type="item()" occurs="*"/>
+    <result type="xs:integer"/>
+    <status>y</status>
+    <description>Counts the number of items in a sequence</description>
+</function>
+<function>
+    <signature>xslt:current => item?</signature>
+    <name>xslt:current</name>
+    <result type="item()" occurs="?"/>
+    <status>y</status>
+    <description>Returns the item that was the current item supplied
+     on entry to the XPath expression</description>
+</function>
+<function>
+    <signature>fn:current-date() => date</signature>
+    <name>fn:current-date</name>
+    <result type="xs:date"/>
+    <status>Implemented. Changed in 7.8 to return a date in the local timezone.</status>
+    <description>Returns the current date</description>
+</function>
+<function>
+    <signature>fn:current-dateTime() => dateTime</signature>
+    <name>fn:current-dateTime</name>
+    <result type="xs:dateTime"/>
+    <status>Implemented. Changed in 7.8 to return a date/time in the local timezone.</status>
+    <description>Returns the current date and time</description>
+</function>
+
+<function>
+    <signature>xslt:current-group() => item()*</signature>
+    <name>xslt:current-group</name>
+    <result type="item()" occurs="*"/>
+    <status>y</status>
+    <description>Returns the contents of the current group selected 
+    by <code>xsl:for-each-group</code></description>
+</function>
+<function>
+    <signature>xslt:current-grouping-key() => xdt:anyAtomicType</signature>
+    <name>xslt:current-grouping-key</name>
+    <result type="xdt:anyAtomicType"/>
+    <status>Implemented in Saxon 7.6.5</status>
+    <description>Returns the value that is the grouping key of the current group 
+    selected by <code>xsl:for-each-group</code></description>
+</function>
+<function>
+    <signature>fn:current-time() => time</signature>
+    <name>fn:current-time</name>
+    <result type="xs:time"/>
+    <status>Implemented. Changed in 7.8 to return a time in the local timezone.</status>
+    <description>Returns the current time</description>
+</function>
+<function>
+    <signature>fn:data(item* $srcval) => xdt:anyAtomicType*</signature>
+    <name>fn:data</name>
+    <arg name="srcval" type="item()" occurs="*"/>
+    <result type="xdt:anyAtomicType" occurs="*"/>
+    <status>y</status>
+    <description>Returns the result of atomizing the supplied sequence</description>
+</function>
+<function>
+    <signature>op:date-equal(date $operand1, date $operand2) => boolean</signature>
+    <name>op:date-equal</name>
+    <arg name="operand1" type="xs:date"/>
+    <arg name="operand2" type="xs:date"/> 
+    <result type="xs:boolean"/>   
+    <status>y</status>
+</function>
+<function>
+    <signature>op:date-greater-than( date $operand1, date $operand2) => boolean</signature>
+    <name>op:date-greater-than</name>
+    <arg name="operand1" type="xs:date"/>
+    <arg name="operand2" type="xs:date"/> 
+    <result type="xs:boolean"/>   
+    <status>y</status>
+</function>
+<function>
+    <signature>op:date-less-than( date $operand1, date $operand2) => boolean</signature>
+    <name>op:date-less-than</name>
+    <arg name="operand1" type="xs:date"/>
+    <arg name="operand2" type="xs:date"/> 
+    <result type="xs:boolean"/>   
+    <status>y</status>
+</function>
+<function>
+    <signature>op:dateTime-equal( dateTime $operand1, dateTime $operand2) => boolean</signature>
+    <name>op:dateTime-equal</name>
+    <arg name="operand1" type="xs:dateTime"/>
+    <arg name="operand2" type="xs:dateTime"/> 
+    <result type="xs:boolean"/>   
+    <status>y</status>
+</function>
+<function>
+    <signature>op:dateTime-greater-than( dateTime $operand1, dateTime $operand2) => boolean</signature>
+    <name>op:dateTime-greater-than</name>
+    <arg name="operand1" type="xs:dateTime"/>
+    <arg name="operand2" type="xs:dateTime"/> 
+    <result type="xs:boolean"/>   
+    <status>y</status>
+</function>
+<function>
+    <signature>op:dateTime-less-than( dateTime $operand1, dateTime $operand2) => boolean</signature>
+    <name>op:dateTime-less-than</name>
+    <arg name="operand1" type="xs:dateTime"/>
+    <arg name="operand2" type="xs:dateTime"/> 
+    <result type="xs:boolean"/>   
+    <status>y</status>
+</function>
+<function>
+    <signature>op:dayTimeDuration-equal( dayTimeDuration $operand1, dayTimeDuration $operand2) => boolean</signature>
+    <name>op:dayTimeDuration-equal</name>
+    <arg name="operand1" type="xdt:dayTimeDuration"/>
+    <arg name="operand2" type="xdt:dayTimeDuration"/> 
+    <result type="xs:boolean"/>   
+    <status>y</status>
+</function>
+<function>
+    <signature>op:dayTimeDuration-greater-than( dayTimeDuration $operand1, dayTimeDuration $operand2) => boolean</signature>
+    <name>op:dayTimeDuration-greater-than</name>
+    <arg name="operand1" type="xdt:dayTimeDuration"/>
+    <arg name="operand2" type="xdt:dayTimeDuration"/> 
+    <result type="xs:boolean"/>   
+    <status>y</status>
+</function>
+<function>
+    <signature>op:dayTimeDuration-less-than( dayTimeDuration $operand1, dayTimeDuration $operand2) => boolean</signature>
+    <name>op:dayTimeDuration-less-than</name>
+    <arg name="operand1" type="xdt:dayTimeDuration"/>
+    <arg name="operand2" type="xdt:dayTimeDuration"/> 
+    <result type="xs:boolean"/>   
+    <status>y</status>
+</function>
+<function>
+    <signature>fn:deep-equal(item()* $parameter1, item()* $parameter2) => boolean</signature>
+    <name>fn:deep-equal</name>
+    <arg name="operand1" type="item()" occurs="*"/>
+    <arg name="operand2" type="item()" occurs="*"/> 
+    <result type="xs:boolean"/>   
+    <status>y</status>
+    <description>Compares two sequences for deep equality: the names and contents must be the same,
+    but nodes need not have the same identity.</description>
+</function>
+<function>
+    <signature>fn:deep-equal(item()* $parameter1, item()* $parameter2, string $collation) => boolean</signature>
+    <name>fn:deep-equal</name>
+    <arg name="operand1" type="item()" occurs="*"/>
+    <arg name="operand2" type="item()" occurs="*"/>
+    <arg name="collation" type="string"/> 
+    <result type="xs:boolean"/>  
+    <status>y</status>
+    <description>Compares two sequences for deep equality; string values are compared using the named collation;
+    nodes are compared for deep equality of names and content.</description>
+</function>
+<function>
+    <signature>fn:default-collation() => string</signature>
+    <name>fn:default-collation</name>
+    <result type="xs:string"/>
+    <status>Implemented. In Saxon this always returns a value: if no default collation has been
+    specified explicitly, it returns the URI of the code-point collation.
+    Note, the May 2003 draft still returns an anyURI, though elsewhere collations are now represented
+    by a string.</status>
+    <description>Returns the name of the default collation</description>
+</function>
+<function>
+    <signature>fn:distinct-nodes( node()* $srcval) => node()*</signature>
+    <name>fn:distinct-nodes</name>
+    <arg name="srcval" type="node()" occurs="*"/>
+    <result type="node()" occurs="*"/>  
+    <status>Removed in Saxon 7.8</status>
+    <description>Eliminates nodes with duplicate values</description>
+</function>
+<function>
+    <signature>fn:distinct-values( xdt:anyAtomicType* $srcval) => xdt:anyAtomicType*</signature>
+    <name>fn:distinct-values</name>
+    <arg name="srcval" type="xdt:anyAtomicType" occurs="*"/>
+    <result type="xdt:anyAtomicType" occurs="*"/>  
+    <status>y</status>
+    <description>Returns the set of distinct values present in a given sequence</description>
+</function>
+<function>
+    <signature>fn:distinct-values( xdt:anyAtomicType* $srcval, string $collation) => xdt:anyAtomicType*</signature>
+    <name>fn:distinct-values</name>
+    <arg name="srcval" type="xdt:anyAtomicType" occurs="*"/>
+    <arg name="collation" type="string"/>
+    <result type="xdt:anyAtomicType" occurs="*"/>  
+    <status>y</status>
+    <description>Returns the set of distinct values present in a given sequence,
+    comparing strings using a named collation.</description>    
+</function>
+<function>
+    <signature>op:divide-dayTimeDuration( dayTimeDuration $srcval1, decimal $srcval2) => dayTimeDuration"</signature>
+    <name>op:divide-dayTimeDuration</name>
+    <arg name="operand1" type="xdt:dayTimeDuration"/>
+    <arg name="operand2" type="xs:decimal"/> 
+    <result type="xdt:dayTimeDuration"/>   
+    <status>y</status>
+</function>
+<function>
+    <signature>op:divide-yearMonthDuration( yearMonthDuration $srcval1, decimal $srcval2) => yearMonthDuration</signature>
+    <name>op:divide-yearMonthDuration</name>
+    <arg name="operand1" type="xdt:yearMonthDuration"/>
+    <arg name="operand2" type="xs:decimal"/> 
+    <result type="xdt:yearMonthDuration"/>   
+    <status>y</status>
+</function>
+<function>
+    <signature>fn:doc(string? $uri) => document?</signature>
+    <name>fn:doc</name>
+    <arg name="uri" type="string" occurs="?"/>
+    <result type="document-node()" occurs="?"/>
+    <status>Implemented in Saxon 7.6</status>
+    <description>Loads a document identified by its URI</description>
+</function>
+<function>
+    <signature>xslt:document(item* $srcval1) => node*</signature>
+    <name>xslt:document</name>
+    <arg name="uri" type="item" occurs="*"/>
+    <result type="node()" occurs="*"/>
+    <status>y</status>
+    <description>Loads one or more documents identified by their URIs</description>
+</function>
+<function>
+    <signature>xslt:document(item* $srcval1, node* $srcval2) => node*</signature>
+    <name>xslt:document</name>
+    <arg name="uri" type="item" occurs="*"/>
+    <arg name="base" type="node()" occurs="*"/>
+    <result type="node()" occurs="*"/>
+    <status>y</status>
+    <description>Loads one or more documents identified by their URIs, using the base URI of the
+    node given in the second argument to resolve any relative URIs</description>
+    <notes>Check the type of the second argument against the latest spec.</notes>
+</function>
+<function>
+    <signature>fn:document-uri(node $srcval) => string?</signature>
+    <name>fn:document-uri</name>
+    <arg name="srcval" type="node()"/>
+    <result type="string" occurs="?"/>
+    <status>y</status>
+    <description>Returns the URI of a document</description>
+    <notes>The function is supported, though not strictly according to the spec.
+It is defined only for document nodes (as specified in the data model), and the URI returned is
+not guaranteed to be absolute, and is not guaranteed to be capable of retrieving the document using
+the <code>document</code> function (for example, a value is returned for a temporary tree).</notes>
+</function>
+<function>
+    <signature>op:duration-equal( duration $operand1, duration $operand2) => boolean</signature>
+    <name>op:duration-equal</name>
+    <arg name="operand1" type="xs:duration"/>
+    <arg name="operand2" type="xs:duration"/> 
+    <result type="xs:boolean"/>   
+    <status>Implemented, but not defined in F&amp;O specification</status>
+</function>
+<function>
+    <name>xslt:element-available</name>
+    <arg name="element" type="xs:string"/>
+    <result type="xs:boolean"/>
+    <status>Implemented. There is a restriction, namely that if the argument value is
+    not a compile-time constant, then the function has no information about the names
+    of user-defined extension elements, so it will return false if the name of such an
+    element is supplied.</status>
+    <description>Determines whether a particular instruction (typically, an extension element)
+    is available in the context</description>
+</function>
+<function>
+    <signature>fn:empty(item()* $srcval) => boolean</signature>
+    <name>fn:empty</name>
+    <arg name="srcval" type="item()" occurs="*"/>
+    <result type="xs:boolean"/>
+    <status>y</status>
+    <description>Returns true if the given sequence is empty</description>
+</function>
+<function>
+    <signature>fn:ends-with(string? $operand1, string? $operand2) => boolean?</signature>
+    <name>fn:ends-with</name>
+    <arg name="operand1" type="xs:string" occurs="?"/>
+    <arg name="operand2" type="xs:string" occurs="?"/>
+    <result type="xs:boolean" occurs="?"/>    
+    <status>y</status>
+    <description>Returns true if the first string ends with the second string</description>
+</function>
+<function>
+    <signature>fn:ends-with(string? $operand1, string? $operand2, string $collation) => boolean?</signature>
+    <name>fn:ends-with</name>
+    <arg name="operand1" type="xs:string" occurs="?"/>
+    <arg name="operand2" type="xs:string" occurs="?"/>
+    <arg name="collation" type="xs:string"/>
+    <result type="xs:boolean" occurs="?"/>    
+    <status>y</status>
+    <description>Returns true if the first string ends with the second string, when
+    compared using the named collation</description>
+    <tests><test>str128</test></tests>
+</function>
+<function>
+    <signature>fn:error()</signature>
+    <name>fn:error</name>
+    <status>y</status>
+    <description>Raises an error.</description>
+    <tests><test>error223</test></tests>
+</function>
+<function>
+    <signature>fn:error($srcval as item()?)</signature>
+    <name>fn:error</name>
+    <arg name="srcval" type="item()" occurs="?"/>
+    <status>y</status>
+    <description>Raises an error. The string value of the supplied item is used as the error message.</description>    
+    <tests><test>error224</test></tests>
+</function>
+<function>
+    <signature>fn:escape-uri(string $uri-part, boolean $escape-reserved) => string</signature>
+    <name>fn:escape-uri</name>
+    <arg name="uri-part" type="xs:string"/>
+    <arg name="escape-reserved" type="xs:boolean"/>
+    <result type="string"/>
+    <status>y</status>
+    <description>Applies the %HH escaping convention to a URI</description>
+</function>
+<function>
+    <signature>fn:exactly-one($srcval as item*) as item?</signature>
+    <name>fn:exactly-one</name>
+    <arg name="srcval" type="item()" occurs="*"/>
+    <result type="item()" occurs="?"/>
+    <status>y</status>
+    <tests><test>type040</test><test>type901err</test>
+        <test>type902err</test><test>type903err</test><test>type904err</test>
+    </tests>    
+</function>
+<function>
+    <signature>op:except(node()* $parameter1, node()* $parameter2) => node()*</signature>
+    <name>op:except</name>
+    <arg name="operand1" type="node()" occurs="*"/>
+    <arg name="operand2" type="node()" occurs="*"/>
+    <result type="node()" occurs="*"/>
+    <status>y</status>
+</function>
+<function>
+    <signature>fn:exists(item()* $srcval) => boolean</signature>
+    <name>fn:exists</name>
+    <arg name="srcval" type="item()" occurs="*"/>
+    <result type="xs:boolean"/>
+    <status>y</status>
+    <description>Returns true if the given sequence is not empty</description>
+</function>
+<function>
+    <signature>fn:expanded-QName( string $paramURI, string $paramLocal) => QName</signature>
+    <name>fn:expanded-QName</name>
+    <arg name="paramURI" type="xs:string"/>
+    <arg name="paramLocal" type="xs:string"/>
+    <result type="xs:QName"/>
+    <status>y</status>
+    <description>Constructs a QName value from a URI and local name</description>
+    <tests><test>type031</test><test>type032</test></tests>
+</function>
+<function>
+    <signature>fn:false() => boolean</signature>
+    <name>fn:false</name>
+    <result type="xs:boolean"/>
+    <status>y</status>
+    <description>Returns the boolean value false</description>
+</function>
+<function>
+    <signature>fn:floor(numeric? $srcval) => numeric?</signature>
+    <name>fn:floor</name>
+    <arg name="srcval" type="numeric" occurs="?"/>
+    <result type="numeric" occurs="?"/>
+    <status>Implemented. Changed in 7.4 to return the same type as the supplied argument.</status>
+    <description>Rounds a number towards minus infinity</description>
+</function>
+<function>
+    <name>xslt:format-date</name>
+    <arg name="value" type="xs:date" occurs="?"/>
+    <arg name="picture" type="xs:string"/>
+    <arg name="date-format-name" type="xs:string"/>
+    <result type="xs:string"/>
+    <status>Supported with limitations. The third argument is ignored, the function
+    always formats the date for the current locale. Alphabetic forms of numbers (including
+    ordinals) are not at present localized.</status>
+    <description>Formats a date</description>
+</function>
+<function>
+    <name>xslt:format-date</name>
+    <arg name="value" type="xs:date" occurs="?"/>
+    <arg name="picture" type="xs:string"/>
+    <result type="xs:string"/>
+    <status>Supported with limitations. The function
+    always formats the date for the current locale. Alphabetic forms of numbers (including
+    ordinals) are not at present localized.</status>
+    <description>Formats a date</description>
+</function>
+<function>
+    <name>xslt:format-dateTime</name>
+    <arg name="value" type="xs:dateTime" occurs="?"/>
+    <arg name="picture" type="xs:string"/>
+    <arg name="date-format-name" type="xs:string"/>
+    <result type="xs:string"/>
+    <status>Supported with limitations. The third argument is ignored, the function
+    always formats the date for the current locale. Alphabetic forms of numbers (including
+    ordinals) are not at present localized.</status>
+    <description>Formats a dateTime</description>
+</function>
+<function>
+    <name>xslt:format-dateTime</name>
+    <arg name="value" type="xs:dateTime" occurs="?"/>
+    <arg name="picture" type="xs:string"/>
+    <result type="xs:string"/>
+    <status>Supported with limitations. The function
+    always formats the date for the current locale. Alphabetic forms of numbers (including
+    ordinals) are not at present localized.</status>
+    <description>Formats a dateTime</description>
+</function>
+
+
+<function>
+    <signature>xslt:format-number(double $value, string $picture) => string</signature>
+    <name>xslt:format-number</name>
+    <arg name="value" type="xs:double"/>
+    <arg name="picture" type="xs:string"/>
+    <result type="xs:string"/>
+    <status>Implemented. Changed in 7.4.1 to use the new XSLT 2.0 specification. This
+    creates slight incompatibilities from the previous version, which remains available
+    under the name format-number-1.0(). There is one known restriction: characters such
+    as the decimal-separator are restricted to be in the Unicode BMP, i.e. below
+    Unicode 0xFFFF. The current implementation does not attempt to cache or precompile
+    the picture string. Also it does not detect the error that occurs when the same
+    character is used in more than one role. Error checking has not been thoroughly tested.</status>
+    <description>Formats a number as specified by a picture string, using the default decimal format</description>
+</function>
+<function>
+    <signature>xslt:format-number(double $value, string $picture, string $decimal-format) => string</signature>
+    <name>xslt:format-number</name>
+    <arg name="value" type="xs:double"/>
+    <arg name="picture" type="xs:string"/>
+    <arg name="decimal-format" type="xs:string"/>
+    <result type="xs:string"/>
+    <status>See two-argument version of format-number().</status>
+    <description>Formats a number as specified by a picture string, using a named decimal format</description>
+</function>
+<function>
+    <name>xslt:format-time</name>
+    <arg name="value" type="xs:time" occurs="?"/>
+    <arg name="picture" type="xs:string"/>
+    <arg name="date-format-name" type="xs:string"/>
+    <result type="xs:string"/>
+    <status>Supported with limitations. The third argument is ignored, the function
+    always formats the time for the current locale. Alphabetic forms of numbers (including
+    ordinals) are not at present localized.</status>
+    <description>Formats a time</description>
+</function>
+<function>
+    <name>xslt:format-time</name>
+    <arg name="value" type="xs:time" occurs="?"/>
+    <arg name="picture" type="xs:string"/>
+    <result type="xs:string"/>
+    <status>Supported with limitations. The function
+    always formats the date for the current locale. Alphabetic forms of numbers (including
+    ordinals) are not at present localized.</status>
+    <description>Formats a time</description>
+</function>
+<function>
+    <name>xslt:function-available</name>
+    <arg name="function" type="xs:string"/>
+    <result type="xs:boolean"/>
+    <status>Implemented. There is a restriction, namely that if the argument value is
+    not a compile-time constant, then the function has no information about the names
+    of stylesheet functions, so it will return false if the name of a stylesheet
+    function is supplied.</status>
+    <description>Determines whether a particular function is available in the context</description>
+</function>
+<function>
+    <name>xslt:function-available</name>
+    <arg name="function" type="xs:string"/>
+    <arg name="arity" type="xs:integer"/>
+    <result type="xs:boolean"/>
+    <status>Implemented in Saxon 7.9. There is a restriction, namely that if the argument value is
+    not a compile-time constant, then the function has no information about the names
+    of stylesheet functions, so it will return false if the name of a stylesheet
+    function is supplied.</status>
+    <description>Determines whether a particular function is available in the context. The two-argument
+    version of the function was added during the Last Call period.</description>
+</function>
+<function>
+    <signature>op:gDay-equal(gDay $operand1, gDay $operand2) => boolean</signature>
+    <name>op:gDay-equal</name>
+    <arg name="operand1" type="xs:gDay"/>
+    <arg name="operand2" type="xs:gDay"/> 
+    <result type="xs:boolean"/>   
+    <status>y</status>
+</function>
+<function>
+    <signature>xslt:generate-id() => string</signature>
+    <name>xslt:generate-id</name>
+    <result type="xs:string"/>
+    <status>y</status>
+    <description>Returns a generated unique identifier of the context node</description>
+</function>
+<function>
+    <signature>xslt:generate-id(node()? $srcval) => string</signature>
+    <name>xslt:generate-id</name>
+    <arg name="srcval" type="node()" occurs="?"/>
+    <result type="xs:string"/>
+    <status>y</status>
+    <description>Returns a generated unique identifier of a given node</description>
+</function>
+<function>
+    <signature>fn:day-from-date( date? $srcval) => integer?</signature>
+    <name>fn:day-from-date</name>
+    <arg name="srcval" type="xs:date" occurs="?"/>
+    <result type="xs:integer" occurs="?"/>
+    <status>y</status>
+    <description>Extracts the day component of a date value</description>
+    <notes>The old name get-day-from-date is retained as a synonym</notes>
+</function>
+<function>
+    <signature>fn:day-from-dateTime( dateTime? $srcval) => integer?</signature>
+    <name>fn:day-from-dateTime</name>
+    <arg name="srcval" type="xs:dateTime" occurs="?"/>
+    <result type="xs:integer" occurs="?"/>
+    <status>y</status>
+    <description>Extracts the day component of a dateTime value</description>
+    <notes>The old name get-day-from-dateTime is retained as a synonym</notes>    
+</function>
+<function>
+    <signature>fn:days-from-dayTimeDuration( dayTimeDuration? $srcval) => integer?</signature>
+    <name>fn:days-from-dayTimeDuration</name>
+    <arg name="srcval" type="xdt:dayTimeDuration" occurs="?"/>
+    <result type="xs:integer" occurs="?"/>
+    <status>y</status>
+    <description>Extracts the days component of a dayTimeDuration value</description>
+    <notes>The old name get-days-from-dayTimeDuration is retained as a synonym</notes>    
+</function>
+<function>
+    <signature>fn:get-dayTimeDuration-from-dateTimes( dateTime $srcval1, dateTime $srcval2) => dayTimeDuration</signature>
+    <status>Implemented but no longer defined in spec. Renamed?</status>
+    <description>Returns the difference between two dateTimes in the form of a dayTimeDuration</description>
+</function>
+<function>
+    <signature>fn:hours-from-dateTime( dateTime? $srcval) => integer?</signature>
+    <name>fn:hours-from-dateTime</name>
+    <arg name="srcval" type="xs:dateTime" occurs="?"/>
+    <result type="xs:integer" occurs="?"/>
+    <status>Implemented</status>
+    <description>Extracts the hour component of a dateTime value</description>
+    <notes>The old name get-hours-from-dateTime is retained as a synonym</notes>    
+</function>
+<function>
+    <signature>fn:hours-from-dayTimeDuration( dayTimeDuration? $srcval) => integer?</signature>
+    <name>fn:hours-from-dayTimeDuration</name>
+    <arg name="srcval" type="xdt:dayTimeDuration" occurs="?"/>
+    <result type="xs:integer" occurs="?"/>
+    <status>y</status>
+    <description>Extracts the hours component of a dayTimeDuration value</description>
+    <notes>The old name get-hours-from-dayTimeDuration is retained as a synonym</notes>     
+</function>
+<function>
+    <signature>fn:hours-from-time( time? $srcval) => integer?</signature>
+    <name>fn:hours-from-time</name>
+    <arg name="srcval" type="xs:time" occurs="?"/>
+    <result type="xs:integer" occurs="?"/>
+    <status>Implemented; but currently returns the local time value, not the normalized
+    time value.</status>
+    <description>Extracts the hours component of a time value</description>
+    <notes>The old name get-hours-from-time is retained as a synonym</notes>     
+</function>
+<function>
+    <signature>fn:in-scope-prefixes($element as element()) => string*</signature>
+    <name>fn:in-scope-prefixes</name>
+    <arg name="element" type="element()"/>
+    <result type="xs:string" occurs="*"/>
+    <status>Implemented. Name changed in 7.8 from get-in-scope-namespaces().</status>
+    <description>Returns the names of the namespaces that are in scope for an element</description>
+    <notes>The old name get-in-scope-prefixes is retained as a synonym</notes>     
+</function>
+<function>
+    <signature>fn:local-name-from-QName( QName? $srcval) => string?</signature>
+    <name>fn:local-name-from-QName</name>
+    <arg name="srcval" type="xs:QName" occurs="?"/>
+    <result type="string" occurs="?"/>
+    <status>y</status>
+    <description>Extracts the local name component of a QName value</description>
+    <notes>The old name get-local-name-from-QName is retained as a synonym</notes>     
+</function>
+<function>
+    <signature>fn:minutes-from-dateTime( dateTime? $srcval) => integer?</signature>
+    <name>fn:minutes-from-dateTime</name>
+    <arg name="srcval" type="xs:dateTime" occurs="?"/>
+    <result type="xs:integer" occurs="?"/>
+    <status>y</status>
+    <description>Extracts the minutes component of a dateTime value</description>
+    <notes>The old name get-minutes-from-dateTime is retained as a synonym</notes>     
+</function>
+<function>
+    <signature>fn:minutes-from-dayTimeDuration( dayTimeDuration? $srcval) => integer?</signature>
+    <name>fn:minutes-from-dayTimeDuration</name>
+    <arg name="srcval" type="xdt:dayTimeDuration" occurs="?"/>
+    <result type="xs:integer" occurs="?"/>
+    <status>y</status>
+    <description>Extracts the minutes component of a dayTimeDuration value</description>
+    <notes>The old name get-minutes-from-dayTimeDuration is retained as a synonym</notes>     
+</function>
+<function>
+    <signature>fn:minutes-from-time( time? $srcval) => integer?</signature>
+    <name>fn:minutes-from-time</name>
+    <arg name="srcval" type="xs:time" occurs="?"/>
+    <result type="xs:integer" occurs="?"/>
+    <status>y</status>
+    <description>Extracts the minutes component of a time value</description>
+    <notes>The old name get-minutes-from-time is retained as a synonym</notes>     
+</function>
+<function>
+    <signature>fn:month-from-date( date? $srcval) => integer?</signature>
+    <name>fn:month-from-date</name>
+    <arg name="srcval" type="xs:date" occurs="?"/>
+    <result type="xs:integer" occurs="?"/>
+    <status>y</status>
+    <description>Extracts the month component of a date value</description>
+    <notes>The old name get-month-from-date is retained as a synonym</notes>     
+</function>
+<function>
+    <signature>fn:month-from-dateTime( dateTime? $srcval) => integer?</signature>
+    <name>fn:month-from-dateTime</name>
+    <arg name="srcval" type="xs:dateTime" occurs="?"/>
+    <result type="xs:integer" occurs="?"/>
+    <status>y</status>
+    <description>Extracts the month component of a dateTime value</description>
+    <notes>The old name get-month-from-dateTime is retained as a synonym</notes>     
+</function>
+<function>
+    <signature>fn:months-from-yearMonthDuration( yearMonthDuration? $srcval) => integer?</signature>
+    <name>fn:months-from-yearMonthDuration</name>
+    <arg name="srcval" type="xdt:yearMonthDuration" occurs="?"/>
+    <result type="xs:integer" occurs="?"/>
+    <status>y</status>
+    <description>Extracts the months component of a yearMonthDuration value</description>
+    <notes>The old name get-months-from-yearMonthDuration is retained as a synonym</notes>     
+</function>
+<function>
+    <signature>fn:namespace-uri-from-QName( QName? $srcval) => anyURI?</signature>
+    <name>fn:namespace-uri-from-QName</name>
+    <arg name="srcval" type="xs:QName" occurs="?"/>
+    <result type="string" occurs="?"/>
+    <status>y</status>
+    <description>Extracts the namespace URI component of a QName value</description>
+    <notes>The old name get-namespace-from-QName [sic] is retained as a synonym</notes>     
+</function>
+<function>
+    <signature>fn:namespace-uri-for-prefix( element $element, string $prefix) => string?</signature>
+    <name>fn:namespace-uri-for-prefix</name>
+    <arg name="prefix" type="xs:string"/>
+    <arg name="element" type="element()"/>
+    <result type="string" occurs="?"/>
+    <status>Implemented. Changed in 7.9 so the prefix is now the first argument, the element node
+    the second.</status>
+    <description>Returns the namespace URI corresponding to a given prefix, using
+    the namespaces that are in scope for a given element</description>
+    <notes>The old name get-namespace-uri-for-prefix is retained as a synonym</notes>     
+</function>
+<function>
+    <signature>fn:seconds-from-dateTime( dateTime? $srcval) => decimal?</signature>
+    <name>fn:seconds-from-dateTime</name>
+    <arg name="srcval" type="xs:dateTime" occurs="?"/>
+    <result type="xs:integer" occurs="?"/>
+    <status>y</status>
+    <description>Extracts the seconds component of a dateTime value</description>
+    <notes>The old name get-seconds-from-dateTime is retained as a synonym</notes>     
+</function>
+<function>
+    <signature>fn:seconds-from-dayTimeDuration( dayTimeDuration? $srcval) => decimal?</signature>
+    <name>fn:seconds-from-dayTimeDuration</name>
+    <arg name="srcval" type="xdt:dayTimeDuration" occurs="?"/>
+    <result type="xs:integer" occurs="?"/>
+    <status>Implemented. Return type should be decimal, not integer.</status>
+    <description>Extracts the seconds component of a dayTimeDuration value</description>
+    <notes>The old name get-seconds-from-dayTimeDuration is retained as a synonym</notes>     
+</function>
+<function>
+    <signature>fn:seconds-from-time( time? $srcval) => decimal?</signature>
+    <name>fn:seconds-from-time</name>
+    <arg name="srcval" type="xs:time" occurs="?"/>
+    <result type="xs:integer" occurs="?"/>
+    <status>y</status>
+    <description>Extracts the seconds component of a time value</description>
+    <notes>The old name get-seconds-from-time is retained as a synonym</notes>     
+</function>
+<function>
+    <signature>fn:timezone-from-date( date? $srcval) => xdt:dayTimeDuration?</signature>
+    <name>fn:timezone-from-date</name>
+    <arg name="srcval" type="xs:date" occurs="?"/>
+    <result type="xdt:dayTimeDuration" occurs="?"/>
+    <status>Implemented. Changed in 7.8 to return dayTimeDuration rather than string.</status>
+    <description>Extracts the timezone component of a date value</description>
+    <notes>The old name get-timezone-from-date is retained as a synonym</notes>     
+</function>
+<function>
+    <signature>fn:timezone-from-dateTime( dateTime? $srcval) => xdt:dayTimeDuration?</signature>
+    <name>fn:timezone-from-dateTime</name>
+    <arg name="srcval" type="xs:dateTime" occurs="?"/>
+    <result type="xdt:dayTimeDuration" occurs="?"/>
+    <status>Implemented. Changed in 7.8 to return dayTimeDuration rather than string.</status>
+    <description>Extracts the timezone component of a dateTime value</description>
+    <notes>The old name timezone-from-dateTime is retained as a synonym</notes>    
+</function>
+<function>
+    <signature>fn:timezone-from-time( time? $srcval) => xdt:dayTimeDuration?</signature>
+    <name>fn:timezone-from-time</name>
+    <arg name="srcval" type="xs:time" occurs="?"/>
+    <result type="xdt:dayTimeDuration" occurs="?"/>
+    <status>Implemented. Changed in 7.8 to return dayTimeDuration rather than string.</status>
+    <description>Extracts the timezone component of a time value</description>
+    <notes>The old name get-timezone-from-time is retained as a synonym</notes>    
+</function>
+<function>
+    <signature>fn:year-from-date( date? $srcval) => integer?</signature>
+    <name>fn:year-from-date</name>
+    <arg name="srcval" type="xs:date" occurs="?"/>
+    <result type="xs:integer" occurs="?"/>
+    <status>y</status>
+    <description>Extracts the year component of a date value</description>
+    <notes>The old name get-year-from-date is retained as a synonym</notes>    
+</function>
+<function>
+    <signature>fn:year-from-dateTime( dateTime? $srcval) => integer?</signature>
+    <name>fn:year-from-dateTime</name>
+    <arg name="srcval" type="xs:dateTime" occurs="?"/>
+    <result type="xs:integer" occurs="?"/>
+    <status>y</status>
+    <description>Extracts the year component of a dateTime value</description>
+    <notes>The old name get-year-from-dateTime is retained as a synonym</notes>       
+</function>
+<function>
+    <signature>fn:years-from-yearMonthDuration( yearMonthDuration? $srcval) => integer?</signature>
+    <name>fn:years-from-yearMonthDuration</name>
+    <arg name="srcval" type="xdt:yearMonthDuration" occurs="?"/>
+    <result type="xs:integer" occurs="?"/>
+    <status>y</status>
+    <description>Extracts the years component of a yearMonthDuration value</description>
+    <notes>The old name get-years-from-yearMonthDuration is retained as a synonym</notes>       
+</function>
+<function>
+    <signature>op:gMonth-equal(gMonth $operand1, gMonth $operand2) => boolean</signature>
+    <name>op:gMonth-equal</name>
+    <arg name="operand1" type="xs:gMonth"/>
+    <arg name="operand2" type="xs:gMonth"/> 
+    <result type="xs:boolean"/>   
+    <status>y</status>
+</function>
+<function>
+    <signature>op:gMonthDay-equal( gMonthDay $operand1, gMonthDay $operand2) => boolean</signature>
+    <name>op:gMonthDay-equal</name>
+    <arg name="operand1" type="xs:gMonthDay"/>
+    <arg name="operand2" type="xs:gMonthDay"/>
+    <result type="xs:boolean"/>       
+    <status>y</status>
+</function>
+<function>
+    <signature>op:gYear-equal(gYear $operand1, gYear $operand2) => boolean</signature>
+    <name>op:gYear-equal</name>
+    <arg name="operand1" type="xs:gYear"/>
+    <arg name="operand2" type="xs:gYear"/> 
+    <result type="xs:boolean"/>      
+    <status>y</status>
+</function>
+<function>
+    <signature>op:gYearMonth-equal( gYearMonth $operand1, gYearMonth $operand2) => boolean</signature>
+    <name>op:gYearMonth-equal</name>
+    <arg name="operand1" type="xs:gYearMonth"/>
+    <arg name="operand2" type="xs:gYearMonth"/> 
+    <result type="xs:boolean"/>      
+    <status>y</status>
+</function>
+<function>
+    <signature>op:hex-binary-equal( hexBinary $value1, hexBinary $value2) => boolean</signature>
+    <name>op:hex-binary-equal</name>
+    <arg name="operand1" type="xs:hexBinary"/>
+    <arg name="operand2" type="xs:hexBinary"/> 
+    <result type="xs:boolean"/>     
+    <status>y</status>
+</function>
+<function>
+    <signature>fn:id(string* $srcval) => element*</signature>
+    <name>fn:id</name>
+    <arg name="srcval" type="xs:string" occurs="*"/>
+    <result type="element()" occurs="*"/>
+    <status>y</status>
+    <description>Finds the elements with given ID attribute values</description>
+    <notes>Implemented according to the XPath 1.0 specification. The new second argument
+    (introduced after the 12 Nov 2004 draft) is not yet implemented.</notes>
+</function>
+<function>
+    <signature>fn:idref(string* $srcval) => node()*</signature>
+    <name>fn:idref</name>
+    <arg name="srcval" type="xs:string" occurs="*"/>
+    <result type="node()" occurs="*"/>    
+    <status>Implemented in Saxon 7.9</status>
+    <description>Finds the elements that link to the element with a given ID value.</description>
+    <notes>The new second argument
+    (introduced after the 12 Nov 2004 draft) is not yet implemented.</notes>
+</function>
+<function>
+    <signature>fn:implicit-timezone() => dayTimeDuration</signature>
+    <name>fn:implicit-timezone</name>
+    <result type="xdt:dayTimeDuration"/>
+    <status>Implemented in Saxon 7.8</status>
+    <description>Returns the implicit timezone</description>
+</function>
+<function>
+    <signature>fn:index-of(xdt:anyAtomicType* $seqParam, xdt:anyAtomicType $srchParam) => integer*</signature>
+    <name>fn:index-of</name>
+    <arg name="seqParam" type="xdt:anyAtomicType" occurs="*"/>
+    <arg name="srchParam" type="xdt:anyAtomicType"/>  
+    <result type="xs:integer" occurs="*"/>  
+    <status>Implemented.</status>
+    <description>Finds the positions of items in a sequence that match the second argument</description>
+</function>
+<function>
+    <signature>fn:index-of(xdt:anyAtomicType* $seqParam, xdt:anyAtomicType $srchParam, string $collation) => unsignedInt*</signature>
+    <name>fn:index-of</name>
+    <arg name="seqParam" type="xdt:anyAtomicType" occurs="*"/>
+    <arg name="srchParam" type="xdt:anyAtomicType"/>
+    <arg name="collation" type="xs:string"/> 
+    <result type="xs:integer" occurs="*"/>  
+    <status>Implemented.</status>
+    <description>Finds the positions of items in a sequence that match the second argument, using
+    a named collation for the comparison</description>
+</function>
+<function>
+    <signature>fn:input() => node*</signature>
+    <name>fn:input</name>
+    <result type="node()" occurs="*"/>
+    <status>Removed in Saxon 7.8</status>
+    <description>Returns the sequence of nodes established by the calling environment as the current
+    input collection</description>
+    <notes>This implementation of the <code>input()</code> function is very simple. If the parameter
+<code>{http://saxon.sf.net/}input</code> has been supplied to the transformation, the function returns the value
+of this parameter. This must be a node sequence - which means it cannot be supplied from the 
+command line. If no such parameter has been supplied, it returns the root of the principal source
+document (the document containing the node that was matched on entry to the transformation).</notes>
+</function>
+<function>
+    <signature>fn:insert-before(item()* $target, integer $position, item()* $inserts) => item*</signature>
+    <name>fn:insert-before</name>
+    <arg name="target" type="item()" occurs="*"/>
+    <arg name="position" type="xs:integer"/>
+    <arg name="inserts" type="item()" occurs="*"/> 
+    <result type="item()" occurs="*"/>       
+    <status>Implemented. Changed in 7.4 to reflect the latest WD which changes the name
+    from insert to insert-before, and inserts the new items before the selected position, not
+    after it as previously. Changed in 7.8 to allow the insert position to be beyond
+    the end of the original sequence (which causes the new sequence to be appended).</status>
+    <description>Insert an item into a sequence</description>
+</function>
+<function>
+    <signature>op:intersect(node()* $parameter1, node()* $parameter2) => node()*</signature>
+    <name>op:intersect</name>
+    <arg name="operand1" type="node()" occurs="*"/>
+    <arg name="operand2" type="node()" occurs="*"/>
+    <result type="node()" occurs="*"/>
+    <status>y</status>
+</function>
+<function>
+    <signature>fn:item-at(item()* $seqParam, integer $posParam) => item()?</signature>
+    <name>fn:item-at</name>
+    <arg name="seqParam" type="item()" occurs="*"/>
+    <arg name="posParam" type="xs:integer"/>
+    <result type="item()" occurs="?"/>  
+    <status>Removed in Saxon 7.8</status>
+    <description>Return the item at a given position in a sequence</description>
+</function>
+<function>
+    <name>xslt:key</name>
+	<arg name="key-name" type="xs:string"/>
+	<arg name="key-value" type="xdt:anyAtomicType" occurs="*"/>   
+	<result type="node()" occurs="*"/>
+	<status>y</status>
+	<description>Returns the nodes identified by a named key declaration in the stylesheet.</description> 
+</function>
+<function>
+    <signature>fn:lang(string $testlang) => boolean</signature>
+    <name>fn:lang</name>
+    <arg name="testlang" type="xs:string" occurs="*"/>
+    <result type="xs:boolean"/>  
+    <status>The optional second argument (added since the 12 Nov 2003 draft) is not yet implemented.</status>
+    <description>Returns true if the xml:lang value for the context node matches the given language</description>
+</function>
+<function>
+    <signature>fn:last() => integer?</signature>
+    <name>fn:last</name>
+    <result type="xs:integer"/>  
+    <status>y</status>
+    <description>Returns the context size (the size of the sequence of items currently being processed)</description>
+</function>
+<function>
+    <signature>fn:local-name() => string</signature>
+    <name>fn:local-name</name>
+    <result type="xs:string"/>
+    <status>y</status>
+    <description>Returns the local part of the name of the context node</description>
+</function>
+<function>
+    <signature>fn:local-name(node? $srcval) => string</signature>
+    <name>fn:local-name</name>
+    <arg name="srcval" type="node()" occurs="?"/>
+    <result type="xs:string"/>
+    <status>y</status>
+    <description>Returns the local part of the name of a given node</description>
+</function>
+<function>
+    <signature>fn:lower-case(string? $srcval) => string?</signature>
+    <name>fn:lower-case</name>
+    <arg name="srcval" type="xs:string" occurs="?"/>
+    <result type="xs:string" occurs="?"/>
+    <status>y</status>
+    <description>Translates characters in a string to lower case</description>
+</function>
+<function>
+    <signature>fn:matches(string? $input, string $pattern) => boolean?</signature>
+    <name>fn:matches</name>
+    <arg name="input" type="xs:string" occurs="?"/>
+    <arg name="pattern" type="xs:string"/>    
+    <result type="xs:boolean" occurs="?"/>
+    <status>y</status>
+    <description>Returns true if the given string matches the given regular expression</description>
+    <notes>Upgraded in Saxon 7.9 to match the precise regex syntax and to support all four flags s, m, i, x.</notes>
+</function>
+<function>
+    <signature>fn:matches(string? $input, string $pattern, string $flags) => boolean?</signature>
+    <name>fn:matches</name>
+    <arg name="input" type="xs:string" occurs="?"/>
+    <arg name="pattern" type="xs:string"/> 
+    <arg name="flags" type="xs:string"/>        
+    <result type="xs:boolean" occurs="?"/>
+    <status>y</status>
+    <description>Returns true if the given string matches the given regular expression,
+    specifying flags to control the way pattern matching is performed</description>    
+    <notes>Upgraded in Saxon 7.9 to match the precise regex syntax and to support all four flags s, m, i, x.</notes>
+</function>
+<function>
+    <signature>fn:max(xdt:anyAtomicType* $srcval) => xdt:anyAtomicType?</signature>
+    <name>fn:max</name>
+    <arg name="srcval" type="xdt:anyAtomicType" occurs="*"/>
+    <result type="xdt:anyAtomicType" occurs="?"/>
+    <status>Implemented. Changed in 7.4 to support any comparable type. Changed in 7.8
+    to convert untyped Atomic values to xs:double, and to return NaN if the input sequence contains a NaN.</status>
+    <description>Returns the highest value in a sequence of comparable items</description>
+</function>
+<function>
+    <signature>fn:max(xdt:anyAtomicType* $srcval, string $collation) => xdt:anyAtomicType?</signature>
+    <name>fn:max</name>
+    <arg name="srcval" type="xdt:anyAtomicType" occurs="*"/>
+    <arg name="collation" type="xs:string"/>
+    <result type="xdt:anyAtomicType" occurs="?"/>
+    <status>Implemented in 7.4. Changed in 7.8
+    to convert untyped Atomic values to xs:double, and to return NaN if the input sequence contains a NaN.</status>
+    <description>Returns the highest value in a sequence of strings, using a specified collation to
+    perform the comparisons</description>
+</function>
+<function>
+    <signature>fn:min(xdt:anyAtomicType* $srcval) => xdt:anyAtomicType?</signature>
+    <name>fn:min</name>
+    <arg name="srcval" type="xdt:anyAtomicType" occurs="*"/>
+    <result type="xdt:anyAtomicType" occurs="?"/>
+    <status>Implemented. Changed in 7.4 to support any comparable type. Changed in 7.8
+    to convert untyped Atomic values to xs:double, and to return NaN if the input sequence contains a NaN.</status>
+    <description>Returns the lowest value in a sequence of comparable items</description>
+</function>
+<function>
+    <signature>fn:min(xdt:anyAtomicType* $srcval, string $collation) => xdt:anyAtomicType?</signature>
+    <name>fn:min</name>
+    <arg name="srcval" type="xdt:anyAtomicType" occurs="*"/>
+    <arg name="collation" type="xs:string"/>
+    <result type="xdt:anyAtomicType" occurs="?"/>
+    <status>Implemented in 7.4. Changed in 7.8
+    to convert untyped Atomic values to xs:double, and to return NaN if the input sequence contains a NaN.</status>
+    <description>Returns the lowest value in a sequence of strings, using a specified collation to
+    perform the comparisons</description>    
+</function>
+<function>
+    <signature>op:multiply-dayTimeDuration( dayTimeDuration $srcval1, decimal $srcval2) => dayTimeDuration</signature>
+    <name>op:multiply-dayTimeDuration</name>
+    <arg name="srcval1" type="xdt:dayTimeDuration"/>
+    <arg name="srcval2" type="xs:decimal"/>
+    <result type="xdt:dayTimeDuration"/>
+    <status>y</status>
+</function>
+<function>
+    <signature>op:multiply-yearMonthDuration( yearMonthDuration $srcval1, decimal $srcval2) => yearMonthDuration</signature>
+    <name>op:multiply-yearMonthDuration</name>
+    <arg name="srcval1" type="xdt:yearMonthDuration"/>
+    <arg name="srcval2" type="xs:decimal"/>
+    <result type="xdt:yearMonthDuration"/>
+    <status>y</status>
+</function>
+<function>
+    <signature>fn:name() => string</signature>
+    <name>fn:name</name>
+    <result type="xs:string"/>
+    <status>y</status>
+    <description>Returns the name of the context node, as a string in the lexical form of a QName</description>
+</function>
+<function>
+    <signature>fn:name(node()? $srcval) => string</signature>
+    <name>fn:name</name>
+    <arg name="srcval" type="node()" occurs="?"/>
+    <result type="xs:string"/>
+    <status>y</status>
+    <description>Returns the name of a given node, as a string in the lexical form of a QName</description>
+</function>
+<function>
+    <signature>fn:namespace-uri() => string</signature>
+    <name>fn:namespace-uri</name>
+    <result type="xs:string"/>
+    <status>y</status>
+    <status>y</status>
+    <description>Returns the namespace URI of the name of the context node</description>
+</function>
+<function>
+    <signature>fn:namespace-uri(node? $srcval) => string</signature>
+    <name>fn:namespace-uri</name>
+    <arg name="srcval" type="node()" occurs="?"/>
+    <result type="xs:string"/>
+    <status>y</status>
+    <description>Returns the namespace URI of the name of a given node</description>
+</function>
+<function>
+    <signature>op:node-after(node $parameter1, node $parameter2) => boolean</signature>
+    <name>op:node-after</name>
+    <arg name="parameter1" type="node()"/>
+    <arg name="parameter2" type="node()"/>   
+    <result type="xs:boolean"/> 
+    <status>y</status>
+</function>
+<function>
+    <signature>op:node-before(node $parameter1, node $parameter2) => boolean</signature>
+    <name>op:node-before</name>
+    <arg name="parameter1" type="node()"/>
+    <arg name="parameter2" type="node()"/>   
+    <result type="xs:boolean"/> 
+    <status>y</status>
+</function>
+<function>
+    <signature>op:node-equal(node $parameter1, node $parameter2) => boolean</signature>
+    <name>op:node-equal</name>
+    <arg name="parameter1" type="node()"/>
+    <arg name="parameter2" type="node()"/>   
+    <result type="xs:boolean"/> 
+    <status>y</status>
+</function>
+<function>
+    <signature>fn:node-kind(node $srcval) => string</signature>
+    <name>fn:node-kind</name>
+    <arg name="srcval" type="node()"/>
+    <result type="xs:string"/>
+    <status>Removed in Saxon 7.8</status>
+    <description>Identifies what kind of node the argument is, as a string, for example "element" or
+    "attribute"</description>
+</function>
+<function>
+    <signature>fn:node-name(node $srcval) => QName?</signature>
+    <name>fn:node-name</name>
+    <arg name="srcval" type="node()"/>
+    <result type="xs:QName" occurs="?"/>
+    <status>y</status>
+    <description>Returns the name of the given node, as a QName value (that is, a namespace URI plus
+    local name)</description>
+    <tests><test>nspc44</test></tests>
+</function>
+<function>
+    <signature>fn:normalize-space() => string?</signature>
+    <name>fn:normalize-space</name>
+    <result type="xs:string" occurs="?"/>
+    <status>y</status>
+    <description>Eliminates redundant spaces from the string value of the context node</description>
+</function>
+<function>
+    <signature>fn:normalize-space( string? $srcval) => string?</signature>
+    <name>fn:normalize-space</name>
+    <arg name="srcval" type="xs:string" occurs="?"/>
+    <result type="xs:string" occurs="?"/>
+    <status>y</status>
+    <description>Eliminates redundant spaces from a string</description>
+</function>
+<function>
+    <signature>fn:normalize-unicode( string? $srcval) => string?</signature>
+    <name>fn:normalize-unicode</name>
+    <arg name="srcval" type="xs:string" occurs="?"/>
+    <result type="xs:string" occurs="?"/>
+    <status>n</status>
+    <description>Converts a string to Unicode normalized form NFC by modifying the way in which
+    combining characters are represented</description>
+</function>
+<function>
+    <signature>fn:normalize-unicode( string? $srcval, string $normalizationForm) => string?</signature>
+    <name>fn:normalize-unicode</name>
+    <arg name="srcval" type="xs:string" occurs="?"/>
+    <arg name="normalizationForm" type="xs:string"/>
+    <result type="xs:string" occurs="?"/>
+    <status>n</status>
+    <description>Converts a string to a given Unicode normalized form by modifying the way in which
+    combining characters are represented</description>    
+</function>
+<function>
+    <signature>fn:not(item()* $srcval) => boolean</signature>
+    <name>fn:not</name>
+    <arg name="srcval" type="item()" occurs="*"/>
+    <result type="xs:boolean"/>
+    <status>y</status>
+    <description>Returns true if the effective boolean value of the argument is false, and vice versa</description>
+</function>
+<function>
+    <signature>op:NOTATION-equal( NOTATION $srcval1, NOTATION $srcval2) => boolean</signature>
+    <name>op:NOTATION-equal</name>
+    <arg name="operand1" type="xs:NOTATION"/>
+    <arg name="operand2" type="xs:NOTATION"/> 
+    <result type="xs:boolean"/>  
+    <status>n</status>
+</function>
+<function>
+    <signature>fn:number() => double</signature>
+    <name>fn:number</name>
+    <result type="xs:double"/>
+    <status>y</status>
+    <description>Converts the string value of the context node to a number</description>
+    <notes>Saxon 7.4 implements some incompatible changes to this function defined in XPath 2.0.
+    When given an empty sequence as the argument, the <code>number</code> function now returns
+    an empty sequence, rather than <code>NaN</code>. When given a value that is not a valid
+    number, it raises an error rather than returning <code>NaN</code>. The strings "INF" and "-INF"
+    are recognized as representations of positive and negative infinity.</notes>
+</function>
+<function>
+    <signature>fn:number(item()? $srcval) => double</signature>
+    <name>fn:number</name>
+    <arg name="srcval" type="item()" occurs="?"/>
+    <result type="xs:double"/>
+    <status>y</status>
+    <description>Converts the string value of the given node to a number</description>
+    <notes>Implementation follows the XPath 1.0 specification. Changed in 7.4 so that if the
+    argument is the empty sequence, the result is the empty sequence - this causes some backwards
+    compatibility problems.</notes>
+</function>
+<function>
+    <signature>op:numeric-add(numeric $operand1, numeric $operand2) => numeric</signature>
+    <name>op:numeric-add</name>
+    <arg name="operand1" type="numeric"/>
+    <arg name="operand2" type="numeric"/> 
+    <result type="numeric"/>  
+    <status>y</status>
+</function>
+<function>
+    <signature>op:numeric-divide( numeric $operand1, numeric $operand2) => numeric</signature>
+    <name>op:numeric-divide</name>
+    <arg name="operand1" type="numeric"/>
+    <arg name="operand2" type="numeric"/> 
+    <result type="numeric"/>  
+    <status>y</status>
+</function>
+<function>
+    <signature>op:numeric-equal(numeric $operand1, numeric $operand2) => boolean</signature>
+    <name>op:numeric-equal</name>
+    <arg name="operand1" type="numeric"/>
+    <arg name="operand2" type="numeric"/> 
+    <result type="xs:boolean"/>  
+    <status>y</status>
+</function>
+<function>
+    <signature>op:numeric-greater-than( numeric $operand1, numeric $operand2) => boolean</signature>
+    <name>op:numeric-greater-than</name>
+    <arg name="operand1" type="numeric"/>
+    <arg name="operand2" type="numeric"/> 
+    <result type="xs:boolean"/>  
+    <status>y</status>
+</function>
+<function>
+    <signature>op:numeric-integer-divide( integer $operand1, integer $operand2) => integer</signature>
+    <name>op:numeric-integer-divide</name>
+    <arg name="operand1" type="xs:integer"/>
+    <arg name="operand2" type="xs:integer"/> 
+    <result type="xs:integer"/>  
+    <status>y</status>
+</function>
+<function>
+    <signature>op:numeric-less-than( numeric $operand1, numeric $operand2) => boolean</signature>
+    <name>op:numeric-less-than</name>
+    <arg name="operand1" type="numeric"/>
+    <arg name="operand2" type="numeric"/> 
+    <result type="xs:boolean"/>  
+    <status>y</status>
+</function>
+<function>
+    <signature>op:numeric-mod(numeric $operand1, numeric $operand2) => numeric</signature>
+    <name>op:numeric-mod</name>
+    <arg name="operand1" type="numeric"/>
+    <arg name="operand2" type="numeric"/> 
+    <result type="numeric"/>  
+    <status>y</status>
+</function>
+<function>
+    <signature>op:numeric-multiply( numeric $operand1, numeric $operand2) => numeric</signature>
+    <name>op:numeric-multiply</name>
+    <arg name="operand1" type="numeric"/>
+    <arg name="operand2" type="numeric"/> 
+    <result type="numeric"/>  
+    <status>y</status>
+</function>
+<function>
+    <signature>op:numeric-subtract( numeric $operand1, numeric $operand2) => numeric</signature>
+    <name>op:numeric-subtract</name>
+    <arg name="operand1" type="numeric"/>
+    <arg name="operand2" type="numeric"/> 
+    <result type="numeric"/>  
+    <status>y</status>
+</function>
+<function>
+    <signature>op:numeric-unary-minus( numeric $operand) => numeric</signature>
+    <name>op:numeric-unary-minus</name>
+    <arg name="operand" type="numeric"/>
+    <result type="numeric"/>  
+    <status>y</status>
+</function>
+<function>
+    <signature>op:numeric-unary-plus( numeric $operand) => numeric</signature>
+    <name>op:numeric-unary-plus</name>
+    <arg name="operand" type="numeric"/>
+    <result type="numeric"/>  
+    <status>y</status>
+</function>
+<function>
+    <signature>fn:one-or-more($srcval as item*) as item?</signature>
+    <name>fn:one-or-more</name>
+    <arg name="srcval" type="item()" occurs="*"/>
+    <result type="item()" occurs="?"/>
+    <status>y</status>
+    <tests>
+        <test>type040</test><test>type901err</test>
+        <test>type902err</test><test>type903err</test><test>type904err</test>
+    </tests>
+</function>
+<function>
+    <signature>fn:position() => integer?</signature>
+    <name>fn:position</name>
+    <result type="xs:integer"/>  
+    <status>y</status>
+    <description>Returns the context position (that is, the position of the context item in the sequence
+    currenly being processed)</description>
+</function>
+<function>
+    <signature>op:QName-equal(QName $srcval1, QName $srcval2) => boolean</signature>
+    <name>op:QName-equal</name>
+    <arg name="operand1" type="xs:NOTATION"/>
+    <arg name="operand2" type="xs:NOTATION"/> 
+    <result type="xs:boolean"/>  
+    <status>y</status>
+</function>
+<function>
+    <name>xslt:regex-group</name>
+    <arg name="groupNumber" type="xs:integer"/>
+    <result type="xs:string"/>
+    <status>y</status>
+    <description>Returns the contents of the substring that matched the n'th
+    subexpression in a regular expression processed using <code>xsl:analyze-string</code></description>
+</function>
+<function>
+    <signature>fn:remove(item* $target, integer $position) => item*</signature>
+    <name>fn:remove</name>
+    <arg name="target" type="item()" occurs="*"/>
+    <arg name="position" type="xs:integer"/>
+    <result type="item()" occurs="*"/>
+    <status>y</status>
+    <description>Removes the item at a given position in a sequence</description>
+</function>
+<function>
+    <signature>fn:replace(string? $input, string $pattern, string $replacement) => string?</signature>
+    <name>fn:replace</name>
+    <arg name="input" type="xs:string" occurs="?"/>
+    <arg name="pattern" type="xs:string"/> 
+    <arg name="replacement" type="xs:string"/>        
+    <result type="xs:string" occurs="?"/>
+    <status>y</status>
+    <description>Replaces sequences of characters within a string that match a given regular expression</description> 
+    <notes>Upgraded in Saxon 7.9 to match the precise regex syntax and to support all four flags s, m, i, x.
+    Also changed to disallow a pattern that matches a zero-length string.</notes>
+</function>
+<function>
+    <signature>fn:replace(string? $input, string? $pattern, string? $replacement, string? $flags) => string?</signature>
+    <name>fn:replace</name>
+    <arg name="input" type="xs:string" occurs="?"/>
+    <arg name="pattern" type="xs:string"/> 
+    <arg name="replacement" type="xs:string"/>         
+    <arg name="flags" type="xs:string"/>        
+    <result type="xs:string" occurs="?"/>
+    <status>y</status>
+    <description>Replaces sequences of characters within a string that match a given regular expression,
+    specifying flags to control the way the regular expression is matched</description> 
+    <notes>Upgraded in Saxon 7.9 to match the precise regex syntax and to support all four flags 
+    s, m, i, x. Also changed to disallow a pattern that matches a zero-length string.</notes>
+</function>
+<function>
+    <signature>fn:resolve-QName($qname as xs:string, $element as element) as xs:QName</signature>
+    <name>fn:resolve-QName</name>
+    <arg name="qname" type="xs:string"/>
+    <arg name="element" type="element()"/>
+    <result type="xs:QName"/>    
+    <status>y</status>
+    <description>Expands a lexical QName using the in-scope namespaces from the given element</description>
+</function>
+<function>
+    <signature>fn:resolve-uri(string $relative) => string</signature>
+    <name>fn:resolve-uri</name>
+    <arg name="relative" type="xs:string"/>
+    <result type="xs:string"/>    
+    <status>y</status>
+    <description>Resolves a relative URI against the base URI from the static context</description>
+</function>
+<function>
+    <signature>fn:resolve-uri(string $relative, string $base) => string</signature>
+    <name>fn:resolve-uri</name>
+    <arg name="relative" type="xs:string"/>
+    <arg name="base" type="xs:string"/>
+    <result type="xs:string"/>    
+    <status>y</status>
+    <description>Resolves a relative URI against a given base URI</description>
+    <notes>Current WD still describes the second argument as having type xs:anyURI</notes>
+</function>
+<function>
+    <signature>fn:reverse($srcval as item()*) => item()?</signature>
+    <name>fn:reverse</name>
+    <arg name="srcval" type="item()" occurs="*"/>
+    <result type="item()" occurs="*"/>
+    <status>Implemented in Saxon 7.8</status>
+    <description>Reverses the order of the items in the input sequence.</description>
+</function>
+<function>
+    <signature>fn:root() => node</signature>
+    <name>fn:root</name>
+    <result type="node()"/>
+    <status>y</status>
+    <description>Returns the root node (document node) of the tree containing the context node</description>
+    <tests><test>axes056</test></tests>
+</function>
+<function>
+    <signature>fn:root(node $srcval) => node</signature>
+    <name>fn:root</name>
+    <arg name="srcval" type="node()"/>
+    <result type="node()"/>
+    <status>y</status>
+    <description>Returns the root node (document node) of the tree containing the given node</description>
+</function>
+<function>
+    <signature>fn:round(numeric? $srcval) => numeric?</signature>
+    <name>fn:round</name>
+    <arg name="srcval" type="numeric" occurs="?"/>
+    <result type="numeric" occurs="?"/>
+    <status>Implemented. Changed in 7.4 to return the same type as the supplied argument.</status>
+    <description>Rounds a numeric value to the nearest whole number, rounding x.5 towards
+    positive infinity.</description>
+</function>
+<function>
+    <signature>fn:round-half-to-even(numeric? $srcval) => numeric?</signature>
+    <name>fn:round-half-to-even</name>
+    <arg name="srcval" type="numeric" occurs="?"/>
+    <result type="numeric" occurs="?"/>
+    <status>y</status>
+    <description>Rounds a numeric value to the nearest whole number, rounding x.5 towards
+    the nearest even number.</description>
+</function>
+<function>
+    <signature>fn:round-half-to-even(numeric? $srcval, integer $precision) => numeric?</signature>
+    <name>fn:round-half-to-even</name>
+    <arg name="srcval" type="numeric" occurs="?"/>
+    <arg name="precision" type="xs:integer"/>
+    <result type="numeric" occurs="?"/>
+    <status>y</status>
+    <description>Rounds a numeric value to the nearest integer multiple of 10 the power of minus precision, 
+    rounding x.5 towards the nearest number whose last digit is even.</description>
+    <notes>In the case of doubles and floats, rounding errors may occur giving unexpected effects.</notes>    
+</function>
+<function>
+    <signature>fn:sequence-node-identical( node()* $parameter1, node()* $parameter2) => boolean?</signature>
+    <name>fn:sequence-node-identical</name>
+    <arg name="parameter1" type="node()" occurs="*"/>
+    <arg name="parameter2" type="node()" occurs="*"/>  
+    <result type="xs:boolean" occurs="?"/>  
+    <status>Removed in Saxon 7.8</status>
+    <description>Tests whether two sequences contain identical nodes in identical positions</description>
+    <tests><test>expr80</test></tests>
+</function>
+<!--<function>
+    <name>xslt:sort</name>
+	<arg name="input-sequence" type="item()" occurs="*"/>
+	<arg name="sort-spec-name" type="xs:string"/>
+	<result type="item()" occurs="*"/>
+	<status>y</status>
+	<description>Sorts a sequence using a named sort key (an <code>xsl:sort-key</code> declaration
+	in the stylesheet</description>
+</function>-->
+<function>
+    <signature>fn:starts-with(string? $operand1, string? $operand2) => boolean?</signature>
+    <name>fn:starts-with</name>
+    <arg name="operand1" type="xs:string" occurs="?"/>
+    <arg name="operand2" type="xs:string" occurs="?"/>
+    <result type="xs:boolean" occurs="?"/>    
+    <status>y</status>
+    <description>Tests whether one string starts with another string</description>
+</function>
+<function>
+    <signature>fn:starts-with(string? $operand1, string? $operand2, string $collation) => boolean?</signature>
+    <name>fn:starts-with</name>
+    <arg name="operand1" type="xs:string" occurs="?"/>
+    <arg name="operand2" type="xs:string" occurs="?"/>
+    <arg name="collation" type="xs:string"/>
+    <result type="xs:boolean" occurs="?"/>    
+    <status>y</status>
+    <description>Tests whether one string starts with another string, using the given
+    collation for comparison</description>
+    <tests><test>str126</test></tests>
+</function>
+<function>
+    <signature>fn:string() => string</signature>
+    <name>fn:string</name>
+    <result type="xs:string"/>
+    <status>y</status>
+    <description>Returns the string value of the context node</description>
+</function>
+<function>
+    <signature>fn:string(item()? $srcval) => string</signature>
+    <name>fn:string</name>
+    <arg name="srcval" type="item()" occurs="?"/>
+    <result type="xs:string"/>
+    <status>y</status>
+    <description>Returns the string value of the argument. Saxon implements the argument as
+    type item()* rather than item()?</description>
+</function>
+<function>
+    <signature>fn:string-join(string* $sequence, string $separator) => string</signature>
+    <name>fn:string-join</name>
+    <arg name="sequence" type="xs:string" occurs="*"/>
+    <arg name="separator" type="xs:string"/>
+    <result type="xs:string"/>
+    <status>y</status>
+    <description>Concatenates all the strings in the given sequence, separated by the given separator</description>
+</function>
+<function>
+    <signature>fn:string-length() => integer?</signature>
+    <name>fn:string-length</name>
+    <result type="xs:integer" occurs="?"/>
+    <status>y</status>
+    <description>Returns the number of characters in the string value of the context node</description>
+</function>
+<function>
+    <signature>fn:string-length(string? $srcval) => integer?</signature>
+    <name>fn:string-length</name>
+    <arg name="srcval" type="xs:string" occurs="?"/>
+    <result type="xs:integer" occurs="?"/>
+    <status>y</status>
+    <description>Returns the number of characters in the given string</description>
+</function>
+<function>
+    <signature>fn:string-pad(string? $padString, integer $padCount) => string?</signature>
+    <name>fn:string-pad</name>
+    <arg name="padString" type="xs:string" occurs="?"/>
+    <arg name="padCount" type="xs:integer"/>
+    <result type="xs:string" occurs="?"/>
+    <status>Removed in Saxon 7.8</status>
+    <description>Returns a string obtained by concatenating $padCount occurrences of $padString</description>
+</function>
+<function>
+    <signature>fn:string-to-codepoints(string $srcval) => integer*</signature>
+    <name>fn:string-to-codepoints</name>
+    <arg name="srcval" type="xs:string"/>
+    <result type="xs:integer" occurs="*"/>
+    <status>y</status>
+    <description>Returns a sequence of integers representing the Unicode codepoints of the 
+    characters in the supplied string</description>
+</function>
+<function>
+    <signature>fn:subsequence(item()* $sourceSeq, double $startingLoc) => item()*</signature>
+    <name>fn:subsequence</name>
+    <arg name="sourceSeq" type="item()" occurs="*"/>
+    <arg name="startingLoc" type="xs:double" />
+    <result type="item()" occurs="*"/>
+    <status>Implemented, currently requires integer argument</status>
+    <description>Returns those items in the given sequence from the given starting position
+    to the end of the sequence</description>
+    <notes>Non-integer values, negative values etc for the second argument may not work
+    as defined in the XPath specification.</notes>
+</function>
+<function>
+    <signature>fn:subsequence(item()* $sourceSeq, double $startingLoc, double $length) => item*</signature>
+    <name>fn:subsequence</name>
+    <arg name="sourceSeq" type="item()" occurs="*"/>
+    <arg name="startingLoc" type="xs:double" />
+    <arg name="length" type="xs:double" />    
+    <result type="item()" occurs="*"/>
+    <status>Implemented, currently requires integer arguments</status>
+    <description>Returns those items in the given sequence from the given starting position
+    up to the position implied by the given length</description>
+    <notes>Non-integer values, negative values etc for the second or third argument may not work
+    as defined in the XPath specification.</notes>
+</function>
+<function>
+    <signature>fn:substring(string? $sourceString, double $startingLoc) => string?</signature>
+    <name>fn:substring</name>
+    <arg name="sourceString" type="xs:string" occurs="?"/>
+    <arg name="startingLoc" type="xs:double" />
+    <result type="xs:string" occurs="?"/>   
+    <status>y</status>
+    <description>Returns a substring of a given string starting at the given starting position
+    and continuing to the end of the string</description>
+</function>
+<function>
+    <signature>fn:substring(string? $sourceString, double $startingLoc, double $length) => string?</signature>
+    <name>fn:substring</name>
+    <arg name="sourceString" type="xs:string" occurs="?"/>
+    <arg name="startingLoc" type="xs:double" />
+    <arg name="length" type="xs:double" />    
+    <result type="xs:string" occurs="?"/>   
+    <status>y</status>
+    <description>Returns a subtring of a given string, starting at a given position and
+    continuing up to a given length</description>
+</function>
+<function>
+    <signature>fn:substring-after( string? $operand1, string? $operand2) => string?</signature>
+    <name>fn:substring-after</name>
+    <arg name="operand1" type="xs:string" occurs="?"/>
+    <arg name="operand2" type="xs:string" occurs="?"/>
+    <result type="xs:string" occurs="?"/>    
+    <status>y</status>
+    <description>Returns that part of the given input string that occurs after the first occurrence
+    of the string given in $operand2</description>
+</function>
+<function>
+    <signature>fn:substring-after( string? $operand1, string? $operand2, string $collation) => string?</signature>
+    <name>fn:substring-after</name>
+    <arg name="operand1" type="xs:string" occurs="?"/>
+    <arg name="operand2" type="xs:string" occurs="?"/>
+    <arg name="collation" type="xs:string"/>
+    <result type="xs:string" occurs="?"/>  
+    <status>y</status>
+    <description>Returns that part of the given input string that occurs after the first occurrence
+    of the string given in $operand2, using the given collation to compare strings</description>
+</function>
+<function>
+    <signature>fn:substring-before( string? $operand1, string? $operand2) => string?</signature>
+    <name>fn:substring-before</name>
+    <arg name="operand1" type="xs:string" occurs="?"/>
+    <arg name="operand2" type="xs:string" occurs="?"/>
+    <result type="xs:string" occurs="?"/>  
+    <status>y</status>
+    <description>Returns that part of the given input string that occurs before the first occurrence
+    of the string given in $operand2</description>
+</function>
+<function>
+    <signature>fn:substring-before( string? $operand1, string? $operand2, anyURI $collation) => string?</signature>
+    <name>fn:substring-before</name>
+    <arg name="operand1" type="xs:string" occurs="?"/>
+    <arg name="operand2" type="xs:string" occurs="?"/>
+    <arg name="collation" type="xs:string"/>
+    <result type="xs:string" occurs="?"/>  
+    <status>y</status>
+    <description>Returns that part of the given input string that occurs before the first occurrence
+    of the string given in $operand2, using the given collation to compare strings</description>    
+</function>
+<function>
+    <signature>op:subtract-dates( date? $operand1, date? $operand2) => dayTimeDuration?</signature>
+    <status>y</status>
+    <description>Returns the difference between two dates as a dayTimeDuration</description>    
+</function>
+<function>
+    <signature>fn:subtract-dateTimes-yielding-dayTimeDuration( dateTime? $operand1, dateTime? $operand2) => dayTimeDuration?</signature>
+    <name>fn:subtract-dateTimes-yielding-dayTimeDuration</name>
+    <arg name="operand1" type="xs:dateTime" occurs="?"/>
+    <arg name="operand2" type="xs:dateTime" occurs="?"/>
+    <result type="xdt:dayTimeDuration" occurs="?"/>  
+    <status>n</status>
+    <description>Returns the difference between two dateTimes as a dayTimeDuration</description>    
+</function>
+<function>
+    <signature>fn:subtract-dateTimes-yielding-yearMonthDuration( dateTime? $operand1, dateTime? $operand2) => yearMonthDuration?</signature>
+    <name>fn:subtract-dateTimes-yielding-yearMonthDuration</name>
+    <arg name="operand1" type="xs:dateTime" occurs="?"/>
+    <arg name="operand2" type="xs:dateTime" occurs="?"/>
+    <result type="xdt:yearMonthDuration" occurs="?"/>  
+    <status>n</status>
+    <description>Returns the difference between two dateTimes as a yearMonthDuration</description>    
+</function>
+<function>
+    <signature>op:subtract-dayTimeDuration-from-date( date $srcval1, dayTimeDuration $srcval2) => date</signature>
+    <status>y</status>
+</function>
+<function>
+    <signature>op:subtract-dayTimeDuration-from-dateTime( dateTime $srcval1, dayTimeDuration $srcval2) => dateTime</signature>
+    <status>y</status>
+</function>
+<function>
+    <signature>op:subtract-dayTimeDuration-from-time( time $srcval1, dayTimeDuration $srcval2) => time</signature>
+    <status>y</status>
+</function>
+<function>
+    <signature>op:subtract-dayTimeDurations( dayTimeDuration $srcval1, dayTimeDuration $srcval2) => dayTimeDuration</signature>
+    <status>y</status>
+</function>
+<function>
+    <signature>op:subtract-times( time $srcval1, time $srcval2) => dayTimeDuration</signature>
+    <status>y</status>
+</function>
+<function>
+    <signature>op:subtract-yearMonthDuration-from-date( date $srcval1, yearMonthDuration $srcval2) => date</signature>
+    <status>y</status>
+</function>
+<function>
+    <signature>op:subtract-yearMonthDuration-from-dateTime( dateTime $srcval1, yearMonthDuration $srcval2) => dateTime</signature>
+    <status>y</status>
+</function>
+<function>
+    <signature>op:subtract-yearMonthDurations( yearMonthDuration $srcval1, yearMonthDuration $srcval2) => yearMonthDuration</signature>
+    <status>y</status>
+</function>
+<function>
+    <signature>fn:sum($srcval as xdt:anyAtomicType*) => xdt:anyAtomicType?</signature>
+    <name>fn:sum</name>
+    <arg name="srcval" type="xdt:anyAtomicType" occurs="*"/>
+    <result type="xdt:anyAtomicType" occurs="?"/>
+    <status>Implemented. In 7.4, works on all numeric types and returns the same type as the
+    arguments. Not implemented for other addable types, e.g. duration. The new optional
+    second parameter is not implemented. Changed in 7.8 to return integer 0 for an empty
+    sequence, rather than double 0.0.</status>
+    <description>Returns the total of a sequence of numbers</description>
+</function>
+<function>
+    <name>xslt:system-property</name>
+    <arg name="propertyName" type="xs:string"/>
+    <result type="xs:string"/>
+    <status>y</status>
+    <description>Returns the value of a system property</description>
+</function>
+<function>
+    <signature>op:time-equal(time $operand1, time $operand2) => boolean</signature>
+    <status>y</status>
+</function>
+<function>
+    <signature>op:time-greater-than( dateTime $operand1, dateTime $operand2) => boolean</signature>
+    <status>y</status>
+</function>
+<function>
+    <signature>op:time-less-than( time $operand1, time $operand2) => boolean</signature>
+    <status>y</status>
+</function>
+<function>
+    <signature>op:to(decimal $firstval, decimal $lastval) => integer+</signature>
+    <status>y</status>
+</function>
+<function>
+    <signature>fn:tokenize(string? $input, string $pattern) => string*</signature>
+    <name>fn:tokenize</name>
+    <arg name="input" type="xs:string" occurs="?"/>
+    <arg name="pattern" type="xs:string"/> 
+    <result type="xs:string" occurs="*"/>
+    <status>Implemented. The facility to split a string into its individual characters
+    by supplying a regex that matches a zero-length string is newly implemented in Saxon 7.7.</status>
+    <description>Returns a sequence of strings formed by breaking the input string at any substring
+    that matches the given regular expression</description>
+    <notes>Upgraded in Saxon 7.9 to match the precise regex syntax and to support all four flags 
+    s, m, i, x. Also changed to disallow a pattern that matches a zero-length string.</notes>
+</function>
+<function>
+    <signature>fn:tokenize(string? $input, string $pattern, string $flags) => string*</signature>
+    <name>fn:tokenize</name>
+    <arg name="input" type="xs:string" occurs="?"/>
+    <arg name="pattern" type="xs:string"/> 
+    <arg name="flags" type="xs:string"/>        
+    <result type="xs:string" occurs="*?"/>
+    <status>y</status>
+    <description>Returns a sequence of strings formed by breaking the input string at any substring
+    that matches the given regular expression, using flags to control the way regular expression matching
+    is performed</description>    
+    <notes>Upgraded in Saxon 7.9 to match the precise regex syntax and to support all four flags 
+    s, m, i, x. Also changed to disallow a pattern that matches a zero-length string.</notes>
+</function>
+<function>
+    <signature>fn:trace($value as item()*, $label as xs:string) as item()*</signature>
+    <name>fn:trace</name>
+    <arg name="value" type="item()" occurs="*"/>
+    <arg name="label" type="xs:string"/>
+    <result type="item()" occurs="*"/>
+    <status>y</status>
+    <description>Returns the value of the first argument after outputting a diagnostic message</description>
+    <notes>The Saxon implementation outputs the value of each item in a sequence as it is evaluated (except
+    when the sequence is empty, in which case it outputs "empty sequence" at the start). Atomic values are
+    output by converting them to a string, nodes by calling getPath() to generate a path expression to the node.
+    With complex expressions the order of evaluation may be rather different from the expected order. The
+    trace output is directed to System.err, this may be redirected by using "2&gt;log.txt" on the command line.</notes>
+    <tests><test>ver16</test><test>ver17</test></tests> 
+</function>
+<function>
+    <signature>fn:translate(string? $srcval, string? $mapString, string? $transString) => string?</signature>
+    <name>fn:translate</name>
+    <arg name="srcval" type="xs:string" occurs="?"/>
+    <arg name="mapString" type="xs:string" occurs="?"/>
+    <arg name="transString" type="xs:string" occurs="?"/>
+    <result type="xs:string" occurs="?"/>            
+    <status>y</status>
+    <description>Returns a string formed by replacing individual characters that appear in the second
+    argument with the characters that appear at the corresponding position in the third argument</description>
+</function>
+<function>
+    <signature>fn:true() => boolean</signature>
+    <name>fn:true</name>
+    <result type="xs:boolean"/>
+    <status>y</status>
+    <description>Return the boolean value true</description>
+</function>
+<function>
+    <signature>op:union(node()* $parameter1, node()* $parameter2) => node()*</signature>
+    <name>op:union</name>
+    <arg name="operand1" type="node()" occurs="*"/>
+    <arg name="operand2" type="node()" occurs="*"/>
+    <result type="node()" occurs="*"/>
+    <status>y</status>
+</function>
+<function>
+    <signature>xslt:unparsed-entity-uri(string $srcval) => string</signature>
+    <name>xslt:unparsed-entity-uri</name>
+    <arg name="srcval" type="xs:string"/>
+    <result type="xs:string"/>
+    <status>y</status>
+    <description>Return the system ID of an unparsed entity, given its name</description>
+    <tests><test>expr02</test><test>expr88</test></tests>
+</function>
+<function>
+    <signature>xslt:unparsed-entity-public-id(string $srcval) => string</signature>
+    <name>xslt:unparsed-entity-public-id</name>
+    <arg name="srcval" type="xs:string"/>
+    <result type="xs:string"/>
+    <status>y</status>
+    <description>Return the public ID of an unparsed entity, given its name</description>
+    <tests><test>expr88</test></tests>    
+</function>
+<function>
+    <signature>xslt:unparsed-text(string $uri) => string</signature>
+    <name>xslt:unparsed-text</name>
+    <arg name="uri" type="xs:string"/>
+    <result type="xs:string"/>
+    <status>Not implemented. The encoding parameter is currently mandatory.</status>
+    <description>Returns the contents of an external text file, given its URI and encoding</description>
+</function>
+<function>
+    <signature>xslt:unparsed-text(string $uri, string $encoding) => string</signature>
+    <name>xslt:unparsed-text</name>
+    <arg name="uri" type="xs:string"/>
+    <arg name="encoding" type="xs:string"/>
+    <result type="xs:string"/>
+    <status>Implemented. Changed at 7.5 so it no longer processes multiple URIs ina single call.</status>
+    <description>Returns the contents of an external text file, given its URI and encoding</description>
+</function>
+<function>
+    <signature>fn:unordered(item* $sequence) => item*</signature>
+    <name>fn:unordered</name>
+    <arg name="sequence" type="item()" occurs="*"/>
+    <result type="item()" occurs="*"/>
+    <status>y</status>
+    <description>Returns a random permutation of its argument</description>
+    <notes>In practice the only important case where this function has any effect in the Saxon
+implementation is where the sequence supplied as argument is a Step using a reverse axis: for example,
+<code>unordered(ancestor::*)</code> returns the ancestors in reverse document order. But applications should
+not rely on the actual order; the function is intended to be used by applications that do not care about
+the order of the results.</notes>
+</function>
+<function>
+    <signature>fn:upper-case(string? $srcval) => string?</signature>
+    <name>fn:upper-case</name>
+    <arg name="srcval" type="xs:string" occurs="?"/>
+    <result type="xs:string" occurs="?"/>
+    <status>y</status>
+    <description>Converts a string to upper case</description>
+</function>
+<function>
+    <signature>op:yearMonthDuration-equal( yearMonthDuration $operand1, yearMonthDuration $operand2) => boolean</signature>
+    <status>y</status>
+</function>
+<function>
+    <signature>op:yearMonthDuration-greater-than( yearMonthDuration $operand1, yearMonthDuration $operand2) => boolean</signature>
+    <status>y</status>
+</function>
+<function>
+    <signature>op:yearMonthDuration-less-than( yearMonthDuration $operand1, yearMonthDuration $operand2) => boolean</signature>
+    <status>y</status>
+</function>
+<!--<function>
+    <signature>fn:yearMonthDuration-from-months(int months) => yearMonthDuration</signature>
+    <status>Implemented, but no longer in the spec</status>
+</function>-->
+<function>
+    <signature>fn:zero-or-one($srcval as item*) as item?</signature>
+    <name>fn:zero-or-one</name>
+    <arg name="srcval" type="item()" occurs="*"/>
+    <result type="item()" occurs="?"/>
+    <status>y</status>
+    <tests><test>type040</test><test>type901err</test>
+        <test>type902err</test><test>type903err</test><test>type904err</test>
+    </tests>    
+</function>
+
+</functions>
+
+<xsl:stylesheet id="ss"  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+ version="2.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+ 
+ <xsl:template match="xsl:stylesheet"/>
+ 
+ <xsl:template match="functions">
+   <html>
+    <head>
+    <title>XSLT 2.0 and XPath 2.0 Functions</title>
+    <link rel="stylesheet" type="text/css" href="saxon-style.css"/>
+    </head>   
+   
+   <body>
+    <div align="right"><a href="index.html">Saxon home page</a></div>
+
+   <h1>XSLT 2.0 and XPath 2.0 Functions</h1>
+   <p>The list on this page indicates which functions are implemented in this Saxon release,
+   and any restrictions in the current implementation.</p>
+   
+   <p>It includes both the core functions defined in XPath 2.0, and the additional
+   functions defined in the XSLT 2.0 specification.</p>
+   
+   <h2>Index</h2>
+   
+   <xsl:variable name="fns" select="function[starts-with(name, 'fn:') or starts-with(name, 'xslt:')]"/>
+   <xsl:variable name="sfns" as="element()*">
+     <xsl:perform-sort select="$fns">
+       <xsl:sort select="substring-after(name, ':')"/>
+     </xsl:perform-sort>
+   </xsl:variable>
+   <xsl:variable name="colsize" select="xs:integer(ceiling(count($fns) div 4))"/>
+   
+   <table>
+   <tr class="body">
+   <td valign="top"><xsl:apply-templates select="$sfns[(position()-1) idiv $colsize eq 0]" mode="index"/></td> 
+   <td valign="top"><xsl:apply-templates select="$sfns[(position()-1) idiv $colsize eq 1]" mode="index"/></td>   
+   <td valign="top"><xsl:apply-templates select="$sfns[(position()-1) idiv $colsize eq 2]" mode="index"/></td>   
+   <td valign="top"><xsl:apply-templates select="$sfns[(position()-1) idiv $colsize ge 3]" mode="index"/></td>
+   </tr>
+   </table>   
+
+   <hr />
+   <h2>Function Definitions</h2>   
+   <xsl:apply-templates select="$sfns"/>
+
+<p align="center"><a HREF="mailto:michael.h.kay@ntlworld.com">Michael H. Kay</a> <br/>
+<xsl:value-of select="format-date(current-date(), '[Dn] [MNn] [Y0001]')"/></p>
+
+   </body></html>
+ </xsl:template>
+ 
+ <xsl:template match="function" mode="index">
+ <a href="#{name}"><xsl:value-of select="name"/></a><br/></xsl:template>
+ 
+ <xsl:template match="function">
+      <xsl:apply-templates select="signature"/>
+      <p><i><xsl:copy-of select="description"/></i></p>
+      <xsl:variable name="fname" select="substring-before(substring-after(signature,':'),'(')"/>
+      <xsl:choose>
+      <xsl:when test="starts-with(signature, 'fn:')">
+        <p><a href="http://www.w3.org/TR/xpath-functions/#func-{$fname}">XPath 2.0 Specification</a></p>
+      </xsl:when>
+      <xsl:otherwise>
+        <p><a href="http://www.w3.org/TR/xslt20/#function-{$fname}">XSLT 2.0 Specification</a></p>
+      </xsl:otherwise>
+      </xsl:choose>
+      <xsl:apply-templates select="status"/>
+      <xsl:apply-templates select="notes"/>
+      <hr/>
+ </xsl:template>
+ 
+  <xsl:template match="function[name]" priority="5">
+      <p><b><a name="{name}"><xsl:value-of select="name"/></a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+        <xsl:for-each select="arg">
+          <tr><td width="120">$<xsl:value-of select="@name"/></td>
+              <td width="150"><xsl:value-of select="concat(@type, ' ', @occurs)"/></td>
+          </tr>
+        </xsl:for-each>
+          <tr><td width="120"><b>Result</b></td>
+              <td width="150"><xsl:value-of select="concat(result/@type, ' ', result/@occurs)"/></td>
+          </tr>
+      </table>        
+
+      <p><i><xsl:copy-of select="description"/></i></p>
+      <xsl:variable name="fname" select="substring-after(name,':')"/>
+      <xsl:choose>
+      <xsl:when test="starts-with(name, 'fn:')">
+        <p><a href="http://www.w3.org/TR/xpath-functions/#func-{$fname}">XPath 2.0 Specification</a></p>
+      </xsl:when>
+      <xsl:otherwise>
+        <p><a href="http://www.w3.org/TR/xslt20/#function-{$fname}">XSLT 2.0 Specification</a></p>
+      </xsl:otherwise>
+      </xsl:choose>
+      <xsl:apply-templates select="status"/>
+      <xsl:apply-templates select="notes"/>
+      <hr/>
+ </xsl:template>
+ 
+ <xsl:template match="function[starts-with(signature, 'op:')]" priority="6"/>
+
+ <xsl:template match="signature">
+   <p><b><a name="{../name}"><xsl:apply-templates/></a></b></p>
+ </xsl:template>
+ 
+ <xsl:template match="status">
+   <p><xsl:copy-of select="child::node()"/></p>
+ </xsl:template>
+ 
+  <xsl:template match="status[.='y']"/>
+ 
+  <xsl:template match="status[.='n']">
+   <p>** Not yet implemented **</p>
+ </xsl:template>
+ 
+  <xsl:template match="notes">
+   <p><b>Note: </b><xsl:apply-templates/></p>
+ </xsl:template>
+ 
+ </xsl:stylesheet> 
+
+</conformance>

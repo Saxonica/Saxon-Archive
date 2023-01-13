@@ -1,0 +1,814 @@
+
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <title>XPath 2.0 Functions</title>
+      <link rel="stylesheet" type="text/css" href="saxon-style.css">
+   </head>
+   <body>
+      <div align="right"><a href="index.html">Saxon home page</a></div>
+      <h1>XPath 2.0 Functions</h1>
+      <p>The list on this page indicates which XPath 2.0 functions are implemented in this Saxon release,
+         and any restrictions in the current implementation.
+      </p>
+      <p>Functions defined in the XSLT 2.0 specification are not currently listed.</p>
+      <p><b>fn:add-timezone-to-date( date $srcval) =&gt; date</b></p>
+      <p><i>
+            <description>Sets the timezone information on a date value to the system timezone</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-add-timezone-to-date">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:add-timezone-to-date( date $srcval, dayTimeDuration $timezone) =&gt; date</b></p>
+      <p><i>
+            <description>Sets the timezone information on a date value to $timezone</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-add-timezone-to-date">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:add-timezone-to-dateTime( dateTime $srcval) =&gt; dateTime</b></p>
+      <p><i>
+            <description>Sets the timezone information on a dateTime value to the system timezone</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-add-timezone-to-dateTime">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:add-timezone-to-dateTime( dateTime $srcval, dayTimeDuration $timezone) =&gt; dateTime</b></p>
+      <p><i>
+            <description>Sets the timezone information on a dateTime value to $timezone</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-add-timezone-to-dateTime">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:add-timezone-to-time( time $srcval) =&gt; time</b></p>
+      <p><i>
+            <description>Sets the timezone information on a time value to the system timezone</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-add-timezone-to-time">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:add-timezone-to-time( time $srcval, dayTimeDuration $timezone) =&gt; time</b></p>
+      <p><i>
+            <description>Sets the timezone information on a time value to $timezone</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-add-timezone-to-time">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:avg(item* $srcval) =&gt; double?</b></p>
+      <p><i>
+            <description>Returns the average of a set of numbers</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-avg">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:base-uri(node $srcval) =&gt; anyURI?,returns String</b></p>
+      <p><i>
+            <description>Returns the base URI of a given node</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-base-uri">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:boolean(item* $srcval) =&gt; boolean</b></p>
+      <p><i>
+            <description>Obtains the effective boolean value of any expression</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-boolean">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:ceiling(double? $srcval) =&gt; double?</b></p>
+      <p><i>
+            <description>Rounds a value towards positive infinity</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-ceiling">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:codepoints-to-string(integer* codes) =&gt; string</b></p>
+      <p><i>
+            <description>Converts a sequence of integers representing Unicode characters to the corresponding string</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-codepoints-to-string">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:collection(string $srcval) =&gt; node*</b></p>
+      <p><i>
+            <description>Loads an external collection of nodes identified by the URI of the collection</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-collection">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:compare(string? $comparand1, string? $comparand2) =&gt; integer?</b></p>
+      <p><i>
+            <description>Compares two strings using the default collation</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-compare">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:compare(string? $comparand1, string? $comparand2, anyURI $collationLiteral) =&gt; integer?</b></p>
+      <p><i>
+            <description>Compares two strings using a specified collation</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-compare">XPath 2.0 Specification</a></p>y (collation is a string)
+      <p><b>Note: </b>In Saxon, the collation is represented as a string
+      </p>
+      <hr>
+      <p><b>fn:concat(string $arg1, ...) =&gt; string</b></p>
+      <p><i>
+            <description>Concatenates the string-values of the arguments into a single string</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-concat">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:contains(string? $operand1, string? $operand2) =&gt; boolean?</b></p>
+      <p><i>
+            <description>Returns true if the second string is a substring of the first</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-contains">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>Currently implemented by comparing Unicode code-points
+      </p>
+      <hr>
+      <p><b>fn:contains(string? $operand1, string? $operand2, anyURI $collationLiteral) =&gt; boolean?</b></p>
+      <p><i></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-contains">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:context-item() =&gt; item?</b></p>
+      <p><i></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-context-item">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:copy(node? $srcval) =&gt; node?</b></p>
+      <p><i></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-copy">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:count(item* $srcval) =&gt; unsignedInt</b></p>
+      <p><i>
+            <description>Counts the number of items in a sequence</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-count">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>Currently returns an integer, not an unsignedInt
+      </p>
+      <hr>
+      <p><b>fn:current-date() =&gt; date</b></p>
+      <p><i>
+            <description>Returns the current date</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-current-date">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:current-dateTime() =&gt; dateTime</b></p>
+      <p><i>
+            <description>Returns the current date and time</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-current-dateTime">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:current-time() =&gt; time</b></p>
+      <p><i>
+            <description>Returns the current time</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-current-time">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:data(node $srcval) =&gt; atomic value*</b></p>
+      <p><i>
+            <description>Returns the typed value of a node</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-data">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:deep-equal(node $parameter1, node $parameter2) =&gt; boolean</b></p>
+      <p><i>
+            <description>Compares two nodes for deep equality: the names and contents must be identical</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-deep-equal">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:deep-equal(node $parameter1, node $parameter2, anyURI $collation) =&gt; boolean</b></p>
+      <p><i>
+            <description>Compares two nodes for deep equality; string values are compared using the named collation</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-deep-equal">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>Untested
+      </p>
+      <hr>
+      <p><b>fn:distinct-nodes( node* $srcval) =&gt; node*</b></p>
+      <p><i>
+            <description>Eliminates nodes with duplicate values</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-distinct-nodes">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:distinct-values( item* $srcval) =&gt; item*</b></p>
+      <p><i>
+            <description>Returns the set of distinct values present in a given sequence</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-distinct-values">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:distinct-values( item* $srcval, anyURI $collationLiteral) =&gt; item*</b></p>
+      <p><i>
+            <description>Returns the set of distinct values present in a given sequence,
+               comparing strings using a named collation.
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-distinct-values">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:document(item* $srcval1) =&gt; node*</b></p>
+      <p><i>
+            <description>Loads one or more documents identified by their URIs</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-document">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:document(item* $srcval1, node* $srcval2) =&gt; node*</b></p>
+      <p><i>
+            <description>Loads one or more documents identified by their URIs, using the base URI of the
+               node given in the second argument to resolve any relative URIs
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-document">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:empty(item* $srcval) =&gt; boolean</b></p>
+      <p><i>
+            <description>Returns true if the given sequence is empty</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-empty">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:ends-with(string? $operand1, string? $operand2) =&gt; boolean?</b></p>
+      <p><i>
+            <description>Returns true if the first string ends with the second string</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-ends-with">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>Currently compares string using Unicode codepoint matching
+      </p>
+      <hr>
+      <p><b>fn:ends-with(string? $operand1, string? $operand2, anyURI $collationLiteral) =&gt; boolean?</b></p>
+      <p><i>
+            <description>Returns true if the first string ends with the second string, when
+               compared using the named collation
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-ends-with">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:error()</b></p>
+      <p><i>
+            <description>Raises an error</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-error">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:error(item $srcval)</b></p>
+      <p><i>
+            <description>Raises an error</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-error">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:escape-uri(string $uri-part, boolean $escape-reserved) =&gt; string</b></p>
+      <p><i>
+            <description>Applies the %HH escaping convention to a URI</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-escape-uri">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:exists(item* $srcval) =&gt; boolean</b></p>
+      <p><i>
+            <description>Returns true if the given sequence is not empty</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-exists">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:expanded-QName( string $paramURI, string $paramLocal) =&gt; QName</b></p>
+      <p><i>
+            <description>Constructs a QName value from a URI and local name</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-expanded-QName">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:false() =&gt; boolean</b></p>
+      <p><i>
+            <description>Returns the boolean value false</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-false">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:floor(double? $srcval) =&gt; double?</b></p>
+      <p><i>
+            <description>Rounds a number towards minus infinity</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-floor">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:get-day-from-date( date? $srcval) =&gt; integer?</b></p>
+      <p><i>
+            <description>Extracts the day component of a date value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-get-day-from-date">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:get-day-from-dateTime( dateTime? $srcval) =&gt; integer?</b></p>
+      <p><i>
+            <description>Extracts the day component of a dateTime value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-get-day-from-dateTime">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:get-days-from-dayTimeDuration( dayTimeDuration? $srcval) =&gt; integer?</b></p>
+      <p><i>
+            <description>Extracts the days component of a dayTimeDuration value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-get-days-from-dayTimeDuration">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:get-dayTimeDuration-from-dateTimes( dateTime $srcval1, dateTime $srcval2) =&gt; dayTimeDuration</b></p>
+      <p><i>
+            <description>Returns the difference between two dateTimes in the form of a dayTimeDuration</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-get-dayTimeDuration-from-dateTimes">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:get-hours-from-dateTime( dateTime? $srcval) =&gt; integer?</b></p>
+      <p><i>
+            <description>Extracts the hour component of a dateTime value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-get-hours-from-dateTime">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:get-hours-from-dayTimeDuration( dayTimeDuration? $srcval) =&gt; integer?</b></p>
+      <p><i>
+            <description>Extracts the hours component of a dayTimeDuration value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-get-hours-from-dayTimeDuration">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:get-hours-from-time( time? $srcval) =&gt; integer?</b></p>
+      <p><i>
+            <description>Extracts the hours component of a time value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-get-hours-from-time">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:get-local-name-from-QName( QName? $srcval) =&gt; string?</b></p>
+      <p><i>
+            <description>Extracts the local name component of a QName value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-get-local-name-from-QName">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:get-minutes-from-dateTime( dateTime? $srcval) =&gt; integer?</b></p>
+      <p><i>
+            <description>Extracts the minutes component of a dateTime value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-get-minutes-from-dateTime">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:get-minutes-from-dayTimeDuration( dayTimeDuration? $srcval) =&gt; integer?</b></p>
+      <p><i>
+            <description>Extracts the minutes component of a dayTimeDuration value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-get-minutes-from-dayTimeDuration">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:get-minutes-from-time( time? $srcval) =&gt; integer?</b></p>
+      <p><i>
+            <description>Extracts the minutes component of a time value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-get-minutes-from-time">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:get-month-from-date( date? $srcval) =&gt; integer?</b></p>
+      <p><i>
+            <description>Extracts the month component of a date value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-get-month-from-date">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:get-month-from-dateTime( dateTime? $srcval) =&gt; integer?</b></p>
+      <p><i>
+            <description>Extracts the month component of a dateTime value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-get-month-from-dateTime">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:get-months-from-yearMonthDuration( yearMonthDuration? $srcval) =&gt; integer?</b></p>
+      <p><i>
+            <description>Extracts the months component of a yearMonthDuration value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-get-months-from-yearMonthDuration">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:get-namespace-from-QName( QName? $srcval) =&gt; anyURI?</b></p>
+      <p><i>
+            <description>Extracts the namespace URI component of a QName value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-get-namespace-from-QName">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:get-seconds-from-dateTime( dateTime? $srcval) =&gt; decimal?</b></p>
+      <p><i>
+            <description>Extracts the seconds component of a dateTime value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-get-seconds-from-dateTime">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:get-seconds-from-dayTimeDuration( dayTimeDuration? $srcval) =&gt; integer?</b></p>
+      <p><i>
+            <description>Extracts the seconds component of a dayTime value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-get-seconds-from-dayTimeDuration">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:get-seconds-from-time( time? $srcval) =&gt; decimal?</b></p>
+      <p><i>
+            <description>Extracts the seconds component of a time value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-get-seconds-from-time">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:get-timezone-from-date( date? $srcval) =&gt; string?</b></p>
+      <p><i>
+            <description>Extracts the timezone component of a date value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-get-timezone-from-date">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:get-timezone-from-dateTime( dateTime? $srcval) =&gt; string?</b></p>
+      <p><i>
+            <description>Extracts the timezone component of a dateTime value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-get-timezone-from-dateTime">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:get-timezone-from-time( time? $srcval) =&gt; string?</b></p>
+      <p><i>
+            <description>Extracts the timezone component of a time value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-get-timezone-from-time">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:get-year-from-date( date? $srcval) =&gt; integer?</b></p>
+      <p><i>
+            <description>Extracts the year component of a date value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-get-year-from-date">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:get-year-from-dateTime( dateTime? $srcval) =&gt; integer?</b></p>
+      <p><i>
+            <description>Extracts the year component of a dateTime value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-get-year-from-dateTime">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:get-yearMonthDuration-from-dateTimes( dateTime $srcval1, dateTime $srcval2) =&gt; yearMonthDuration</b></p>
+      <p><i>
+            <description>Returns the difference between two dateTime values in the form of a yearMonthDuration</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-get-yearMonthDuration-from-dateTimes">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:get-years-from-yearMonthDuration( yearMonthDuration? $srcval) =&gt; integer?</b></p>
+      <p><i>
+            <description>Extracts the years component of a yearMonthDuration value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-get-years-from-yearMonthDuration">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:id(IDREF* $srcval) =&gt; element*</b></p>
+      <p><i>
+            <description>Finds the elements with given ID attribute values</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-id">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>Implemented according to the XPath 1.0 specification
+      </p>
+      <hr>
+      <p><b>fn:idref(string* $srcval) =&gt; element*</b></p>
+      <p><i>
+            <description>Finds the elements that link to the element with a given ID value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-idref">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:if-absent(node? $node, anySimpleType $value) =&gt; anySimpleType*</b></p>
+      <p><i>
+            <description>Evaluates the second argument if the first is an empty sequence</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-if-absent">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:if-empty(node? $node, anySimpleType $value) =&gt; anySimpleType*</b></p>
+      <p><i>
+            <description>Evaluates the second argument if the first is an element with empty content</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-if-empty">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:index-of(item* $seqParam, item $srchParam) =&gt; unsignedInt*</b></p>
+      <p><i>
+            <description>Finds the positions of items in a sequence that match the second argument</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-index-of">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:index-of(item* $seqParam, item $srchParam, anyURI $collationLiteral) =&gt; unsignedInt*</b></p>
+      <p><i>
+            <description>Finds the positions of items in a sequence that match the second argument, using
+               a named collation for the comparison
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-index-of">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:input() =&gt; node*</b></p>
+      <p><i>
+            <description>Return the sequence of nodes established by the calling environment as the current
+               input collection
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-input">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:insert(item* $target, decimal $position, item* $inserts) =&gt; item*</b></p>
+      <p><i>
+            <description>Insert an item into a sequence</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-insert">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:item-at(item* $seqParam, decimal $posParam) =&gt; item?</b></p>
+      <p><i>
+            <description>Return the item at a given position in a sequence</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-item-at">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>Currently returns an empty sequence rather than raising an error if the index is
+         out of range
+      </p>
+      <hr>
+      <p><b>fn:lang(string $testlang) =&gt; boolean</b></p>
+      <p><i>
+            <description>Returns true if the xml:lang value for the context node matches the given language</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-lang">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:last() =&gt; unsignedInt?</b></p>
+      <p><i>
+            <description>Returns the context size (the size of the sequence of items currently being processed)</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-last">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:local-name() =&gt; string</b></p>
+      <p><i>
+            <description>Returns the local part of the name of the context node</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-local-name">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:local-name(node? $srcval) =&gt; string</b></p>
+      <p><i>
+            <description>Returns the local part of the name of a given node</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-local-name">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:lower-case(string? $srcval) =&gt; string?</b></p>
+      <p><i>
+            <description>Translates characters in a string to lower case</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-lower-case">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:matches(string? $input, string? $pattern) =&gt; boolean?</b></p>
+      <p><i>
+            <description>Returns true if the given string matches the given regular expression</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-matches">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:matches(string? $input, string? $pattern, string? $flags) =&gt; boolean?</b></p>
+      <p><i>
+            <description>Returns true if the given string matches the given regular expression,
+               specifying flags to control the way pattern matching is performed
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-matches">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:max(item* $srcval) =&gt; anySimpleType?</b></p>
+      <p><i>
+            <description>Returns the highest value in a sequence of comparable items</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-max">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:max(item* $srcval, anyURI $collationLiteral) =&gt; anySimpleType?</b></p>
+      <p><i>
+            <description>Returns the highest value in a sequence of strings, using a specified collation to
+               perform the comparisons
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-max">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:min(item* $srcval) =&gt; anySimpleType?</b></p>
+      <p><i>
+            <description>Returns the lowest value in a sequence of comparable items</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-min">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:min(item* $srcval, anyURI $collationLiteral) =&gt; anySimpleType?</b></p>
+      <p><i>
+            <description>Returns the lowest value in a sequence of strings, using a specified collation to
+               perform the comparisons
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-min">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:name() =&gt; string</b></p>
+      <p><i>
+            <description>Returns the name of the context node, as a string in the lexical form of a QName</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-name">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:name(node? $srcval) =&gt; string</b></p>
+      <p><i>
+            <description>Returns the name of a given node, as a string in the lexical form of a QName</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-name">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:namespace-uri() =&gt; string</b></p>
+      <p><i>
+            <description>Returns the namespace URI of the name of the context node</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-namespace-uri">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:namespace-uri(node? $srcval) =&gt; string</b></p>
+      <p><i>
+            <description>Returns the namespace URI of the name of a given node</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-namespace-uri">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:node-kind(node $srcval) =&gt; string</b></p>
+      <p><i>
+            <description>Identifies what kind of node the argument is, as a string, for example "element" or
+               "attribute"
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-node-kind">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:node-name(node $srcval) =&gt; QName?</b></p>
+      <p><i>
+            <description>Returns the name of the given node, as a QName value (that is, a namespace URI plus
+               local name)
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-node-name">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:normalize-space( string? $srcval) =&gt; string?</b></p>
+      <p><i>
+            <description>Eliminates redundant spaces from a string</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-normalize-space">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:normalize-unicode( string? $srcval) =&gt; string?</b></p>
+      <p><i>
+            <description>Converts a string to Unicode normalized form NFC by modifying the way in which
+               combining characters are represented
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-normalize-unicode">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:normalize-unicode( string? $srcval, string $normalizationForm) =&gt; string?</b></p>
+      <p><i>
+            <description>Converts a string to a given Unicode normalized form by modifying the way in which
+               combining characters are represented
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-normalize-unicode">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:not(item* $srcval) =&gt; boolean</b></p>
+      <p><i>
+            <description>Returns true if the effective boolean value of the argument is false, and vice versa</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-not">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:number() =&gt; double</b></p>
+      <p><i>
+            <description>Converts the string value of the context node to a number</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-number">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:number(node $srcval) =&gt; double</b></p>
+      <p><i>
+            <description>Converts the string value of the given node to a number</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-number">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>Implementation follows the XPath 1.0 specification
+      </p>
+      <hr>
+      <p><b>fn:position() =&gt; unsignedInt?</b></p>
+      <p><i>
+            <description>Returns the context position (that is, the position of the context item in the sequence
+               currenly being processed)
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-position">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:remove(item* $target, decimal $position) =&gt; item*</b></p>
+      <p><i>
+            <description>Removes the item at a given position in a sequence</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-remove">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:remove-timezone-from-dateTime( dateTime $srcval) =&gt; dateTime</b></p>
+      <p><i>
+            <description>Removes the timezone information from a dateTime value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-remove-timezone-from-dateTime">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:remove-timezone-from-dateTime( dateTime $srcval, dayTimeDuration $timezone) =&gt; dateTime</b></p>
+      <p><i>
+            <description>Removes the timezone information from a dateTime value, substituting the given timezone</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-remove-timezone-from-dateTime">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:remove-timezone-from-time( time $srcval) =&gt; time</b></p>
+      <p><i>
+            <description>Removes the timezone information from a time value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-remove-timezone-from-time">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:remove-timezone-from-time( time $srcval, dayTimeDuration $timezone) =&gt; time</b></p>
+      <p><i>
+            <description>Removes the timezone information from a time value, substituting the given timezone</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-remove-timezone-from-time">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:replace(string? $input, string? $pattern, string? $replacement) =&gt; string?</b></p>
+      <p><i>
+            <description>Replaces sequences of characters within a string that match a given regular expression</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-replace">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:replace(string? $input, string? $pattern, string? $replacement, string? $flags) =&gt; string?</b></p>
+      <p><i>
+            <description>Replaces sequences of characters within a string that match a given regular expression,
+               specifying flags to control the way the regular expression is matched
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-replace">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:resolve-uri(anyURI $base, anyURI $relative) =&gt; anyURI</b></p>
+      <p><i>
+            <description>Resolves a relative URI against a given base URI</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-resolve-uri">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:root(node $srcval) =&gt; node</b></p>
+      <p><i>
+            <description>Returns the root node (document node) of the tree containing the given node</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-root">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:round(double? $srcval) =&gt; double?</b></p>
+      <p><i>
+            <description>Rounds a numeric value to the nearest whole number</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-round">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:sequence-deep-equal( item* $parameter1, item* $parameter2) =&gt; boolean?</b></p>
+      <p><i>
+            <description>Tests whether two sequences contain items that are pairwise deep-equal</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-sequence-deep-equal">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:sequence-deep-equal( item* $parameter1, item* $parameter2, anyURI $collationLiteral) =&gt; boolean?</b></p>
+      <p><i>
+            <description>Tests whether two sequences contain items that are pairwise deep-equal, using
+               the given collation to compare string values
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-sequence-deep-equal">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:sequence-node-equal( node* $parameter1, node* $parameter2) =&gt; boolean?</b></p>
+      <p><i>
+            <description>Tests whether two sequences contain identical nodes in identical positions</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-sequence-node-equal">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:starts-with(string? $operand1, string? $operand2) =&gt; boolean?</b></p>
+      <p><i>
+            <description>Tests whether one string starts with another string</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-starts-with">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>Currently compares the strings using Unicode code-point matching
+      </p>
+      <hr>
+      <p><b>fn:starts-with(string? $operand1, string? $operand2, anyURI $collationLiteral) =&gt; boolean?</b></p>
+      <p><i>
+            <description>Tests whether one string starts with another string, using the given
+               collation for comparison
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-starts-with">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:string() =&gt; string</b></p>
+      <p><i>
+            <description>Returns the string value of the context node</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-string">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:string(item $srcval) =&gt; string</b></p>
+      <p><i>
+            <description>Returns the string value of the argument</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-string">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:string-join(string* $sequence, string $separator) =&gt; string</b></p>
+      <p><i>
+            <description>Concatenates all the strings in the given sequence, separated by the given separator</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-string-join">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:string-length(string? $srcval) =&gt; integer?</b></p>
+      <p><i>
+            <description>Returns the number of characters in the given string</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-string-length">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:string-pad(string? $padString, decimal? $padCount) =&gt; string?</b></p>
+      <p><i>
+            <description>Returns a string obtained by concatenating $padCount occurrences of $padString</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-string-pad">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:string-to-codepoints(string $srcval) =&gt; integer*</b></p>
+      <p><i>
+            <description>Returns a sequence of integers representing the Unicode codepoints of the 
+               characters in the supplied string
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-string-to-codepoints">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:subsequence(item* $sourceSeq, decimal $startingLoc) =&gt; item*</b></p>
+      <p><i>
+            <description>Returns those items in the given sequence from the given starting position
+               to the end of the sequence
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-subsequence">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:subsequence(item* $sourceSeq, decimal $startingLoc, decimal $length) =&gt; item*</b></p>
+      <p><i>
+            <description>Returns those items in the given sequence from the given starting position
+               up to the position implied by the given length
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-subsequence">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:substring(string? $sourceString, decimal? $startingLoc) =&gt; string?</b></p>
+      <p><i>
+            <description>Returns a substring of a given string starting at the given starting position
+               and continuing to the end of the string
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-substring">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:substring(string? $sourceString, decimal? $startingLoc, decimal? $length) =&gt; string?</b></p>
+      <p><i>
+            <description>Returns a subtring of a given string, starting at a given position and
+               continuing up to a given length
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-substring">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:substring-after( string? $operand1, string? $operand2) =&gt; string?</b></p>
+      <p><i>
+            <description>Returns that part of the given input string that occurs after the first occurrence
+               of the string given in $operand2
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-substring-after">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:substring-after( string? $operand1, string? $operand2, anyURI $collationLiteral) =&gt; string?</b></p>
+      <p><i>
+            <description>Returns that part of the given input string that occurs after the first occurrence
+               of the string given in $operand2, using the given collation to compare strings
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-substring-after">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:substring-before( string? $operand1, string? $operand2) =&gt; string?</b></p>
+      <p><i>
+            <description>Returns that part of the given input string that occurs before the first occurrence
+               of the string given in $operand2
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-substring-before">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:substring-before( string? $operand1, string? $operand2, anyURI $collationLiteral) =&gt; string?</b></p>
+      <p><i>
+            <description>Returns that part of the given input string that occurs before the first occurrence
+               of the string given in $operand2, using the given collation to compare strings
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-substring-before">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:sum(item* $srcval) =&gt; double</b></p>
+      <p><i>
+            <description>Returns the total of a sequence of numbers</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-sum">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:tokenize(string? $input, string? $pattern) =&gt; string*</b></p>
+      <p><i>
+            <description>Returns a sequence of strings formed by breaking the input string at any substring
+               that matches the given regular expression
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-tokenize">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:tokenize(string? $input, string? $pattern, string? $flags) =&gt; string*</b></p>
+      <p><i>
+            <description>Returns a sequence of strings formed by breaking the input string at any substring
+               that matches the given regular expression, using flags to control the way regular expression matching
+               is performed
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-tokenize">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:translate(string? $srcval, string? $mapString, string? $transString) =&gt; string?</b></p>
+      <p><i>
+            <description>Returns a string formed by replacing individual characters that appear in the second
+               argument with the characters that appear at the corresponding position in the third argument
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-translate">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:true() =&gt; boolean</b></p>
+      <p><i>
+            <description>Return the boolean value true</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-true">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b>fn:unique-ID(node $srcval) =&gt; ID?</b></p>
+      <p><i>
+            <description>Return the value of the ID attribute of an element, if it has one</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-unique-ID">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b>fn:upper-case(string? $srcval) =&gt; string?</b></p>
+      <p><i>
+            <description>Converts a string to upper case</description></i></p>
+      <p><a href="http://www.w3.org/TR/xquery-operators/#function-upper-case">XPath 2.0 Specification</a></p>
+      <hr>
+      <p align="center"><a HREF="mailto:michael.h.kay@ntlworld.com">Michael H. Kay</a><br>
+         15 November 2002
+      </p>
+   </body>
+</html>
+
+ 
+

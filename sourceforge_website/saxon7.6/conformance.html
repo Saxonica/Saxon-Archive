@@ -1,0 +1,427 @@
+<html>
+
+<head>
+  <title>Standards Conformance</title>
+  <link rel="stylesheet" type="text/css" href="saxon-style.css">
+</head>
+
+<body>
+<div align=right><a href="index.html">Saxon home page</a></div>
+
+<h1>Standards Conformance</h1>
+
+<hr />
+
+<h2>XSLT 1.0 and XPath 1.0 conformance</h2>
+
+<p><i>Saxon XSLT implements the
+XSLT 1.0 and XPath 1.0 Recommendations from the World Wide Web Consortium, found at
+ <a href="http://www.w3.org/TR/xslt">
+http://www.w3.org/TR/xslt</a> and
+ <a href="http://www.w3.org/TR/xpath">
+http://www.w3.org/TR/xpath</a>, which are 
+referred to here collectively as "XSLT"</i></p>
+
+<p>Saxon is 100% conformant to the mandatory requirements of these recommendations,
+except in some cases where incompatibilities have been introduced in the
+XSLT 2.0 and XPath 2.0 working drafts.</p>
+
+<h2>XSLT 2.0 conformance</h2>
+
+<p>This release of Saxon
+implements many facilities defined in the draft XSLT 2.0 specification. This specification
+is not yet complete, though most features defined in the working drafts of 2 May 2003 are available. </p>
+
+<p>Known restrictions include the following:</p>
+
+<ul>
+
+<li><p>The <code>xsl:schema-import</code> declaration is not implemented; and therefore, 
+it is not possible to refer to user-defined types.</p></li>
+
+<li><p>There is no support for source documents, result documents, or temporary trees to be
+validated and annotated using a schema processor. (But elements and attributes that have a simple
+built-in type, for example xs:date, can be annotated as such).</p></li>
+
+<li><p>The <code>as</code> attribute on <code>xsl:template</code> is not implemented</p></li>
+
+<li><p>In <code>xsl:for-each-group</code>, each item in the population is allocated to exactly
+one group. Sequence-valued grouping keys are not supported, and the function <code>current-grouping-key</code>
+is not implemented.</p></li>
+
+<li><p>The <code>xsl:value-of</code> instruction outputs only the first item of a sequence if the
+<code>separator</code> attribute is omitted. When <code>version="2.0"</code> is specified, it should output
+all items, space-separated.</p></li>
+
+<li><p>It is not possible to for a local variable to shadow another local variable with the
+same name.</p></li>
+
+<li><p>The new XSLT 2.0 facilities for initiating a transformation are not provided (specifying a named
+template as the entry point, supplying an input collection, etc.)</p></li>
+
+<li><p>The new <code>xsl:output</code> option  <code>normalize-unicode</code>
+is not implemented.</p></li>
+
+<li><p>The <code>xsl:character-map</code> facility is not yet implemented.</p></li>
+
+<li><p>exclude-result-prefixes="#all" is not yet implemented.</p></li>
+
+<li><p>The <code>as</code> attribute is not implemented on elements <code>xsl:key</code>
+or <code>xsl:for-each-group</code>.</p></li>
+
+<li><p>The <code>xhtml</code> output method does not follow all the rules for XHTML formatting in
+the draft XSLT 2.0 specification.</p></li>
+
+<li><p>If <code>key()</code> is called in a match pattern, the argument must be a string literal.</p></li>
+</ul>
+
+
+<h2>XPath 2.0 conformance</h2>
+
+<p>Saxon 7.4 implements
+the full XPath 2.0 grammar with the exception of schema-related
+aspects of the <code>SequenceType</code> production. The SequenceType production currently allows either
+a node-kind (e.g. element, attribute, document-node), a built-in simple schema type (e.g. xs:integer, xs:ID), or the
+constructs "element(*,T)" and "attribute(*,T)" where T is a built-in simple schema type. Note
+that the latter require the type annotation of the node to be T, this can be set using the type-annotation
+attribute of xsl:element and xsl:attribute.</p>
+
+<p>The restrictions in XPath 2.0 support include the following:</p>
+
+<ul>
+
+<li><p>Saxon supports the following data types: string, boolean, decimal, duration, integer, float,
+double, date, dateTime, time, anyURI, QName, with their literal forms and constructors. All built-in subtypes of
+integer are implemented (but note, unsignedLong does not support values greater than the maximum
+value of a Long). All built-in types derived by restriction from xs:string are implemented (but not
+the list types IDREFS, NMTOKENS, and ENTITIES). The data types yearMonthDuration, dayTimeDuration, 
+untypedAtomic, and anyAtomicType are available in the namespace <code>http://www.w3.org/2003/05/xpath-datatypes</code>.</p></li>
+
+<li><p>Subtraction of two dates to yield a duration,
+and addition of a date to a duration, are not yet implemented.</p></li>
+
+<li><p>Casting of a QName to a string, and vice versa, are not supported.</p></li>
+
+<li><p>The type tests element(XX) and attribute(XX) are supported as part of the SequenceType
+production, but not in steps of a path expression or match pattern.</p></li>
+
+<li><p>The state of implementation of all the standard functions is described in
+<a href="functions.html">functions.html</a></p></li> 
+
+<li><p>Standard functions are implemented in the null namespace; it is not possible to use the namespace
+URI defined in the <i>Functions and Operators</i> specification.</i></p></li>
+
+<li><p>Note that in the dateTime and time data types, the timezone is retained as part of the value. Equality
+and ordering is done by normalizing the time to UTC, but conversion to a string, and extraction of
+components, reflects the timezone as originally specified.<p></li>
+
+<li><p>Constructor functions for schema-defined types are available in both the schema-defined namespaces 
+"http://www.w3.org/2001/XMLSchema" (conventional prefix xs) and "http://www.w3.org/2001/XMLSchema-datatypes"
+(conventional prefix xsd). They are available for all the built-in data types that have been implemented.
+The semantics are the same as a cast, that is, <code>xs:dateTime($x)</code> means exactly the same as
+ <code>cast as xs:dateTime($x)</code>.</p></li>
+ 
+<li><p>Ordering is implemented as a total order over all durations, based on the average length of a month
+(one year = 365.242199 days).</p> </li>
+ 
+<li><p>In replace(), if the pattern matches a zero-length string, each character in the source text
+is replaced by two instances of the replacement text. This is the Java behavior.</p></li>
+
+<li><p>There are many areas where the semantics implemented by Saxon still reflect the XPath 1.0 rules,
+for example the rules for conversion of numbers to strings. In some cases the XPath 2.0 rules in
+these areas are not yet stable (that is, there are open issues documented in the current working
+draft).</p></li>
+
+</ul>
+
+<a name="xquery"><h2>XQuery 1.0 Conformance</h2></a>
+
+<p>The restrictions noted above with respect to XPath 2.0 apply equally to Saxon's support for
+XQuery 1.0.</p>
+
+<p>Additional restrictions in Saxon compared with the May 2003 draft of XQuery 1.0 include the
+following:</p>
+
+<ul>
+
+<li><p>The <code>typeswitch</code> expression is not implemented.</p></li>
+
+<li><p>The <code>validate</code> expression is not implemented.</p></li>
+
+<li><p>Multiple modules are not implemented.</p></li>
+
+<li><p>The processor is not schema-aware, and therefore does not support the
+<code>import schema</code> declaration in the prolog.</p></li>
+
+<li><p>Not all options of <code>order by</code> are implemented, for example empty
+sort key values are always collated first.</p></li>
+
+<li><p>Constructors for document nodes are not implemented, and constructors for text
+nodes have not been tested.</p></li>
+
+<li><p>In computed element and attribute constructors, the computed name must be a string
+in the form of a lexical QName, not a value of type xs:QName.</p></li>
+
+<li><p>User-defined functions must have namespace-prefixed names.</p></li>
+
+<li><p>The <code>as</code> clause in variable declarations (both global variables, and <code>for</code>
+and <code>let</code> variables) follow the XSLT rules, which are based on the XPath function calling
+rules, rather than the stricter XQuery rules. That is, the supplied value is converted to the declared
+type in three circumstances: atomization of nodes, casting of untyped atomic, and numeric promotion.</p></li> 
+
+<li><p>The <code>as</code> clause in <code>some</code> and <code>every</code> expressions is not
+implemented.</p></li>
+</ul>
+
+
+
+<h2>Conformance with other specifications</h2>
+
+<p>Saxon is dependant on the user-selected XML parser to ensure conformance with the XML 1.0
+Recommendation and the XML Namespaces Recommendation.</p>
+
+<p>Saxon implements the <code>&lt;?xml-stylesheet?&gt;</code> processing instruction as described in the 
+W3C Recommendation <i>Associating StyleSheets with XML Documents</i>.
+The <b>href</b> pseudo-attribute must be a URI identifying an XML document containing a stylesheet,
+or a URI with a fragment identifier identifying an embedded stylesheet. The fragment must be the value
+of an ID attribute declared as such in the DTD.</p>
+
+<p>Saxon works with any SAX2-conformant XML parser that is configured to enable namespace 
+processing. There is one limitation: on the startElement() call from the XMLReader to the
+ContentHandler, the QName (that is, the third argument) must be present. According to the SAX2
+specification, namespace-aware parsers are not obliged to supply this argument. However, all
+commonly-used parsers appear to do so.</p>
+
+
+<hr>
+
+
+<h3>Documentation</h3>
+
+<p>The XSLT specification says that the documentation for an implementation should specify
+which URI schemes
+are supported. Saxon supports the URI scheme implemented by the Java java.net.URL class, with
+the optional addition of a fragment identifier, as described below. 
+Additionally,
+Saxon allows the user to nominate a URIResolver class which can be used to implement any URI scheme
+the user wants.</p>
+
+<p>The XSLT specification says that the documentation for an implementation should specify for which
+media types fragment identifiers are supported. The standard URI resolver supports access to 
+XML documents 
+only. A simple fragment identifier is allowed, consisting of the value of an ID attribute in the
+document. The effect is to return the subdocument rooted at the element with this identifier if there
+is one, or an empty document otherwise. For example, the URI mydoc.xml#aaa locates the XML document
+mydoc.xml, and if it contains an element &lt;eeee id="aaa"&gt;, where id is an attribute of type ID, then
+the document retrieved is an XML document with this &lt;eeee&gt; element as its outermost (document) 
+element.</p>
+
+<p>The values of the vendor-specific system properties are:</p>
+
+<table>
+<tr><td width="120">xsl:version</td><td>1.8</td></tr>
+<tr><td>xsl:vendor</td><td>SAXON n.n.n from Michael Kay</td></tr>
+<tr><td>xsl:vendor-url</td><td>http://saxon.sf.net/</td></tr>
+<tr><td>xsl:product-name</td><td>SAXON</td></tr>
+<tr><td>xsl:product-version</td><td>n.n.n</td></tr>
+</table>
+
+<p>All these values are subject to change in future releases. Users wishing to test whether the
+processor is Saxon are advised to test whether the xsl:product system property has the value
+"SAXON".</p>
+
+<p><i>The reason for returning 1.8 from <code>xsl:version</code> is that the product
+is not yet fully conformant with XSLT 2.0</i></p>
+
+<h3>Extensions</h3>
+
+<p>Saxon implements a number of extensions to standard XSLT, following the rules for extension
+functions and extension elements where appropriate. The extensions are documented in
+<a href="extensions.html">extensions.html</a>. They are all implemented in accordance with
+the provisions in the standard for extensibility.</p>
+
+<h2>Character encodings supported</h2>
+
+<p>The encodings supported on input depend entirely on your choice of XML parser.</p>
+
+<p>The encodings available on output are the intersection of:</p>
+
+<pre>
+ascii, us-ascii, utf-8, utf8, utf-16, utf16, iso-8859-1, iso-8859-2
+koi8-r, cp852, cp1250, windows-1250, cp1251, windows-1251
+(again case-insensitive)
+</pre>
+
+<p>with whatever your Java VM supports.</p>
+
+<p>If you select an encoding that the Java VM recognizes, but which is not in the 
+above list, then the output will be written in the requested encoding, but all non-ASCII
+characters will be written as character references.</p>
+
+<h2>XML 1.0 Conformance</h2>
+
+<p>Saxon can be used with any SAX-conformant XML parser. The extent of XML conformance
+depends entirely on the chosen parser.</p>
+
+<p>The default parser is the one supplied with JDK 1.4, which is a version of Apache Crimson.</p>
+
+<h2>DOM Conformance</h2>
+
+<p>Saxon accepts input (both source document and stylesheet) from any standards-compliant DOM
+implementation.</p>
+
+<p>Saxon allows the result tree to be attached to any Document or Element node of an existing
+DOM. Any DOM implementation can be used, provided it is mutable.</p>
+
+<p>Saxon's internal tree structure (which is visible through the Java API, including the case
+where Java extensions functions are called from XPath expressions) conforms with the minimal
+requirements of the DOM level 2 core Java language binding. This DOM interface is read-only,
+so all attempts to call updating methods throw an appropriate DOM exception. No optional
+features are implemented. The DOM interfaces to Saxon's tree structure do not reveal namespace
+nodes as attributes. This means it is not possible to get information about namespace
+declarations except by calls such as getPrefix() and getNamespaceURI() on Element and Attr nodes).</p>
+
+<p>If an extension function returns a DOM Node or NodeList, this must consist only of Nodes
+in a tree constructed using Saxon. Since Saxon's trees cannot be updated using DOM methods, this
+means that the nodes returned must either be nodes from the original source tree, or nodes from
+a tree constructed using Saxon's proprietary API. It is <b>not</b> possible to construct
+the tree using DOM methods such as createElement() and createAttribute().</p>
+
+<h2>JAXP 1.2 Conformance</h2>
+
+<p>Saxon implements the JAXP 1.2 API (including TrAX), as defined in
+<a href="http://jcp.org/aboutJava/communityprocess/final/jsr063/index2.html">JSR-63</a>.
+Saxon implements the interfaces in the javax.xml.transform package in full, including support for
+SAX, DOM, and Stream input, and SAX, DOM, and Stream output.</p>
+
+<p><i>Note: The transformation interfaces in JAXP 1.2 are identical to JAXP 1.1: the new version
+only affects the XML parser interface, adding options to control schema validation.</i></p> 
+
+<p>There are restrictions in using transform() on a DOMSource when the node to be transformed
+is a node other than the root (i.e. the DOM Document node). These apply only if the
+supplied DOM is a third-party DOM, not if it is a Saxon-constructed tree.
+Specifically, if the start node
+is not the root then it must be an element; and it must not have an ancestor or preceding-sibling
+node, or an ancestor with a preceding-sibling node, that is an entity reference node or CDATA
+section node. In addition, the element must be part of a tree that is rooted at a Document node.</p>
+
+<p>Saxon also implements part of the javax.xml.parsers API. Saxon no longer provides its own SAX parser, 
+however it does provide a DocumentBuilder.
+The DOM interfaces are limited by the capabilities of the Saxon DOM, specifically the fact that
+it is read-only. Nevertheless, the DocumentBuilder may be used to construct a Saxon tree, or to
+obtain an empty Document node which can be supplied in a DOMResult to hold the result of a
+transformation.</p>
+
+<a name="errorrecovery"><h2>Error recovery policy</h2></a>
+
+<p>Where the XSLT specification requires that an error be signaled, Saxon produces an error
+message and terminates stylesheet execution. In the case of errors detected at compile
+time, it attempts to report as many errors as possible before terminating; in the case
+of run-time errors, it terminates after the first error.</p>
+
+<p>Where the XSLT specification states that the processor may recover from an error, Saxon takes
+one of three actions as described in the table below. Either it signals the error and terminates
+execution, or it recovers silently from the error in the manner permitted by the specification,
+or it places the action under user control. In the latter case there are three options: report the
+error and terminate, recover silently, or (the default) recover after writing a warning
+ to the system error output stream. These actions can be modified by supplying a user-defined
+ ErrorListener.</p>
+
+<p>Handling of individual recoverable errors is described in the table below.</p>
+
+<p><i>This list is incomplete and needs to be reviewed.</i></p>
+
+<table>
+<tr><td><b>Error</b></td><td><b>Action</b></td></tr>
+
+<tr>
+<td valign="top">There is more than one template rule that matches a node, with the
+same import precedence and priority</td>
+<td valign="top">User option</td>
+</tr>
+
+<tr>
+<td valign="top">There is more that one xsl:namespace-alias statement for a given prefix,
+with the same import precedence</td>
+<td valign="top">Recover silently</td>
+</tr>
+
+<tr>
+<td valign="top">An element name defined using xsl:element is invalid</td>
+<td valign="top">User option</td>
+</tr>
+
+<tr>
+<td valign="top">An attribute name defined using xsl:attribute is invalid</td>
+<td valign="top">User option</td>
+</tr>
+
+<tr>
+<td valign="top">There are several attribute sets with the same import precedence that
+define the same named attribute</td>
+<td valign="top">Recover silently</td>
+</tr>
+
+<tr>
+<td valign="top">A processing-instruction name defined using xsl:processing-instruction is invalid</td>
+<td valign="top">User option</td>
+</tr>
+
+<tr>
+<td valign="top">A node other than a text node is written to the result tree while instantiating
+xsl:attribute, xsl:comment, or xsl:processing-instruction</td>
+<td valign="top">User option</td>
+</tr>
+
+<tr>
+<td valign="top">Invalid characters are written to the content of a comment or processing instruction</td>
+<td valign="top">User option</td>
+</tr>
+
+<tr>
+<td valign="top">An attribute node or namespace node is written directly to the root of a result
+tree fragment, or to any other node that is not an element node.</td>
+<td valign="top">User option</td>
+</tr>
+
+<tr>
+<td valign="top">A value supplied to the value attribute of xsl:number is negative or non-numeric</td>
+<td valign="top">User option</td>
+</tr>
+
+<tr>
+<td valign="top">The document() function identifies a resource that cannot be retrieved</td>
+<td valign="top">User option</td>
+</tr>
+
+<tr>
+<td valign="top">There are several xsl:output elements specifying the same attribute with the same
+import precedence</td>
+<td valign="top">Recover silently</td>
+</tr>
+
+<tr>
+<td valign="top">disable-output-escaping is used for a text node while instantiating
+xsl:attribute, xsl:comment, or xsl:processing-instruction</td>
+<td valign="top">Recover silently</td>
+</tr>
+
+<tr>
+<td valign="top">disable-output-escaping is used for a text node within a result tree fragment
+that is subsequently converted to a string or number</td>
+<td valign="top">Recover silently</td>
+</tr>
+
+<tr>
+<td valign="top">disable-output-escaping is used for a text node containing a character that cannot
+be output using the target encoding</td>
+<td valign="top">Recover silently</td>
+</tr>
+
+</table>
+
+<hr>
+<p align="center">Michael H. Kay<br>
+2 May 2003</p>
+</body>
+</html>

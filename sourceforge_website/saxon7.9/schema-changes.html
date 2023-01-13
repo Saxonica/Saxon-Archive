@@ -1,0 +1,173 @@
+<h3>Schema Processing</h3>
+
+<p>In XSLT, the <code>xsl:import-schema</code> declaration is now implemented. The referenced schema is read, parsed,
+and validated. (This is implemented using a forked copy of the relevant parts of the Castor product:
+for implementation detail see below.)</p>
+
+<p>In XQuery, the <code>import schema</code> declaration in the prolog is implemented. The validation
+declaration in the prolog is implemented. Element validation is implemented; validation is suppressed
+for element constructors that are content-defining children of another element constructor, 
+as it would be redundant. The validate expression is implemented. Validation mode is inherited,
+but non-global validation context is not yet implemented.</p>
+
+<p>A schema loaded using an <code>xsl:import-schema</code> statement is cached in the Configuration object,
+making it available to all other stylesheets compiled using the same <code>TransformerFactory</code>
+instance.</p>
+
+*** cache not currently used at schema module level. ***
+
+<p>Constructor functions for user-defined atomic types in the schema are implemented in both XSLT
+and XQuery. The supplied value
+is checked against the schema-defined facets for the target type.</p>
+
+<p>The <code>cast as</code>, <code>castable as</code>, and <code>instance of</code> operators are also
+ implemented for user-defined atomic types.</p>
+ 
+<p>The validation for user-defined atomic types uses the facets: pattern, length, minLength, maxLength,
+enumeration, minInclusive, maxInclusive, minExclusive, maxExclusive.</p>
+
+*** totalDigits and fractionDigits not yet tested.
+
+*** inherited facets not yet tested.
+  
+ 
+<p>The <code>type</code> attribute can be used on <code>xsl:element</code>, <code>xsl:attribute</code>,
+and <code>xsl:copy</code>,
+and the <code>xsl:type</code> attribute on literal result elements, to annotate an attribute or element
+node with a user-defined simple type (which can be an atomic type, a list type, or a union type).</p>
+
+<p>The option <code>xsl:validation="strict"</code> is working on literal result elements. {schema061}</p>
+
+<p>The <code>default-validation</code> attribute on <code>xsl:stylesheet</code> is implemented. {schema001}</p>
+
+<p>The <code>validation</code> attribute on <code>xsl:result-document</code> is implemented. 
+This checks document-level constraints in the schema (for example <code>xs:unique</code>) as well
+as doing local element and attribute validation. {schema069}</p>
+
+<p>The <code>validation</code> attribute on <code>xsl:attribute</code> is implemented (all
+four options). {schema070}</p>
+
+<p>A new <code>TransformerReceiver</code> class has been implemented, similar to JAXP's TransformerHandler,
+but using the Saxon native Receiver interface rather than SAX2. This allows elements and attributes passed
+down the pipeline to have a type annotation, and it avoids converting from name codes to strings and back again.
+This mechanism is now used by saxon:next-in-chain.</p>
+
+<p>The schema-aware functionality is now separated into the <code>com.saxonica</code> package hierarchy.</p>
+
+<p>The use of <code>type</code> and <code>validation</code> attributes is now not allowed except when using
+the schema-aware configuration.</p>
+
+<p>A variant of <code>net.sf.saxon.Transform</code> is now available called <code>com.saxonica.Transform</code>;
+this invokes the schema-aware processor.</p>
+
+** type on result-document not implemented
+** validation=lax not implemented
+** Syntax implemented but has no effect on xsl:copy-of
+
+
+<p>The KindTests <code>element(*, T)</code> and <code>attribute(*, T)</code> can be used to test whether
+an element or attribute has a particular type annotation, where T is any atomic type (built-in or
+user-defined).</p>
+
+<p>The KindTests <code>element(N)</code>, <code>element(N, *)</code>, and <code>element(N, T)</code> (and
+the corresponding forms for attributes) are implemented. However, at this stage substitution groups are
+not handled, <code>nillable</code> is not implemented, and schema context paths are not implemented.</p> 
+
+<p>The KindTest <code>document-node(element(~,~))</code> is implemented, but is currently available for
+use only within a SequenceType or within an XSLT pattern. It is not yet supported for use in a path
+expression. {schema065}</p>
+ 
+<p>The alternative namespace <code>http://www.w3.org/2001/XMLSchema-datatypes</code> is no longer supported.</p>
+
+<p>The built-in list types <code>NMTOKENS</code>, <code>IDREFS</code>, and <code>ENTITIES</code> are working
+(only the first one tested). {schema020}</p>
+
+*** check the minLength of each of these: zero or one? ***
+
+<p>User-defined list types are also working {schema039}. The length, minLength, and maxLength facets
+are implemented for list types {schema041, 042, 043}.</p>
+
+<p>User-defined union types, including lists of unions, are working {schema044-046}.</p>
+
+<p>Local validation of element content against named complex types is working. Tested using sequence,
+choice, groups, wildcards, derivation by extension. {schema050-057, plus associated error cases}</p>
+
+<p>Validation of attributes is working, including checking for required attributes, checking fixed
+values, and expanding default values. {schema058-059}</p>
+
+<p>Validation of complex types with simple content is working, including validation of attributes.
+{schema060}</p>
+
+<p>Validation of <code>xs:all</code> is working. {schema068, together with associated error cases}</p>
+
+<p>Validation is taking substitution groups into account. {schema061, schema068}</p>
+
+*** subst groups not implemented yet for element(X,Y) node tests ***
+
+<p>Within a schema, the <code>xs:import</code> and <code>xs:include</code> declarations are working.
+{schema066, schema067}.</p>
+
+<p>***** The castor data model imposes a restriction that the default values on the <code>schema</code>
+element (for example <code>elementFormDefault</code>) in an included schema cannot differ from the
+corresponding attributes in the including schema. This constraint is now checked.</p>
+
+
+
+
+<p>An option has been added to the Configuration class and to the TransformerFactory to allow
+schema validation of source documents to be requested. This applies to any input document supplied
+in the form of a SAXSource or StreamSource (but not a DOMSource, or a pre-built Saxon document) either
+as an initial input document, or returned from the doc() or document() functions. It does not apply
+to documents returned as the result of an extension function, or documents supplied as stylesheet or query
+parameters.</p>
+
+<p>This option can be switched on using the <code>-val</code> option on the command line for 
+<code>net.sf.saxon.Transform</code></p>
+
+
+
+
+<h4>Changes made to Castor code</h4>
+
+<p>Many classes and methods that are not needed by Saxon have been removed (Castor is over 70K lines
+of code but fewer than 9K have been taken into Saxon).</p>
+
+<p>The package and class names have been changed.</p>
+
+<p>Annotations in the schema are no longer retained in the object model; this has enabled the removal
+of classes such as AnyNode, SAX2ANY, etc which maintained part of the schema using a general-purpose
+tree.</p>
+
+<p>Replaced Castor's <code>Configuration</code> object (and properties file) with a reference to Saxon's
+<code>Configuration</code> object.</p>
+
+<p>Replaced Castor's <code>URIResolver</code> with the JAXP-conformant URIResolver mechanisms already
+existing in Saxon. A Schema module can now be loaded from any kind of Source object (including, for
+example, a JDOM source).</p>
+
+<p>Replaced <code>FacetList</code> with a standard <code>ArrayList</code>.</p>
+
+<p>Generally corrected javadoc comments, and removed redundant code as identified by IntelliJ IDEA.</p>
+
+<p>Castor's <code>SimpleTypeFactory</code> loaded the definitions of XML Schema built-in types from an
+XML file, using Castor's marshalling/unmarshalling framework to do so. In order to avoid including this
+whole framework in Saxon, this has been rewritten to use direct in-line definitions of the built-in types
+(which already existed in Saxon anyway, to a large extent). The remaining methods in <code>SimpleTypeFactory</code>
+have been absorbed into the <code>Schema</code> class.</p>
+
+<p>Extensive improvements have been made to Castor's error handling. Errors were being reported via a wide
+range of different mechanisms, and this has been consilidated. Errors detected during the schema building
+process are now reported to the ErrorListener as they are encountered, with source file location information,
+and processing continues despite the error. Currently only one error may be detected during the subsequent 
+validation phase, and it is reported without any location information. The class <code>SchemaException</code>
+is used consistently for errors in the schema. Some cross-validation was not being done,
+and some user errors were being reported through low-level Java exceptions, causing a stack trace and a
+lack of useful error information. The class <code>ValidationException</code> is now used exclusively for
+reporting validation errors when source data does not match schema-defined types.</p>
+
+<p>The way that forwards references are handled has generally been simplified. The general model is to
+save the NamePool fingerprint of the referenced object within the referring object, and resolve the
+reference during the validate() phase when the whole schema model is checked for consistency.</p>
+
+
+

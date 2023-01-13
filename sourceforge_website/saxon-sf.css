@@ -1,0 +1,500 @@
+/* saxon-sf.css */
+/* 
+Text blue: #3D5B96
+Dark blue: #C1CEDE
+Mid blue: #E4EEF0
+Light blue: #F6FFFB
+mid green: #B1CCC7
+rust: #96433D
+brown: #B3956F
+
+
+dark grey: #7F7396
+purple-ish grey: #9FA6B4
+mid grey: #C4C4C4
+light grey: #F5F5F5 (Menu dropdown blocks)
+
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+"Lucida Console", Monaco, monospace;
+Georgia,"Times New Roman",Times,serif;
+
+*/
+
+/* RESET PAGE STYLING - for consistency across browsers (avoid using their differing defaults) */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;	
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+/* Prevent mobile browsers from default adapting font sizes of content to make it readable */
+body{
+    -webkit-text-size-adjust: 100%;
+}
+
+/** SAXONICA PAGE STYLING */
+
+/* Body class */
+.main{
+    background:#C1CEDE;
+    margin-top:0px;
+    margin-left:0px;
+    margin-right:0px;
+    margin-bottom:0px;
+    padding:0 0 0 0;
+}
+
+html,body{
+    height: 100%;
+}
+
+body{
+    -webkit-text-size-adjust: 100%;
+    padding:0;
+    margin:0;
+    background:white;
+    font-family:"Lucida Sans Unicode", "Lucida Grande", sans-serif;    
+}
+#footer{
+    height:22px;
+    clear:both;
+    bottom:0;
+    padding:0 0 10px 0;
+    margin:0 10px 0 10px;
+    text-align:left;
+    /*min-height:10%;*/
+}
+
+#footer p{
+    font-size:8pt;
+    background:white;
+    padding:0 0 0 0;
+    margin:0;
+}
+
+/* wrapper for whole page body, fixed width positioned centrally in available space */
+#wrapper{
+    width:980px;
+    margin-left:auto;
+    margin-right:auto;
+    font-size:10pt;
+    background:white;
+    box-shadow:0px 0px 15px #3D5B96;
+    min-height:100%;
+}
+
+/* header and nav container */
+#header-container{
+    width:980px;
+    height:110px;
+    position:fixed;
+    top:0px;
+    z-index:10;
+    background:white;
+    /*box-shadow:0px 0px 15px #3D5B96;*/
+}
+
+/* header section */
+#header{
+    width:980px;
+    min-width:980px;
+    height:60px;
+    z-index:3;
+    margin-top:0px;
+    margin-left:0px;
+    margin-right:0px;
+    background-color:#E4EEF0;/*#96433D;*/
+    visibility:visible;
+    /*border-bottom:3px solid white;*/
+}
+
+
+/* Main content container */
+#content-container{
+    width:960px;
+    background:white;
+    padding:120px 0 0 0;
+    margin:0px 10px 0 10px;    
+    min-height:calc(100% - 120px);
+}
+
+
+/* Main page content section block ~2/3 full page width */
+#section{
+    min-height:70%;
+    min-height:calc(100% - 180px);
+    float:left;
+    width:580px;
+    z-index:4;
+    background-color:white;
+    visibility:visible;
+    margin-top:10px;
+    margin-left:40px;
+    margin-right:30px;
+    margin-bottom:30px;
+}
+
+/* Main page content secondary 'aside' section block ~1/3 full page width */
+#aside{
+    float:right;
+    width:240px;
+    z-index:4;
+    background-color:white;
+    visibility:visible;
+    margin-top:14px;
+    margin-left:20px;
+    margin-right:20px;
+    margin-bottom:20px;
+    padding:10px 10px 10px 10px;
+    border:2px solid #F5F5F5;
+}
+
+
+
+/* Header content*/
+#header a{
+    display:inline-block;
+}
+
+#header a img{
+    margin:0 0 0 0;
+    padding:0 0 0 0;
+    text-decoration:none;
+}
+
+/* Saxonica logo in header */
+.header-saxonica-logo{
+    float:left;
+    width:260px;
+    height:60px;
+    padding-left:10px;
+}
+
+/* Social media icon links in header */
+.social-media{
+    float:right;
+    width:220px;
+    height:40px;
+    padding-top:10px;
+    padding-bottom:10px;
+}
+
+
+/* Body general content */
+
+/* Any link (e.g. links within a page) */
+a{
+    font-family:inherit;
+    font-size:inherit;
+    font-style:normal;
+    color:#3D5B96;
+    font-weight:normal;
+    text-decoration:none;
+}
+
+/* used for in body links */
+a.bodylink{
+    font-family:inherit;
+    font-size:inherit;
+    font-style:inherit;
+    color:#96433D;
+    font-weight:normal;
+    text-decoration:none;
+}
+
+/* used for anchor links within a page */
+a.anchor{
+    display:block;
+    position:relative;
+    top:-102px;
+    visibility:hidden;
+}
+
+/* used for anchor links in scroll-box (e.g. technology FAQ page) */
+a.anchor-in-scroll-box{
+    display:block;
+    position:relative;
+    top:-10px;
+    visibility:hidden;
+}
+
+
+/* Used for 'Return to top of page' links (e.g. FAQ page) */
+a.top-of-page p{
+    font-size:10pt;
+    font-style:italic;
+    text-align:right;
+}
+
+/* used for main page headings */
+h1,
+h2,
+h3,
+.subhead{
+    text-decoration:none;
+    margin-top:0.7em;
+    margin-bottom:0.7em;
+    line-height:1.6em;
+}
+
+h1{
+    font-size:13pt;
+    font-style:normal;
+    color:#3D5B96;
+    font-weight:bold;
+}
+
+h2{
+    font-size:11pt;
+    font-style:normal;
+    color:#3D5B96;
+    font-weight:bold;
+}
+
+h3{
+    font-size:10pt;
+    font-style:italic;
+    color:#3D5B96;
+    font-weight:normal;
+}
+
+/* used for subheads in pref. to H2 etc, to limit underlining width */
+.subhead{
+    font-size:inherit;
+    font-style:normal;
+    color:#3D5B96;
+    font-weight:normal;
+    border-bottom:thin dashed #3D5B96;
+    padding-right:5px;
+}
+
+/* used for standard text */
+p{
+    font-family:inherit;
+    font-size:10pt;
+    font-style:normal;
+    color:#3D5B96;
+    font-weight:normal;
+    text-decoration:none;
+    line-height:1.4em;
+    padding-right:15px;
+    padding-left:15px;
+    margin-top:10px;
+    margin-bottom:10px;
+}
+
+/* used for right-aligned text */
+.align-right{
+    text-align:right;
+}
+
+strong, b{
+    font-family:inherit;
+    font-weight:bold;
+}
+
+i{
+    font-family:inherit;
+    font-size:inherit;
+    font-style:italic;
+    font-weight:normal;
+    text-decoration:none;
+}
+
+blockquote{
+	margin: 15px 30px;
+}
+
+code{
+    font-family:"lucida sans typewriter", courier, monospace;
+    font-size:inherit;
+    font-style:normal;
+    font-weight:normal;
+    text-decoration:none;
+    color:#3D5B96;
+}
+
+
+/* Used for general lists */
+ul, ol{
+    font-family:inherit;
+    font-size:10pt;
+    font-style:normal;
+    color:#3D5B96;
+    font-weight:normal;
+    text-decoration:none;
+    line-height:1.4em;
+    list-style-position:outside;
+    padding-right:15px;
+    padding-left:40px;
+    margin-top:10px;
+    margin-bottom:10px;
+}
+ul{
+    list-style-type:disc;
+}
+li{
+    font-family:inherit;
+    font-size:inherit;
+    font-style:normal;
+    color:#3D5B96;
+    font-weight:normal;
+}
+ol{
+    list-style-type:decimal;
+}
+ul ul{
+    margin-top:5px;
+    margin-bottom:5px;
+}
+
+
+/* used for aside section contents */
+.aside *{
+    font-size:10pt;
+    padding:0 0 0 0;
+    margin:0;
+    text-decoration:none;
+    color:#3D5B96;
+    border-collapse:collapse;
+}
+
+.aside ul{
+    padding-left:20px;
+    margin-top:5px;
+    margin-bottom:5px;
+}
+
+.aside ul li{
+    padding-bottom:2px;
+}
+
+.aside h2{
+    margin-top:0px;
+    margin-bottom:5px;
+    font-size:11pt;
+}
+
+.aside p{
+    margin:5px;
+}
+
+.aside a.bodylink{
+    font-size:inherit;
+    font-style:inherit;
+    color:#96433D;
+    font-weight:normal;
+    text-decoration:none;
+}
+
+/* Main paragraphs on Welcome page */
+div.welcome-part1 p{
+    font-size: 13pt
+}
+div.welcome-part2 p, div.welcome-part2 li{
+    /*font-size: 10pt*/
+}
+
+/* Platform logos appear on Products page */
+.platform-logo{
+    margin:10px;
+    padding-left:18px;
+    position:relative;
+}
+
+/* Used for all tables */
+table{
+    table-layout:fixed;
+    width:auto;
+    /*border-collapse:collapse;*/
+}
+th,
+td{
+    font-family:inherit;
+    font-size:inherit;
+    font-style:normal;
+    color:#3D5B96;
+    text-decoration:none;
+    padding-left:15px;
+    padding-right:15px;
+    padding-top:0px;
+    padding-bottom:10px;
+}
+th{
+    font-weight:bold;
+    line-height:1.3em;
+}
+td{
+    font-weight:normal;
+    text-decoration:none;
+    line-height:1.4em;
+}
+
+
+
+/* Sourceforge project page */
+
+.main.sourceforge{
+    background:#C4C4C4;
+    margin-top:0px;
+    margin-left:0px;
+    margin-right:0px;
+    margin-bottom:0px;
+    padding:0 0 0 0;
+}
+.sourceforge #wrapper{
+    box-shadow:0px 0px 15px black;
+}
+.sourceforge #header-container{
+    height:auto;
+    position:static;
+}
+.sourceforge #header{
+    background-color:#E4EEF0;/*#96433D; #F5F5F5;*/
+}
+.sourceforge #content-container{
+    padding:0 0 0 0;
+    min-height:100%;
+}
+.sourceforge #content-container a.anchor{
+    top:-20px;
+}

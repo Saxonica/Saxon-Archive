@@ -1,0 +1,260 @@
+<html>
+
+<head>
+  <title>Using XQuery</title>
+  <link rel="stylesheet" type="text/css" href="saxon-style.css">
+  <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">  
+</head>
+
+<body>
+
+<div align=right><a href="index.html">Saxon home page</a></div>
+
+<h1>Using XQuery</h1>
+
+<hr>
+
+<p>This page describes how to use Saxon as an XQuery processor, either from the command line,
+or from the Java API.</p>
+
+<table width="100%">
+  <tr>
+    <td colspan=2 width="719" class="head"><b>Contents</b></td>
+  </tr>
+  <tr>
+    <td class="subhead">Using XQuery</td>
+    <td class="subhead">Reference</td>
+  </tr>
+  </tr>
+
+  <tr>
+    <td VALIGN="top"   class="body">
+    <a href="#Introduction">Introduction</a><br>
+    <a href="#Command-line">Running a Query from the Command Line</a><br>
+    <a href="#Embedding">Embedding Saxon in an Application</a><br> 
+    <a href="#Results">Result Format</a><br>     
+    <a href="#use-cases">Use Cases</a><br>     
+    </td>
+    <td VALIGN="top"  class="body">
+    See also:<br>
+    <a href="expressions.html">XPath Expressions</a><br>
+    <a href="functions.html">Function Library</a><br>    
+    <a href="extensibility.html">Saxon Extensibility</a><br>
+    <a href="conformance.html#xquery">XQuery Conformance</a><br>
+    </td>
+  </tr>
+</table>
+
+
+<h2><a name="Introduction">Introduction</a></h2>
+
+<p>Saxon, from release 7.6 onwards, supports XQuery as well as XSLT.</p>
+
+<p>The run-time code for both languages is identical, reflecting the fact that
+they have very similar semantics. The XQuery support in Saxon consists essentially
+of an XQuery parser (which is itself an extension of the XPath parser); the parser
+generates the same internal intepretable code as the XSLT processor.</p>
+
+<p><i>Since the XQuery support is very new, this may sometimes show through, for
+example in error messages.</i></p>
+
+<p>The XQuery processor may be invoked either from the operating system command line,
+or via an API from a Java application. There is no graphical user interface provided.</p>
+
+<p>Saxon is an in-memory processor. Whether you use XSLT or XQuery, Saxon is designed
+to process source documents that fit in memory. If you want to handle a large database,
+you need an XML database product such as Software AG's <a href="http://www.tamino.com/">Tamino</a>.</p>
+
+<p>At this release, there is no interoperability between XSLT code and XQuery code. However, since
+the run-time representation is identical, this is clearly an opportunity for future releases. At the
+very least, I would expect to see the ability for XSLT functions and XQuery functions to call each
+other freely.</p>
+
+<hr>
+
+<h2><a name="Command-line">Running a Transformation from the Command Line</a></h2>
+
+<p>The Java class <code>net.sf.saxon.Query</code> has a main program that
+may be used to run a query contained in a file. The form of
+command is:</p>
+
+<p class="highlight">java&nbsp; net.sf.saxon.Query 
+&nbsp; [options]&nbsp;&nbsp; query&nbsp;&nbsp; [ <i>params...</i>]</p>
+
+<p>The options must come first, then the two file names, then the params.</p>
+
+<p>The options are as follows (in any order): </p>
+
+<table>
+
+<tr><td valign="top" width="20%">-ds</td>
+<td>Use the classic tree model for source documents. 
+See <a href="using-xsl.html#choosingmodel">Choosing a Tree Model</a>.
+</td></tr>
+
+<tr><td valign="top" width="20%">-dt</td>
+<td>Use the "tinytree" tree model for source documents. This is the default tree model.
+See <a href="using-xsl.html#choosingmodel">Choosing a Tree Model</a>. 
+</td></tr>
+
+<tr><td valign="top" width="20%">-noext</td>
+<td>Prevents the query calling external Java functions. This is useful for safety if the query
+is untrusted. 
+</td></tr>
+
+<tr><td valign="top" width="20%">-o filename</td>
+<td>Send output to named file. In the absence of this option, the results go to standard output.
+The output format depends on whether the -wrap option is present.
+</td></tr>
+
+<tr><td valign="top">-r classname</td>
+<td>Use the specified URIResolver to process all URIs. The URIResolver is a user-defined class,
+that implements the URIResolver interface defined in JAXP, whose function is to take a URI supplied as
+a string, and return a SAX InputSource. It is invoked to process URIs used in the doc() function,
+ and (if -u is also specified) to process the URI
+of the source file provided on the command line.</td></tr>
+
+<tr><td valign="top">-s filename-or-URI</td>
+<td>Take input from the specified file. If the -u option is specified, or if the name begins with "file://"
+or "http://", then the name is assumed to be a URI rather than a filename. This file must contain an
+XML document. The contents of the document are made available to the query as the context item and as
+the value of the <code>input()</code> function. The source document can be
+specified as "-" to take the source from standard input. </td></tr>
+
+<tr><td valign="top">-strip</td>
+<td>Strip all whitespace-only text nodes from source documents.</td></tr>
+
+<tr><td valign="top">-t</td>
+<td>Display version and timing information to the standard error output. The output also traces
+the files that are read and written, and extension modules that are loaded.</td></tr>
+
+<tr><td valign="top">-TJ</td>
+<td>Switches on tracing of the binding of calls to external Java methods.
+This is useful when analyzing why Saxon fails to find a Java method to match
+an extension function call in the stylesheet, or why it chooses one method over another when several
+are available.</td></tr>
+
+<tr><td valign="top">-u</td>
+<td>Indicates that the name of the source document is a URI;
+otherwise it is taken as a filename, unless it starts with "http:" or "file:", in which
+case they it is taken as a URL.</td></tr>
+
+<tr><td valign="top">-wrap</td>
+<td>Wraps the result sequence in an element structure that indicates the type of each node or
+atomic value in the query result.</td></tr>
+
+<tr><td valign="top">-?</td><td>Display command syntax</td></tr>
+
+
+<tr><td valign="top">query</td>
+<td>Identifies the file containing the query. Mandatory. The argument can be
+specified as "-" to read the query from standard input.</td></tr>
+
+</table>
+
+<p>A <i>param</i> takes the form <code>name=value</code>, <i>name</i> being the
+name of the parameter, and <i>value</i> the value of the parameter. These parameters are
+accessible within the query as external variables, using the <code>$name</code> syntax, provided
+they are declared in the query prolog. If there is no such declaration, the supplied
+ parameter value is silently ignored. <i>Not yet tested.</i></p>
+ 
+<p>A <i>param</i> preceded by a leading exclamation mark is interpreted as a serialization parameter.
+For example, <code>!indent=yes</code> requests indented output, and <code>!encoding=iso-8859-1</code>
+requests that the serialized output be in ISO 8859/1 encoding. This is equivalent to specifying
+the attribute <code>indent="yes"</code> or <code>encoding="iso-8859-1"</code>
+on an <code>xsl:output</code> declaration in an XSLT stylesheet.</p>
+
+<p>Under Windows, and some other operating systems, it is possible to supply a value containing
+spaces by enclosing it in double quotes, for example <code>name="John Smith"</code>. This is a feature
+of the operating system shell, not something Saxon does, so it may not work the
+same way under every operating system.</p>
+
+<p>If the parameter name is in a non-null namespace, the parameter can be given a value using
+the syntax <code>{uri}localname=value</code>. Here <code>uri</code> is the namespace URI of the
+parameter's name, and <code>localname</code> is the local part of the name.</p>
+
+<p>This applies also to output parameters. For example, you can set the indentation level to 4 by
+using the parameter <code>!{http://saxon.sf.net/}indent-spaces=4</code>. For the extended set of
+output parameters supported by Saxon, see <a href="extensions.html#output"/>extensions.html</a>.</p>
+ 
+
+<hr>
+
+<h2><a name="Embedding">Embedding Saxon in an Application</a></h2>
+
+
+<p>Rather than using the query processor from the command line, you may want to include it in your
+own application, perhaps one that enables it to be used within an applet or servlet. If you run
+the processor repeatedly, this will always be much faster than running it each time from
+ a command line, even if it handles a different query each time.</p>
+
+<p>There is currently no standard API for XQuery, so I have invented one. It is fully described
+in the JavaDoc included in the download: look for the package <code>net.sf.saxon.query</code>.
+The starting point is the class <code>QueryProcessor</code>.</p>
+
+<hr>
+
+<h2><a name="Results">Result Format</a></h2>
+
+<p>The result of a query is a sequence of nodes and atomic values - which means it is not, in general,
+an XML document. This raises the question as to how the results should be output.</p>
+
+<p>The Saxon command line processor for XQuery by default outputs each item in the result sequence
+starting on a new line. If the item is a document node or an element node, then it is serialized
+as an XML document. If it is any other value, it is converted to a string and its string value is
+displayed.</p>
+
+<p>The alternative is wrapped format, requested using the <code>-wrap</code> argument.
+This wraps the result sequence as an XML document,
+and then serializes the resulting document. Each item in the result sequence is wrapped in an element
+(such as <code>result:element</code> or <code>result:atomic-value</code>) according to its type. The sequence
+as a whole is wrapped in a <code>result:sequence</code> element.</p>
+
+<p>When a query is executed from a Java application, the result sequence can be processed any way you
+like. You can do the same wrapping if you wish, using the <code>QueryResult</code> object, but it is not
+essential. You can also, if you prefer, serialize any result documents or elements directly, again using
+the services of the <code>QueryResult</code> object.</p>
+
+
+<hr>
+
+<h2><a name="Extensibility">Extensibility</a></h2>
+
+<p>The Saxon XQuery implementation allows you to call Java methods as external functions.
+The function does not need to be declared. Use a namespace declaration such as 
+<code>declare namespace math=java:java.lang.Math</code>,
+and invoke the method as <code>math:sqrt(2)</code>.</p>
+
+<p>More details of this mechanism are found in 
+<a href="extensibility.html#Writing-extension-functions">Writing Extension Functions</a>; note however
+that for XQuery the only form of namespace URI accepted is <code>java:<i>full.class.Name</i></code>.</p>
+
+<p>The full library of Saxon and EXSLT functions described in <a href="extensions.html">extensions.html</a>
+is also available, except for those (such as saxon:serialize) that have an intrinsic dependency on an XSLT
+stylesheet.</p>
+ 
+<hr>
+<h2><a name="use-cases">Use Cases</a></h2>
+
+<p>Saxon 7.6 runs all the <a href="http://www.w3.org/xquery-use-cases">XQuery Use Cases</a> with
+the exception of the STRONG use case, which is designed to exercise schema-aware query processors.</p>
+
+<p>The relevant queries (some of which have been corrected from those published by W3C) are included
+in the Saxon distribution (folder <code>use-cases</code>) together with a batch script for running them.
+A few additional use cases have been added to show features that would otherwise not be exercised.</p>
+
+<p>Also included in the distribution is a query <code>samples\query\tour.xq</code>. This is a query that
+generates a knight's tour of the chessboard. It is written as a demonstration of recursive functional
+programming in XQuery. It requires no input document. You need to supply a parameter on the command
+line indicating the square where the knight should start, for example <code>start=h8</code>. The output
+is an HTML document.</p>
+
+
+<hr>
+
+
+
+<p align="center">Michael H. Kay<br>
+8 July 2003</p>
+</body>
+</html>

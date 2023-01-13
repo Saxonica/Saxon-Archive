@@ -1,0 +1,244 @@
+<html>
+
+<head>
+
+<title>DTDGenerator - A tool to generate XML DTDs</title>
+</head>
+
+<body leftmargin="150" bgcolor="#ddeeff"><font face="Arial, Helvetica, sans-serif">
+
+<h1><big><font color="#FF0080"><big>DTDGenerator</big></font></big></h1>
+<p align="right"><big><big><font color="#FF0080">version 7.0</font></big></big></p>
+
+<h1>A tool to generate XML DTDs</h1>
+
+<hr>
+
+<h2>Purpose</h2>
+
+<p>DTDGenerator is a program that takes an XML document as input and produces a Document
+Type Definition (DTD) as output.</p>
+
+<p>The aim of the program is to give you a quick start in writing a DTD. The DTD is one of
+the many possible DTDs to which the input document conforms. Typically you will want to
+examine the DTD and edit it to describe your intended documents more precisely.</p>
+
+<p><strong><font color="#FF0080">The program was formerly issued as part of the
+ <a HREF="http://saxon.sourceforge.net/">Saxon</a> product.
+It is now completely independent of Saxon, though it can still be downloaded
+from the Saxon site.</font></strong></p>
+
+<p><a href="http://prdownloads.sourceforge.net/saxon/dtdgen7-0.zip">Download DTDGenerator</a>
+(18 Kbytes)</p>
+
+<p>DTDGenerator runs as a SAX ContentHandler, and can be used with any
+XML parser that implements the JAXP 1.1 interface: examples are Crimson and
+Xerces from the Apache project, and the AElfred parser that is embedded in Saxon.</p>
+
+
+<hr>
+
+<h2>Usage</h2>
+
+<h3>Web service</h3>
+
+<p>You can use DTDGenerator without installing the software by submitting an XML file to
+the online service provided by Paul Tchistopolskii at 
+<a href="http://www.pault.com/Xmltube/dtdgen.html">http://www.pault.com/Xmltube/dtdgen.html</a>.</p>
+
+<p>If you use this service, ensure that the XML file you upload contains no references to other
+local files such as a DTD or an external entity.</p>
+
+<p>Note: this service is currently using an older version of DTDGenerator, so it may 
+produce a slightly different result from the current version.</p>
+
+<h3>Software required</h3>
+
+<p>DTDGenerator requires the following software to be installed:</p>
+
+<ul>
+<li>JRE 1.2 or later (that is, a Java VM that supports the JDK 1.2 class library, also
+referred to as Java 2 Standard Edition). 
+DTDGenerator will not run with earlier Java VMs, in particular, it will not run with
+the Java VM issued by Microsoft as part of Internet Explorer.</li>
+<li>A SAX2-compatible XML parser. DTDGenerator has been tested with Xerces, with Crimson,
+and with the version of AElfred that is included in the Saxon distribution.</li>
+<li>The API libraries for SAX2 and JAXP 1.1. All the above parsers include these API
+libaries as embedded software, so if you use these parsers, no special action is needed.</li>
+</ul>
+
+<p>The DTDGenerator code itself is issued as a JAR file, <code>dtdgen.jar</code>.</p>
+
+<p>Ensure that all these components are on your classpath. The JAXP 1.1 mechanism ensures
+that DTDGenerator will pick up any suitable XML parser automatically from the classpath;
+if you want to choose a parser more specifically, you can do this by setting the system
+property <code>javax.xml.parsers.SAXParserFactory</code>.</p>
+
+<p>From the command line, enter:</p>
+
+<p><code><b>java DTDGenerator</b> <i>inputfile</i> &gt;<i>outputfile</i></p>
+
+<p></code>The input file must be an XML document; typically it will have no DTD. If it
+does have a DTD, the DTD may be used by the XML parser but it will be ignored by the
+DTDGenerator utility.</p>
+
+<p>The output file will be an XML external document type definition.</p>
+
+<p>The input file is not modified; if you want to edit it to refer to the generated DTD,
+you must do this yourself.</p>
+
+<hr />
+
+<h2>What DTDGenerator does</h2>
+
+<p>The program makes an internal list of all the elements and attributes that appear in your
+document, noting how they are nested, and noting which elements contain character data.</p>
+
+<p>When the document has been completely processed, the DTD is generated according to the
+following rules:</p>
+
+<ul>
+  <li>If an element contains both non-space character data and child elements, then it is
+    declared with mixed element content, permitting all child elements that are actually
+    encountered within instances of that parent element.</li>
+  <li>If no significant character data is found in an element, it is assumed that the element
+    cannot contain character data.</li>
+  <li>If an element contains child elements but no significant character data, then it is
+    declared as having element content. If the same child elements occur in every instance
+    of the parent and in a consistent sequence, then this sequence is reflected in the element
+    declaration: where child elements are repeated or trailing children (only) are omitted
+    in some instances of the parent element, this will result in a declaration that shows
+    the child element as being repeatable or optional or both. If no such consistency of
+    sequence can be detected, then a more general form of element
+    declaration is used in which all child elements may appear any number of times in any 
+    order.
+  <li>If neither character data nor subordinate elements are found in an element, it is
+    assumed the element must always be empty.</li>
+  <li>An attribute appearing in an element is assumed to be REQUIRED if it appears in every
+    occurrence of the element.</li>
+  <li>An attribute that has a distinct value every time it appears is assumed to be an
+    identifying (ID) attribute, provided that there are at least 10 and at most 100,000 
+    instances of the element in the input document.</li>
+  <li>An attribute is assumed to be an enumeration attribute if it has less than 20 distinct
+    values, provided that the number of instances of the attribute is at least three times the
+    number of distinct values and at least ten. </li>
+</ul>
+
+<p>The numeric constants used by these rules are defined in the source code; if you want
+to change them, you can either edit and recompile the source code, or write a subclass
+that uses different values.</p>
+
+<h2>What DTDGenerator doesn't do</h2>
+
+<p>The program makes no attempt to determine whether different elements or attributes
+(that is, elements or attributes with different names) have the same structure. The
+output DTD will never contain parameter entities to define such common structures.
+This means that in documents that allow flexible rules on nesting (like the XHTML
+structure, where any inline element can contain any other inline element), the DTD
+will contain an unnecessary amount of redundancy.</p>
+
+<p>DTDGenerator makes no attempt to recognize IDREF or IDREFS attributes, nor other
+specialized attribute types such as ENTITY or ENTITIES.</p>
+
+<p>DTDGenerator is not namespace-aware. The names of elements and attributes used
+in the DTD are identical to the QNames used in the source document, and different
+QNames are assumed to relate to different elements. Namespace declarations appearing
+in the source document are treated as ordinary attributes, so they will be included in 
+the output DTD.</p>
+
+<p>DTDGenerator does not produce XML Schemas. There are various tools that allow a
+DTD to be converted to a schema.</p>
+
+<p>DTDGenerator works from a single input XML document. It makes no attempt to compare
+the structure of multiple input documents. A technique that has been used successfully
+is to concatenate multiple documents within a single wrapper element. This can be done
+using XML entities, or by means of a SAX filter, or more simply by file concatenation at
+the textual level (provided that the documents contain no prolog). 
+On completion, simply delete the declaration of the wrapper element from
+the generated DTD.</p>
+
+<p>DTDGenerator does not produce any entity or notation declarations in the output DTD.</p>
+
+<h2>Fine-tuning the resulting DTD</h2>
+
+<p>The resulting DTD will often contain rules that are either too restrictive or too
+liberal. The DTD may be too restrictive if it prohibits constructs that do not appear in
+this document, but might legitimately appear in others. It may be too liberal if it fails
+to detect patterns that are inherent to the structure: for example, the order of elements
+within a parent element. These limitations are inherent in any attempt to infer general
+rules from a particular example document.</p>
+
+<p>In general, therefore, you will need to iterate the process. You have a choice: </p>
+
+<ul>
+  <li>Either edit the generated DTD to reflect your knowledge of the document type.</li>
+  <li>Or edit the input document to provide a more representative sample of features that will
+    be encountered in other document instances, and run the utility again.</li>
+</ul>
+
+<p>In a few unusual cases DTDGenerator will create a DTD which is invalid, or one to which
+ the document does not conform.
+You will then have to edit the DTD before you can use it. The known cases are:</p>
+
+<ul>
+  <li>An attribute can only be declared as an ID if all its values are valid XML names,
+   and as an enumeration type if all its values are valid XML NMTOKENs. DTDGenerator only makes a
+   partial check against this condition: in particular, it only rejects values that contain
+   ASCII characters that cannot appear in names (e.g. space).</li>
+   
+  <li>DTDGenerator will decide that an attribute is an ID attribute if all its values are
+    distinct, without checking whether the set of values overlaps with those of another
+    ID attribute. In some cases this results in an IDREF attribute being incorrectly classified
+    as an ID.</li>
+    
+  <li>DTDGenerator writes the output DTD as a text file, with no XML declaration to define the
+  encoding of the result file. The actual encoding of the file depends on the Java VM
+  and the locale; it will not normally be UTF-8 or UTF-16, which are the encodings an XML parser
+  expects in the absence of an XML declaration. 
+  If the document uses element or attribute names containing non-ASCII
+  characters, you may therefore need to add a text declaration
+   at the start of the DTD to define the correct encoding.</li>
+</ul>
+
+<hr />
+
+<h2>Performance</h2>
+
+<p>Because DTDGenerator is a pure SAX application, it should run almost as fast as the
+underlying XML parser.</p>
+
+<p>The memory requirements are very small. Most of the data structures increase linearly
+either with the size of the DTD or with the depth of nesting of elements in the source document. The
+only structure that grows linearly with the size of the source document is the list of unique
+values encountered for an attribute, which is used to decide whether the attribute is an ID,
+ and this is capped at a maximum of 100,000 values.</p>
+
+<p>In an exercise carried out at Software AG, where the DTD was required as input
+to the design study for a Tamino XML database, a 500Mb source XML file was processed in
+a little over 6 minutes.</p>
+
+<hr />
+
+<h2>Conditions of Use</h2>
+
+<p>DTDGenerator may be freely used, distributed, or modified, under the terms of the 
+<a href="http://www.mozilla.org/MPL/">Mozilla Public License Version 1.0</a>.</p>
+
+<p>DTDGenerator was originally developed (as part of Saxon) by 
+<a href="mailto:mhkay@saxon.sourceforge.net">Michael Kay</a> working
+ as an employee
+of <a href="http://www.icl.com/">International Computers Limited</a>, a member
+of the <a href="http://www.fujitsu.com">Fujitsu</a> group. 
+The current version (which is independent of Saxon) was developed by Michael Kay under 
+the terms of the original ICL license, with the sponsorship of his current employers,
+<a href="http://www.softwareag.com/">Software AG</a>.</p>
+
+
+
+<hr>
+<i>
+
+<p align="center"><a href="mailto:mhkay@saxon.sourceforge.net">Michael H. Kay</a><br>
+18 September 2001</i> </p>
+</body>
+</html>

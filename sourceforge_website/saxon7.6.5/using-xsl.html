@@ -1,0 +1,553 @@
+<html>
+
+<head>
+  <title>Using XSLT Stylesheets</title>
+  <link rel="stylesheet" type="text/css" href="saxon-style.css">
+  <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">  
+</head>
+
+<body>
+
+<div align=right><a href="index.html">Saxon home page</a></div>
+
+<h1>Using Stylesheets</h1>
+
+<hr>
+
+<p>This page describes how to use Saxon XSLT Stylesheets, either from the command line,
+or from the Java API, or as an Applet in the browser.</p>
+
+<table width="100%">
+  <tr>
+    <td colspan=2 width="719" class="head"><b>Contents</b></td>
+  </tr>
+  <tr>
+    <td class="subhead">Using Stylesheets</td>
+    <td class="subhead">Reference</td>
+  </tr>
+  </tr>
+
+  <tr>
+    <td VALIGN="top"   class="body">
+    <a href="#Command-line">Running a Transformation from the Command Line</a><br>
+    <a href="#Compiling">Compiling a Stylesheet from the Command Line</a><br>
+    <a href="#choosingmodel">Choosing a Tree Model</a><br/>
+    <a href="#Embedding">Embedding Saxon in an Application</a><br>
+    <a href="#Applet">Running Saxon in an Applet</a><br>
+    <a href="#PerformanceAnalysis">Performance Analysis</a><b>
+    </td>
+    <td VALIGN="top"  class="body">
+    See also:<br>
+    <a href="xsl-elements.html">XSLT Elements</a><br>
+    <a href="expressions.html">XPath Expressions</a><br>
+    <a href="patterns.html">XSLT Patterns</a><br>
+    <a href="extensibility.html">Saxon Extensibility</a><br>
+    <a href="conformance.html">Saxon XSLT and XPath Conformance</a><br>
+    </td>
+  </tr>
+</table>
+
+
+<h2><a name="Command-line">Running a Transformation from the Command Line</a></h2>
+
+<p>The Java class <code>net.sf.saxon.Transform</code> has a main program that
+may be used to apply a given style sheet to a given source XML document. The form of
+command is:</p>
+
+<p class="highlight">java&nbsp; net.sf.saxon.Transform 
+&nbsp; [options]&nbsp;&nbsp; source-document&nbsp;&nbsp; stylesheet&nbsp;&nbsp; [ <i>params...</i>]</p>
+
+<p>The options must come first, then the two file names, then the params.
+The stylesheet is omitted if the -a option is present.</p>
+
+<p>If you are are not using any Java extension functions, you can use the simpler form of command:</p>
+
+<p class="highlight">java&nbsp; -jar <i>dir</i>/saxon7.jar 
+&nbsp; [options]&nbsp;&nbsp; source-document&nbsp;&nbsp; stylesheet&nbsp;&nbsp; [ <i>params&#133;</i>]</p>
+
+<p>Note, however, that this does not work if you need to load user-written extension functions from the classpath.</p>
+
+<p>The options are as follows (in any order): </p>
+
+<table>
+
+<tr><td valign="top" width="20%">-a</td>
+<td>Use the xml-stylesheet processing instruction in the source document
+to identify the stylesheet to be used. The stylesheet argument should be omitted.
+</td></tr>
+
+<tr><td valign="top" width="20%">-c</td>
+<td>Indicates that the stylesheet argument identifies a compiled stylesheet rather
+than an XML source stylesheet. The stylesheet must have been previously compiled as
+described in <a href="#Compiling">Compiling a Stylesheet</a>.
+</td></tr>
+
+<tr><td valign="top">-ds | -dt</td>
+<td>Selects the implementation of the internal tree model. -dt selects the "tinytree"
+model (the default). -ds selects the traditional tree model. See <a href="#choosingmodel">
+Choosing a tree model</a> below.</td></tr>
+
+<tr><td valign="top">-l</td>
+<td>Switches line numbering on for the source document. Line numbers are accessible
+through the extension function saxon:line-number(), or from a trace listener.</td></tr>
+
+<tr><td valign="top">-m classname</td>
+<td>Use the specified Emitter to process the output from xsl:message. The class must implement
+the net.sf.saxon.output.Emitter class. This interface is similar to a SAX ContentHandler,
+it takes a stream of events to generate output. In general the content of a message is an XML
+fragment. By default the standard XML emitter is used, configured to write to the standard error
+stream, and to include no XML declaration. Each message is output as a new document.</td></tr>
+
+<tr><td valign="top">-noext</td>
+<td>Suppress calls on extension functions, other than system-supplied Saxon and EXSLT extension
+functions. This option is useful when loading an untrusted stylesheet, perhaps from a remote
+site using an <code>http://</code> URL; it ensures that the stylesheet cannot call Java methods
+and thereby gain privileged access to resources on your machine.
+</td></tr>
+
+<tr><td valign="top">-o filename</td>
+<td>Send output to named file. In the absence of this option, the results go to standard output.
+If the source argument identifies a directory, this option is mandatory and must also identify
+a directory; on completion it will contain one output file for each file in the source directory.
+You will also need to use this option (rather than sending the results to standard output) if
+the stylesheet writes secondary output files using the <code>xsl:result-document</code>
+instruction; the <code>href</code> attribute of this instruction is regarded as a relative URL,
+and is interpreted relative to the URL of the principal output destination.
+</td></tr>
+
+<tr><td valign="top">-r classname</td>
+<td>Use the specified URIResolver to process all URIs. The URIResolver is a user-defined class,
+that extends the net.sf.saxon.URIResolver class, whose function is to take a URI supplied as
+a string, and return a SAX InputSource. It is invoked to process URIs used in the document() function,
+in the xsl:include and xsl:import elements, and (if -u is also specified) to process the URIs
+of the source file and stylesheet file provided on the command line.</td></tr>
+
+<tr><td valign="top">-t</td>
+<td>Display version and timing information to the standard error output. The output also traces
+the files that are read and writting, and extension modules that are loaded.</td></tr>
+
+<tr><td valign="top">-T</td>
+<td>Display stylesheet tracing information to the standard error output. This traces execution of
+each instruction in the stylesheet, so the output can be quite voluminous.
+Also switches line numbering on for the source document.</td></tr>
+
+<tr><td valign="top">-TJ</td>
+<td>Switches on tracing of the binding of calls to external Java methods.
+This is useful when analyzing why Saxon fails to find a Java method to match
+an extension function call in the stylesheet, or why it chooses one method over another when several
+are available.</td></tr>
+
+<tr><td valign="top">-TL classname</td>
+<td>Run the stylesheet using the specified TraceListener. The classname names a user-defined
+class, which must implement net.sf.saxon.trace.TraceListener</td></tr>
+
+<tr><td valign="top">-TP</td>
+<td>Run the stylesheet using the TraceListener <code>TimedTraceListener</code>. This creates
+an output file giving timings for each instruction executed. This output file can subsequently
+be analyzed to give an execution time profile for the stylesheet. 
+See <a href="#PerformanceAnalysis">Performance Analysis</a> below.</td></tr>
+
+<tr><td valign="top">-u</td>
+<td>Indicates that the names of the source document and the style document are URLs;
+otherwise they are taken as filenames, unless they start with "http:" or "file:", in which
+case they are taken as URLs</td></tr>
+
+<tr><td valign="top">-v</td>
+<td>Requests XML validation of the source file and of any files read using the document()
+function. Requires an XML parser that supports validation.</td></tr>
+
+<tr><td valign="top">-w0, w1, or w2</td>
+<td>Indicates the policy for handling recoverable errors in the stylesheet: w0 means
+recover silently, w1 means recover after writing a warning message to the system error
+output, w2 means signal the error and do not attempt recovery. (Note, this does not
+currently apply to all errors that the XSLT recommendation describes as recoverable).
+The default is w1.</td></tr>
+
+<tr><td valign="top">-x classname</td>
+<td>Use specified SAX parser for source file and any files loaded using the document() function.
+ The parser must be the fully-qualified class name
+of a Java class that implements the org.xml.sax.Parser or org.xml.sax.XMLReader interface</td></tr>
+
+<tr><td valign="top">-y classname</td>
+<td>Use specified SAX parser for stylesheet file, including any loaded using xsl:include
+or xsl:import. The parser must be the fully-qualified class name
+of a Java class that implements the org.xml.sax.Parser or org.xml.sax.XMLReader interface</td></tr>
+
+<tr><td valign="top">-?</td><td>Display command syntax</td></tr>
+
+<tr><td valign="top">source-document</td>
+<td>Identifies the source file or directory. Mandatory. If this is a directory, all the
+files in the directory will be processed individually. In this case the -o option is
+mandatory, and must also identify a directory, to contain the corresponding output files.
+A directory must be specified as a filename, not as a URL. The source-document can be
+specified as "-" to take the source from standard input.</td></tr>
+
+<tr><td valign="top">stylesheet</td>
+<td>Identifies the stylesheet. Mandatory unless the -a option is used. If the -c option
+is used, this argument identifies a compiled stylesheet. The stylesheet argument can be
+specified as "-" to read the stylesheet from standard input.</td></tr>
+
+</table>
+
+<p>A <i>param</i> takes the form <code>name=value</code>, <i>name</i> being the
+name of the parameter, and <i>value</i> the value of the parameter. These parameters are
+accessible within the stylesheet as normal variables, using the <code>$name</code> syntax, provided
+they are declared using a top-level <code>xsl:param</code> element. If there is no such declaration, the supplied
+ parameter value is silently ignored. If the <code>xsl:param</code> element has an <code>as</code>
+ attribute indicating the required type, then the string value supplied on the command line is cast
+ to this type: this may result in an error, for example if an integer is required and the supplied value
+ cannot be converted to an integer.</p>
+ 
+<p>A <i>param</i> preceded by a leading exclamation mark is interpreted as an output parameter.
+For example, <code>!indent=yes</code> requests indented output. This is equivalent to specifying
+the attribute <code>indent="yes"</code> on an <code>xsl:output</code> declaration in the stylesheet.
+An output parameter specified on the command line overrides one specified within the stylesheet.</p>
+
+<p>Under Windows, and some other operating systems, it is possible to supply a value containing
+spaces by enclosing it in double quotes, for example <code>name="John Smith"</code>. This is a feature
+of the operating system shell, not something Saxon does, so it may not work the
+same way under every operating system.</p>
+
+<p>If the parameter name is in a non-null namespace, the parameter can be given a value using
+the syntax <code>{uri}localname=value</code>. Here <code>uri</code> is the namespace URI of the
+parameter's name, and <code>localname</code> is the local part of the name.</p>
+
+<p>This applies also to output parameters. For example, you can set the indentation level to 4 by
+using the parameter <code>!{http://saxon.sf.net/}indent-spaces=4</code>. For the extended set of
+output parameters supported by Saxon, see <a href="extensions.html#output"/>extensions.html</a>.</p>
+ 
+<p>If the <code>-a</code> option is used, the name of the stylesheet is
+omitted. The source document must contain a <code>&lt;?xml-stylesheet?&gt;</code> processing instruction
+before the first element start tag; this processing instruction must have a pseudo-attribute <code>href</code> that
+identifies the relative or absolute URL of the stylsheet document, and a pseudo-attribute type whose
+value is <code>text/xml</code>, <code>application/xml</code>, or <code>text/xsl</code>. For example:
+
+<p class="highlight">&lt;?xml-stylesheet type="text/xsl" href="../style3.xsl" ?&gt;</p>
+
+<p>It is also possible to refer to a stylesheet embedded within the source document, provided
+it has an id attribute and the id attribute is declared in the DTD as being of type ID. For example:
+
+<pre><code>
+&lt;?xml-stylesheet type="text/xsl" href="#style1" ?>
+&lt;!DOCTYPE BOOKLIST SYSTEM "books.dtd"
+  &lt;!ATTLIST xsl:transform id ID #IMPLIED>
+&lt;
+&lt;BOOKLIST>
+  ...
+  &lt;xsl:transform id="style1" version="1.0" xmlns:xsl="...">
+  ...
+  &lt;/xsl:transform>
+&lt;/BOOKLIST></code></pre>
+
+
+<h2><a name="Compiling">Compiling a Stylesheet from the Command Line</a></h2>
+
+<p>Saxon (from release 7.3) allows a compiled stylesheet (a Templates object) 
+to be saved to disk as a file.
+The transformation can then be run using this compiled stylesheet by using the -c option
+to the command <code>java net.sf.saxon.Transform</code>.</p>
+
+<p>The actual compilation of the stylesheet can be achieved using the command
+<code>java net.sf.saxon.Compile</code>. The format of the command is:
+
+<p class="highlight">java&nbsp; net.sf.saxon.Compile 
+&nbsp; [options]&nbsp;&nbsp; stylesheet&nbsp;&nbsp; output&nbsp;&nbsp; [ <i>params&#133;</i>]</p>
+
+<p>The options available are a subset of the options for running a transformation, described above. The
+relevant options are -t (give progress messages), -u (stylesheet argument is a URI, not a filename), -r
+(specify a URIResolver for use at compile time), -y (specify an XML parser for parsing the source 
+stylesheet).</p>
+
+<p>You can use any file extension for the compiled stylesheet, I generally use .sxx (Saxon XSLT executable).
+The file actually contains the Java serialization of a data structure that is then used at run-time to
+drive the transformation process. As an alternative to using the <code>net.sf.saxon.Compile</code> command
+from the command line, you can use the Java serialization API directly, to write the net.sf.saxon.Templates
+object to an ObjectOutputStream.</p>
+
+<p><i>Stylesheet compilation is a little fragile at this release. It has proved difficult to test it
+comprehensively. One known restriction is that stylesheets containing <code>saxon:collation</code> declarations
+cannot be compiled (because it uses Java classes that are not serializable). There may be other restrictions:
+please let me know if you find any.</i></p>
+
+<p><i>The term "compile" is stretching a point. The executable that is produced does not contain
+machine instructions, or even interpreted Java bytecode. It contains instructions in the form of 
+a data structure that Saxon itself can interpret. Note that the format of compiled stylesheets is
+unlikely to be stable from one Saxon release to the next.</i></p> 
+
+<h2><a name="choosingmodel">Choosing a tree model</a></h2>
+
+<p>Saxon provides two implementations of the internal tree data structure (or tree model).
+The tree model can be chosen by an option on the command line (-dt for the tiny tree, -ds
+for the standard tree) or from the Java API. The default is to use the tiny tree model.
+The choice should make no difference to the results of a transformation (except the order
+of attributes and namespace declarations) but only affects performance.</p>
+
+<p><i>There is an exception to this with release 7.3: the so-called "standard" tree model
+(-ds) does not support type annotations. If you want to use the new features to annotate
+element and attribute nodes, use the "tiny tree" (-dt).</i></p>
+
+<p>Generally speaking, the tiny tree model is faster to build but slower to navigate. It
+therefore performs better when you visit each node on the tree once or less. The standard
+tree model may perform better (sometimes very much better) when each node is visited many
+times, especially when you use the preceding or preceding-sibling axis.</p>
+
+<p>The tiny tree model gives most benefit when you are processing a large document. It uses
+a lot less memory, so it can prevent thrashing when the size of document
+is such that the standard tree doesn't fit in real memory.</p>
+
+<p><i>If in doubt, stick with the default.</i></p>
+
+
+<hr>
+
+<h2><a name="Embedding">Embedding Saxon in an Application</a></h2>
+
+
+<p>Rather than using the interpreter from the command line, you may want to include it in your
+own application, perhaps one that enables it to be used within an applet or servlet. If you run
+the interpreter repeatedly, this will always be much faster than running it each time from
+ a command line.</p>
+
+<p>Saxon incorporates support for the
+<a href="http://java.sun.com/xml/jaxp/index.html">JAXP 1.1 API</a>, also known as TrAX.
+ This is compatible with the API for invoking other XSLT processors such as
+ Xalan and jd-xslt.</p>
+ 
+ <p>This API is described in the documentation provided with JDK 1.4. 
+ It is available online at <a href="http://java.sun.com/j2se/1.4/docs/api/">http://java.sun.com/j2se/1.4/docs/api/</a>
+ Look for the <b>javax.xml.transform</b> package.</p>
+
+
+<p>More information and examples relating to the JAXP 1.1 API can be found in the
+<b>TraxExamples.java</b> example application found in the samples directory.</p>
+
+<p>The types of object that can be supplied as stylesheet parameters are not defined
+in the JAXP specification: they are implementation-dependent. Saxon takes the Java object
+supplied, and converts it to an XPath value using the same
+rules as it applies for the return value from a Java
+extension function: for these rules, 
+see <a href="extensibility.html#function-result">Saxon Extensibility</a>. If the resulting value
+is an atomic value, it is cast to the required type of the parameter as specified in the
+<code>xsl:param</code> declaration, using the XPath casting rules. If the value is non-atomic (for example,
+if it is a node, or a sequence of integers), then no conversion is attempted, instead, the value must
+match the required type as stated.</p>
+
+<p>The JAXP TransformerFactory interface provides a configuration method
+<code>setAttribute()</code> for setting implementation-defined configuration parameters. The
+parameters supported by Saxon have names defined by constants in the class
+<code>net.sf.saxon.FeatureKeys</code>. The names of these properties and their meanings, 
+are described in the table below.</p>
+
+<table>
+<tr>
+<td valign="top"><b>property</b></td>
+<td valign="top"><b>meaning</b></td>
+</tr>
+
+
+<tr><td valign="top">ALLOW_EXTERNAL_FUNCTIONS</td>
+<td valign="top">A Boolean: true if the stylesheet allows external functions to be called.
+Default is true. The setting <code>false</code> is recommended in an environment
+where untrusted stylesheets may be executed. Setting this value to <code>false</code>
+also disables user-defined extension elements, together with the writing of multiple
+output files, all of which carry similar security risks.</td>
+</tr>
+
+<tr><td valign="top">TRACE_EXTERNAL_FUNCTIONS</td>
+<td valign="top">A Boolean: true if the tracing of calls to external Java methods is required.
+Default is false. 
+This switch is useful when analyzing why Saxon fails to find a Java method to match
+an extension function call in the stylesheet, or why it chooses one method over another when several
+are available. The trace output is sent to System.err.</td>
+</tr>
+
+<tr>
+<td valign="top">TIMING</td>
+<td valign="top">A Boolean: true if basic timing information is to be output to the standard error output stream.</td>
+</tr>
+
+<tr>
+<td valign="top">TREE_MODEL</td>
+<td valign="top">An Integer: Builder.STANDARD_TREE or Builder.TINY_TREE. Selects an implementation of the
+Saxon tree model. The default is Builder.TINY_TREE.</td>
+</tr>
+
+<tr>
+<td valign="top">TRACE_LISTENER</td>
+<td valign="top">An instance of the class net.sf.saxon.trace.TraceListener. This object will be notified of
+significant events occurring during the transformation, for tracing or debugging purposes.</td>
+</tr>
+
+<tr>
+<td valign="top">LINE_NUMBERING</td>
+<td valign="top">A Boolean. Indicates whether line numbers are to be maintained for the source document. This
+will not be possible if the source document is supplied as a DOM. The line numbers are accessible
+through the tracing interface, and also via the saxon:line-number() extension function.</td>
+</tr>
+
+<tr>
+<td valign="top">RECOVERY_POLICY</td>
+<td valign="top">An Integer. Indicates how dynamic errors should be handled. One of the values (defined as constants
+in the Controller class) RECOVER_SILENTLY, RECOVER_WITH_WARNINGS, or DO_NOT_RECOVER).</td>
+</tr>
+
+<tr>
+<td valign="top">MESSAGE_EMITTER_CLASS</td>
+<td valign="top">The full name of a class that implements the net.sf.saxon.output.Emitter interface; the class will
+be used to format the output of the xsl:message instruction.</td>
+</tr>
+
+<tr>
+<td valign="top">SOURCE_PARSER_CLASS</td>
+<td valign="top">The full name of a class that implements the org.xml.sax.XMLReader interface; the class will be
+used to parse source documents (that is, the principal source document plus any secondary source
+documents read using the document() function)</td>
+</tr>
+
+<tr>
+<td valign="top">STYLE_PARSER_CLASS</td>
+<td valign="top">The full name of a class that implements the org.xml.sax.XMLReader interface; the class will be
+used to parse stylesheet documents (that is, the principal stylesheet module plus any secondary source
+documents read using xsl:include or xsl:import)</td>
+</tr>
+
+<tr>
+<td valign="top">OUTPUT_URI_RESOLVER</td>
+<td valign="top">An instance of the class net.sf.saxon.OutputURIResolver; this object will be used to resolve URIs
+of secondary result documents specified in the <code>href</code> attribute of the <code>xsl:result-document</code>
+instruction</td>
+</tr>
+
+<tr>
+<td valign="top">VALIDATION</td>
+<td valign="top">A Boolean. Indicates whether the XML parser should be asked to validate source documents
+against their DTD. This applies to the initial source document and any source documents read using the
+document() function, unless handled by a user-written URIResolver.</td>
+</tr>
+
+<tr>
+<td valign="top">NAME_POOL</td>
+<td valign="top">A instance of class <code>net.sf.saxon.om.NamePool</code>. 
+Indicates that the supplied NamePool should be used as the target (run-time) NamePool by all
+stylesheets compiled (using <code>newTemplates()</code>) after this call on <code>setAttribute</code>.
+Normally a single system-allocated NamePool is used for all stylesheets compiled while the Java VM
+remains loaded; this attribute allows user control over the allocation of NamePools.
+Note that source trees used as input to a transformation must be built using the same NamePool
+that is used when the stylesheet is compiled: this will happen automatically if the input
+to a transformation is supplied as a SAXSource or StreamSource but it is under user control if
+you build the source tree yourself.</td>
+</tr>
+</table>
+
+<p>Saxon's implementation of the JAXP <code>Transformer</code> interface is the class <code>net.sf.saxon.Controller</code>.
+This provides a number of options beyond those available in the standard JAXP interface, for example the
+ability to set an output URI resolver for secondary output documents, and a method to set the initial mode
+before the transformation starts. You can access these methods by casting
+the <code>Transformer</code> to a <code>Controller</code>. The methods are described in the JavaDoc documentation
+supplied with the product.</p>
+
+<p>When using the JAXP interface, you can set serialization properties using a <code>java.util.Properties</code>
+object. The names of the core XSLT 1.0 properties, such as <code>method</code>, <code>encoding</code>,
+and <code>indent</code>, are defined in the JAXP class <code>javax.xml.transform.OutputKeys</code>. 
+Additional properties, including Saxon extensions and XSLT 2.0 extensions, have names defined by
+constants in the class <code>net.sf.saxon.event.SaxonOutputKeys</code>. The values of the properties
+are exactly as you would specify them in the <code>xsl:output</code> declaration.</p>
+
+<hr>
+
+<h2><a name="Applet">Running Saxon from an Applet</a></h2>
+
+<p>It is possible to run Saxon from an applet in the browser. This means that
+the transformation will run on the client machine, which saves resources on the
+server. It also means that it is possible for the user to navigate around the
+downloaded XML document, performing repeated transformations to see different pages
+of data, without ever returning to the server: this too reduces load on the server,
+as well as giving the user an improved response time once the XML data and the
+supporting Saxon software (saxon7.jar is 632Kb) have been downloaded.</p>
+
+<p><i>Because Saxon now requires JDK 1.4, you must first ensure that
+the <a href="http://java.sun.com/getjava">Sun Java plug-in</a> is installed as the
+default Java VM for your browser</i></p>
+
+<p>To support transformations running in an applet, Saxon includes a support routine
+<code>net.sf.saxon.XSLTProcessorApplet.class</code> which can be used to drive the transformation.
+This rountine is in fact borrowed from the class of the same name included in the Xalan-Java 2.0.0
+product. It drives the transformation using TrAX interfaces, which means that the code
+works equally well with either product.</p>
+
+<p>To use this routine, you first need to include an applet in your HTML page. This might
+take the form:</p>
+
+<code><pre>
+    &lt;applet  
+      name="xslControl"
+      code="net.sf.saxon.XSLTProcessorApplet.class"
+      archive="saxon7.jar"
+      height="0"
+      width"0">
+      &lt;param name="documentURL" value="source.xml"/>  
+      &lt;param name="styleURL" value="style.xsl"/> 
+    &lt;/applet>
+</pre></code>
+
+<p><i>For production use it is better to use the HTML <code>&lt;OBJECT&gt;</code> element.
+This can be used to ensure that the right Java VM is used with the applet, preventing
+failures that will confuse the end user.</i></p>
+
+<p>To run a transformation, all you have to do is to call the getHTMLText() method provided
+by the applet, for example</p>
+
+<code><pre>
+    &lt;body onLoad="target.innerHTML=document.xslControl.getHTMLText()">
+      &lt;div id="target"></div>
+    &lt;/body>
+</pre></code>
+
+<p>You can specify the source document and stylesheet dynamically using the methods
+<code>xslControl.setDocumentURL(string)</code> or <code>xslControl.setStyleURL(string)</code>. 
+If you don't specify
+a stylesheet, Saxon will try to locate one using the <code>&lt;?xml-stylesheet?&gt;</code> processing
+instruction in the source document.</p>
+
+<p>You can set parameters for the transformation (a single parameter only, unfortunately)
+by calling <code>xslControl.setStylesheetParam("name", "value")</code>.</p>
+
+<p>There are some <a href="samples.html#applet">sample applications</a> using Saxon as an applet in 
+the <code>samples/applet</code> folder. Make sure that the <code>saxon7.jar</code> file
+is in an accessible location before you try to use them. If you want to use them as written, there
+must be a copy of <code>saxon7.jar</code> in the directory containing the relevant HTML pages.</p> 
+
+<hr>
+
+<h2><a name="PerformanceAnalysis">Performance Analysis</a></h2>
+
+<p>Saxon comes with a simple tool allowing profiling of the execution time in a stylesheet.</p>
+
+<p>To run this tool, first execute the transformation with the <code>-TP</code> option, which 
+sends timed tracing information to the standard error output file:</p>
+
+<p class="highlight">java &nbsp; -jar &nbsp; <i>dir</i>/saxon7.jar &nbsp;
+ -TP &nbsp; <i>source</i> &nbsp; <i>stylesheet</i> &nbsp; 2>profile.xml</p>
+
+<p>Then run another transformation to create a profile report from the output of this tracing tool:</p>
+
+<p class="highlight">java &nbsp; -jar &nbsp; <i>dir</i>/saxon7.jar &nbsp;
+ profile.xml &nbsp; timing-profile.xsl &nbsp; >profile.html</p>
+ 
+<p>Finally,  view the resulting <code>profile.html</code> file in your browser.</p>
+
+<p>The output identifies instructions in the original stylesheet by their name, line number, and the last
+few characters of the URI of their module. For each instruction it gives the number of times the instruction
+was executed, the average time in milliseconds of each execution, and the total time. The table is sorted
+according to a weighting function that attempts to put the dominant instructions at the top. These will
+not necessarily be those with the greatest time, which tend to be instructions that were only executed once
+but remained active for the duration of the transformation.</p>
+
+<hr>
+
+
+
+<p align="center">Michael H. Kay<br>
+2 May 2003</p>
+</body>
+</html>

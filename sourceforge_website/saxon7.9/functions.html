@@ -1,0 +1,3294 @@
+
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   
+      <title>XSLT 2.0 and XPath 2.0 Functions</title>
+      <link rel="stylesheet" type="text/css" href="saxon-style.css">
+   </head>
+   <body>
+      <div align="right"><a href="index.html">Saxon home page</a></div>
+      <h1>XSLT 2.0 and XPath 2.0 Functions</h1>
+      <p>The list on this page indicates which functions are implemented in this Saxon release,
+         and any restrictions in the current implementation.
+      </p>
+      <p>It includes both the core functions defined in XPath 2.0, and the additional
+         functions defined in the XSLT 2.0 specification.
+      </p>
+      <h2>Index</h2><a href="#fn:abs">fn:abs</a>&nbsp; <a href="#fn:adjust-date-to-timezone">fn:adjust-date-to-timezone</a>&nbsp; <a href="#fn:adjust-date-to-timezone">fn:adjust-date-to-timezone</a>&nbsp; <a href="#fn:adjust-dateTime-to-timezone">fn:adjust-dateTime-to-timezone</a>&nbsp; <a href="#fn:adjust-dateTime-to-timezone">fn:adjust-dateTime-to-timezone</a>&nbsp; <a href="#fn:adjust-time-to-timezone">fn:adjust-time-to-timezone</a>&nbsp; <a href="#fn:adjust-time-to-timezone">fn:adjust-time-to-timezone</a>&nbsp; <a href="#fn:avg">fn:avg</a>&nbsp; <a href="#fn:base-uri">fn:base-uri</a>&nbsp; <a href="#fn:base-uri">fn:base-uri</a>&nbsp; <a href="#fn:boolean">fn:boolean</a>&nbsp; <a href="#fn:ceiling">fn:ceiling</a>&nbsp; <a href="#fn:codepoints-to-string">fn:codepoints-to-string</a>&nbsp; <a href="#fn:collection">fn:collection</a>&nbsp; <a href="#fn:compare">fn:compare</a>&nbsp; <a href="#fn:compare">fn:compare</a>&nbsp; <a href="#fn:concat">fn:concat</a>&nbsp; <a href="#fn:contains">fn:contains</a>&nbsp; <a href="#fn:contains">fn:contains</a>&nbsp; <a href="#fn:context-item">fn:context-item</a>&nbsp; <a href="#fn:count">fn:count</a>&nbsp; <a href="#xslt:current">xslt:current</a>&nbsp; <a href="#fn:current-date">fn:current-date</a>&nbsp; <a href="#fn:current-dateTime">fn:current-dateTime</a>&nbsp; <a href="#xslt:current-group">xslt:current-group</a>&nbsp; <a href="#xslt:current-grouping-key">xslt:current-grouping-key</a>&nbsp; <a href="#fn:current-time">fn:current-time</a>&nbsp; <a href="#fn:data">fn:data</a>&nbsp; <a href="#fn:deep-equal">fn:deep-equal</a>&nbsp; <a href="#fn:deep-equal">fn:deep-equal</a>&nbsp; <a href="#fn:default-collation">fn:default-collation</a>&nbsp; <a href="#fn:distinct-nodes">fn:distinct-nodes</a>&nbsp; <a href="#fn:distinct-values">fn:distinct-values</a>&nbsp; <a href="#fn:distinct-values">fn:distinct-values</a>&nbsp; <a href="#fn:doc">fn:doc</a>&nbsp; <a href="#xslt:document">xslt:document</a>&nbsp; <a href="#xslt:document">xslt:document</a>&nbsp; <a href="#fn:document-uri">fn:document-uri</a>&nbsp; <a href="#xslt:element-available">xslt:element-available</a>&nbsp; <a href="#fn:empty">fn:empty</a>&nbsp; <a href="#fn:ends-with">fn:ends-with</a>&nbsp; <a href="#fn:ends-with">fn:ends-with</a>&nbsp; <a href="#fn:error">fn:error</a>&nbsp; <a href="#fn:error">fn:error</a>&nbsp; <a href="#fn:escape-uri">fn:escape-uri</a>&nbsp; <a href="#fn:exactly-one">fn:exactly-one</a>&nbsp; <a href="#fn:exists">fn:exists</a>&nbsp; <a href="#fn:expanded-QName">fn:expanded-QName</a>&nbsp; <a href="#fn:false">fn:false</a>&nbsp; <a href="#fn:floor">fn:floor</a>&nbsp; <a href="#xslt:format-date">xslt:format-date</a>&nbsp; <a href="#xslt:format-date">xslt:format-date</a>&nbsp; <a href="#xslt:format-dateTime">xslt:format-dateTime</a>&nbsp; <a href="#xslt:format-dateTime">xslt:format-dateTime</a>&nbsp; <a href="#xslt:format-number">xslt:format-number</a>&nbsp; <a href="#xslt:format-number">xslt:format-number</a>&nbsp; <a href="#xslt:format-time">xslt:format-time</a>&nbsp; <a href="#xslt:format-time">xslt:format-time</a>&nbsp; <a href="#xslt:function-available">xslt:function-available</a>&nbsp; <a href="#xslt:function-available">xslt:function-available</a>&nbsp; <a href="#xslt:generate-id">xslt:generate-id</a>&nbsp; <a href="#xslt:generate-id">xslt:generate-id</a>&nbsp; <a href="#fn:day-from-date">fn:day-from-date</a>&nbsp; <a href="#fn:day-from-dateTime">fn:day-from-dateTime</a>&nbsp; <a href="#fn:days-from-dayTimeDuration">fn:days-from-dayTimeDuration</a>&nbsp; <a href="#fn:hours-from-dateTime">fn:hours-from-dateTime</a>&nbsp; <a href="#fn:hours-from-dayTimeDuration">fn:hours-from-dayTimeDuration</a>&nbsp; <a href="#fn:hours-from-time">fn:hours-from-time</a>&nbsp; <a href="#fn:in-scope-prefixes">fn:in-scope-prefixes</a>&nbsp; <a href="#fn:local-name-from-QName">fn:local-name-from-QName</a>&nbsp; <a href="#fn:minutes-from-dateTime">fn:minutes-from-dateTime</a>&nbsp; <a href="#fn:minutes-from-dayTimeDuration">fn:minutes-from-dayTimeDuration</a>&nbsp; <a href="#fn:minutes-from-time">fn:minutes-from-time</a>&nbsp; <a href="#fn:month-from-date">fn:month-from-date</a>&nbsp; <a href="#fn:month-from-dateTime">fn:month-from-dateTime</a>&nbsp; <a href="#fn:months-from-yearMonthDuration">fn:months-from-yearMonthDuration</a>&nbsp; <a href="#fn:namespace-uri-from-QName">fn:namespace-uri-from-QName</a>&nbsp; <a href="#fn:namespace-uri-for-prefix">fn:namespace-uri-for-prefix</a>&nbsp; <a href="#fn:seconds-from-dateTime">fn:seconds-from-dateTime</a>&nbsp; <a href="#fn:seconds-from-dayTimeDuration">fn:seconds-from-dayTimeDuration</a>&nbsp; <a href="#fn:seconds-from-time">fn:seconds-from-time</a>&nbsp; <a href="#fn:timezone-from-date">fn:timezone-from-date</a>&nbsp; <a href="#fn:timezone-from-dateTime">fn:timezone-from-dateTime</a>&nbsp; <a href="#fn:timezone-from-time">fn:timezone-from-time</a>&nbsp; <a href="#fn:year-from-date">fn:year-from-date</a>&nbsp; <a href="#fn:year-from-dateTime">fn:year-from-dateTime</a>&nbsp; <a href="#fn:years-from-yearMonthDuration">fn:years-from-yearMonthDuration</a>&nbsp; <a href="#fn:id">fn:id</a>&nbsp; <a href="#fn:idref">fn:idref</a>&nbsp; <a href="#fn:implicit-timezone">fn:implicit-timezone</a>&nbsp; <a href="#fn:index-of">fn:index-of</a>&nbsp; <a href="#fn:index-of">fn:index-of</a>&nbsp; <a href="#fn:input">fn:input</a>&nbsp; <a href="#fn:insert-before">fn:insert-before</a>&nbsp; <a href="#fn:item-at">fn:item-at</a>&nbsp; <a href="#xslt:key">xslt:key</a>&nbsp; <a href="#fn:lang">fn:lang</a>&nbsp; <a href="#fn:last">fn:last</a>&nbsp; <a href="#fn:local-name">fn:local-name</a>&nbsp; <a href="#fn:local-name">fn:local-name</a>&nbsp; <a href="#fn:lower-case">fn:lower-case</a>&nbsp; <a href="#fn:matches">fn:matches</a>&nbsp; <a href="#fn:matches">fn:matches</a>&nbsp; <a href="#fn:max">fn:max</a>&nbsp; <a href="#fn:max">fn:max</a>&nbsp; <a href="#fn:min">fn:min</a>&nbsp; <a href="#fn:min">fn:min</a>&nbsp; <a href="#fn:name">fn:name</a>&nbsp; <a href="#fn:name">fn:name</a>&nbsp; <a href="#fn:namespace-uri">fn:namespace-uri</a>&nbsp; <a href="#fn:namespace-uri">fn:namespace-uri</a>&nbsp; <a href="#fn:node-kind">fn:node-kind</a>&nbsp; <a href="#fn:node-name">fn:node-name</a>&nbsp; <a href="#fn:normalize-space">fn:normalize-space</a>&nbsp; <a href="#fn:normalize-space">fn:normalize-space</a>&nbsp; <a href="#fn:normalize-unicode">fn:normalize-unicode</a>&nbsp; <a href="#fn:normalize-unicode">fn:normalize-unicode</a>&nbsp; <a href="#fn:not">fn:not</a>&nbsp; <a href="#fn:number">fn:number</a>&nbsp; <a href="#fn:number">fn:number</a>&nbsp; <a href="#fn:one-or-more">fn:one-or-more</a>&nbsp; <a href="#fn:position">fn:position</a>&nbsp; <a href="#xslt:regex-group">xslt:regex-group</a>&nbsp; <a href="#fn:remove">fn:remove</a>&nbsp; <a href="#fn:replace">fn:replace</a>&nbsp; <a href="#fn:replace">fn:replace</a>&nbsp; <a href="#fn:resolve-QName">fn:resolve-QName</a>&nbsp; <a href="#fn:resolve-uri">fn:resolve-uri</a>&nbsp; <a href="#fn:resolve-uri">fn:resolve-uri</a>&nbsp; <a href="#fn:sum">fn:sum</a>&nbsp; <a href="#fn:root">fn:root</a>&nbsp; <a href="#fn:root">fn:root</a>&nbsp; <a href="#fn:round">fn:round</a>&nbsp; <a href="#fn:round-half-to-even">fn:round-half-to-even</a>&nbsp; <a href="#fn:round-half-to-even">fn:round-half-to-even</a>&nbsp; <a href="#fn:sequence-node-identical">fn:sequence-node-identical</a>&nbsp; <a href="#fn:starts-with">fn:starts-with</a>&nbsp; <a href="#fn:starts-with">fn:starts-with</a>&nbsp; <a href="#fn:string">fn:string</a>&nbsp; <a href="#fn:string">fn:string</a>&nbsp; <a href="#fn:string-join">fn:string-join</a>&nbsp; <a href="#fn:string-length">fn:string-length</a>&nbsp; <a href="#fn:string-length">fn:string-length</a>&nbsp; <a href="#fn:string-pad">fn:string-pad</a>&nbsp; <a href="#fn:string-to-codepoints">fn:string-to-codepoints</a>&nbsp; <a href="#fn:subsequence">fn:subsequence</a>&nbsp; <a href="#fn:subsequence">fn:subsequence</a>&nbsp; <a href="#fn:substring">fn:substring</a>&nbsp; <a href="#fn:substring">fn:substring</a>&nbsp; <a href="#fn:substring-after">fn:substring-after</a>&nbsp; <a href="#fn:substring-after">fn:substring-after</a>&nbsp; <a href="#fn:substring-before">fn:substring-before</a>&nbsp; <a href="#fn:substring-before">fn:substring-before</a>&nbsp; <a href="#fn:subtract-dateTimes-yielding-dayTimeDuration">fn:subtract-dateTimes-yielding-dayTimeDuration</a>&nbsp; <a href="#fn:subtract-dateTimes-yielding-yearMonthDuration">fn:subtract-dateTimes-yielding-yearMonthDuration</a>&nbsp; <a href="#fn:sum">fn:sum</a>&nbsp; <a href="#xslt:system-property">xslt:system-property</a>&nbsp; <a href="#fn:tokenize">fn:tokenize</a>&nbsp; <a href="#fn:tokenize">fn:tokenize</a>&nbsp; <a href="#fn:trace">fn:trace</a>&nbsp; <a href="#fn:translate">fn:translate</a>&nbsp; <a href="#fn:true">fn:true</a>&nbsp; <a href="#xslt:unparsed-entity-uri">xslt:unparsed-entity-uri</a>&nbsp; <a href="#xslt:unparsed-entity-public-id">xslt:unparsed-entity-public-id</a>&nbsp; <a href="#xslt:unparsed-text">xslt:unparsed-text</a>&nbsp; <a href="#xslt:unparsed-text">xslt:unparsed-text</a>&nbsp; <a href="#fn:unordered">fn:unordered</a>&nbsp; <a href="#fn:upper-case">fn:upper-case</a>&nbsp; <a href="#fn:zero-or-one">fn:zero-or-one</a>&nbsp; 
+      <hr>
+      <h2>Function Definitions</h2>
+      <p><b><a name="fn:abs">fn:abs</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">numeric ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">numeric ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the absolute value of a given number.
+               Returns the same type as the supplied argument.
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-abs">XPath 2.0 Specification</a></p>
+      <p>Implemented in Saxon 7.6.1.</p>
+      <hr>
+      <p><b><a name="fn:adjust-date-to-timezone">fn:adjust-date-to-timezone</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:date ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:date ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description></description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-adjust-date-to-timezone">XPath 2.0 Specification</a></p>
+      <p>Implemented in Saxon 7.8</p>
+      <hr>
+      <p><b><a name="fn:adjust-date-to-timezone">fn:adjust-date-to-timezone</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:date ?</td>
+         </tr>
+         <tr>
+            <td width="120">$timezone</td>
+            <td width="150">xdt:dayTimeDuration </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:date ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description></description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-adjust-date-to-timezone">XPath 2.0 Specification</a></p>
+      <p>Implemented in Saxon 7.8</p>
+      <hr>
+      <p><b><a name="fn:adjust-dateTime-to-timezone">fn:adjust-dateTime-to-timezone</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:dateTime ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:dateTime ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description></description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-adjust-dateTime-to-timezone">XPath 2.0 Specification</a></p>
+      <p>Implemented in Saxon 7.8</p>
+      <hr>
+      <p><b><a name="fn:adjust-dateTime-to-timezone">fn:adjust-dateTime-to-timezone</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:dateTime ?</td>
+         </tr>
+         <tr>
+            <td width="120">$timezone</td>
+            <td width="150">xdt:dayTimeDuration </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:dateTime ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description></description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-adjust-dateTime-to-timezone">XPath 2.0 Specification</a></p>
+      <p>Implemented in Saxon 7.8</p>
+      <hr>
+      <p><b><a name="fn:adjust-time-to-timezone">fn:adjust-time-to-timezone</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:time ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:time ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description></description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-adjust-time-to-timezone">XPath 2.0 Specification</a></p>
+      <p>Implemented in Saxon 7.8</p>
+      <hr>
+      <p><b><a name="fn:adjust-time-to-timezone">fn:adjust-time-to-timezone</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:time ?</td>
+         </tr>
+         <tr>
+            <td width="120">$timezone</td>
+            <td width="150">xdt:dayTimeDuration </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:time ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description></description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-adjust-time-to-timezone">XPath 2.0 Specification</a></p>
+      <p>Implemented in Saxon 7.8</p>
+      <hr>
+      <p><b><a name="fn:avg">fn:avg</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xdt:anyAtomicType *</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xdt:anyAtomicType ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the average of a set of numbers</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-avg">XPath 2.0 Specification</a></p>
+      <p>Implemented. Changed in 7.4 to return the same type as the argument, when appropriate.
+         (For a set of integers, the result is a double). Not yet implemented for 
+         other addable types, e.g. duration.
+      </p>
+      <hr>
+      <p><b><a name="fn:base-uri">fn:base-uri</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the base URI of the static context</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-base-uri">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:base-uri">fn:base-uri</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">node() </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the base URI of a given node</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-base-uri">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:boolean">fn:boolean</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">item() *</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:boolean </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Obtains the effective boolean value of any expression</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-boolean">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:ceiling">fn:ceiling</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">numeric ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">numeric ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Rounds a value towards positive infinity</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-ceiling">XPath 2.0 Specification</a></p>
+      <p>Implemented. Changed in 7.4 to return the same type as the supplied argument.</p>
+      <hr>
+      <p><b><a name="fn:codepoints-to-string">fn:codepoints-to-string</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$codes</td>
+            <td width="150">xs:integer *</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Converts a sequence of integers representing Unicode characters to the corresponding string</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-codepoints-to-string">XPath 2.0 Specification</a></p>
+      <p>Implemented. The error checking is incomplete (there is no check that the integers in the
+         supplied sequence are legal XML characters).
+      </p>
+      <hr>
+      <p><b><a name="fn:collection">fn:collection</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">node() *</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Loads an external collection of nodes identified by the URI of the collection</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-collection">XPath 2.0 Specification</a></p>
+      <p>Implemented. In the Saxon implementation, the argument is interpreted as the URI
+         of an XML catalogue document containing the URIs of the documents that make up the collection. An
+         example of a catalogue is:<code>
+            
+            <pre>&lt;collection&gt;
+  &lt;doc href="doc1.xml"/&gt;
+  &lt;doc href="doc2.xml"/&gt;
+  &lt;doc href="doc3.xml"/&gt;
+&lt;/collection&gt;
+</pre></code>
+         
+         
+         
+      </p>
+      <hr>
+      <p><b><a name="fn:compare">fn:compare</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$comparand1</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120">$comparand2</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:integer ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Compares two strings using the default collation</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-compare">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:compare">fn:compare</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$comparand1</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120">$comparand2</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120">$collation</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:integer ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Compares two strings using a specified collation</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-compare">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:concat">fn:concat</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$arg1</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Concatenates the string-values of the arguments into a single string</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-concat">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:contains">fn:contains</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$operand1</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120">$operand2</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:boolean ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns true if the second string is a substring of the first</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-contains">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:contains">fn:contains</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$operand1</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120">$operand2</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120">$collation</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:boolean ?</td>
+         </tr>
+      </table>
+      <p><i></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-contains">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:context-item">fn:context-item</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">item() ?</td>
+         </tr>
+      </table>
+      <p><i></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-context-item">XPath 2.0 Specification</a></p>
+      <p>Removed in Saxon 7.8</p>
+      <hr>
+      <p><b><a name="fn:count">fn:count</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">item() *</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:integer </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Counts the number of items in a sequence</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-count">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="xslt:current">xslt:current</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">item() ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the item that was the current item supplied
+               on entry to the XPath expression
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xslt20/#function-current">XSLT 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:current-date">fn:current-date</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:date </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the current date</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-current-date">XPath 2.0 Specification</a></p>
+      <p>Implemented. Changed in 7.8 to return a date in the local timezone.</p>
+      <hr>
+      <p><b><a name="fn:current-dateTime">fn:current-dateTime</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:dateTime </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the current date and time</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-current-dateTime">XPath 2.0 Specification</a></p>
+      <p>Implemented. Changed in 7.8 to return a date/time in the local timezone.</p>
+      <hr>
+      <p><b><a name="xslt:current-group">xslt:current-group</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">item() *</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the contents of the current group selected 
+               by <code>xsl:for-each-group</code></description></i></p>
+      <p><a href="http://www.w3.org/TR/xslt20/#function-current-group">XSLT 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="xslt:current-grouping-key">xslt:current-grouping-key</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xdt:anyAtomicType </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the value that is the grouping key of the current group 
+               selected by <code>xsl:for-each-group</code></description></i></p>
+      <p><a href="http://www.w3.org/TR/xslt20/#function-current-grouping-key">XSLT 2.0 Specification</a></p>
+      <p>Implemented in Saxon 7.6.5</p>
+      <hr>
+      <p><b><a name="fn:current-time">fn:current-time</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:time </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the current time</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-current-time">XPath 2.0 Specification</a></p>
+      <p>Implemented. Changed in 7.8 to return a time in the local timezone.</p>
+      <hr>
+      <p><b><a name="fn:data">fn:data</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">item() *</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xdt:anyAtomicType *</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the result of atomizing the supplied sequence</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-data">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:deep-equal">fn:deep-equal</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$operand1</td>
+            <td width="150">item() *</td>
+         </tr>
+         <tr>
+            <td width="120">$operand2</td>
+            <td width="150">item() *</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:boolean </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Compares two sequences for deep equality: the names and contents must be the same,
+               but nodes need not have the same identity.
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-deep-equal">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:deep-equal">fn:deep-equal</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$operand1</td>
+            <td width="150">item() *</td>
+         </tr>
+         <tr>
+            <td width="120">$operand2</td>
+            <td width="150">item() *</td>
+         </tr>
+         <tr>
+            <td width="120">$collation</td>
+            <td width="150">string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:boolean </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Compares two sequences for deep equality; string values are compared using the named collation;
+               nodes are compared for deep equality of names and content.
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-deep-equal">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:default-collation">fn:default-collation</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the name of the default collation</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-default-collation">XPath 2.0 Specification</a></p>
+      <p>Implemented. In Saxon this always returns a value: if no default collation has been
+         specified explicitly, it returns the URI of the code-point collation.
+         Note, the May 2003 draft still returns an anyURI, though elsewhere collations are now represented
+         by a string.
+      </p>
+      <hr>
+      <p><b><a name="fn:distinct-nodes">fn:distinct-nodes</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">node() *</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">node() *</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Eliminates nodes with duplicate values</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-distinct-nodes">XPath 2.0 Specification</a></p>
+      <p>Removed in Saxon 7.8</p>
+      <hr>
+      <p><b><a name="fn:distinct-values">fn:distinct-values</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xdt:anyAtomicType *</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xdt:anyAtomicType *</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the set of distinct values present in a given sequence</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-distinct-values">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:distinct-values">fn:distinct-values</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xdt:anyAtomicType *</td>
+         </tr>
+         <tr>
+            <td width="120">$collation</td>
+            <td width="150">string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xdt:anyAtomicType *</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the set of distinct values present in a given sequence,
+               comparing strings using a named collation.
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-distinct-values">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:doc">fn:doc</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$uri</td>
+            <td width="150">string ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">document-node() ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Loads a document identified by its URI</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-doc">XPath 2.0 Specification</a></p>
+      <p>Implemented in Saxon 7.6</p>
+      <hr>
+      <p><b><a name="xslt:document">xslt:document</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$uri</td>
+            <td width="150">item *</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">node() *</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Loads one or more documents identified by their URIs</description></i></p>
+      <p><a href="http://www.w3.org/TR/xslt20/#function-document">XSLT 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="xslt:document">xslt:document</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$uri</td>
+            <td width="150">item *</td>
+         </tr>
+         <tr>
+            <td width="120">$base</td>
+            <td width="150">node() *</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">node() *</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Loads one or more documents identified by their URIs, using the base URI of the
+               node given in the second argument to resolve any relative URIs
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xslt20/#function-document">XSLT 2.0 Specification</a></p>
+      <p><b>Note: </b>Check the type of the second argument against the latest spec.
+      </p>
+      <hr>
+      <p><b><a name="fn:document-uri">fn:document-uri</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">node() </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">string ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the URI of a document</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-document-uri">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>The function is supported, though not strictly according to the spec.
+         It is defined only for document nodes (as specified in the data model), and the URI returned is
+         not guaranteed to be absolute, and is not guaranteed to be capable of retrieving the document using
+         the document function (for example, a value is returned for a temporary tree).
+      </p>
+      <hr>
+      <p><b><a name="xslt:element-available">xslt:element-available</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$element</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:boolean </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Determines whether a particular instruction (typically, an extension element)
+               is available in the context
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xslt20/#function-element-available">XSLT 2.0 Specification</a></p>
+      <p>Implemented. There is a restriction, namely that if the argument value is
+         not a compile-time constant, then the function has no information about the names
+         of user-defined extension elements, so it will return false if the name of such an
+         element is supplied.
+      </p>
+      <hr>
+      <p><b><a name="fn:empty">fn:empty</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">item() *</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:boolean </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns true if the given sequence is empty</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-empty">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:ends-with">fn:ends-with</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$operand1</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120">$operand2</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:boolean ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns true if the first string ends with the second string</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-ends-with">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:ends-with">fn:ends-with</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$operand1</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120">$operand2</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120">$collation</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:boolean ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns true if the first string ends with the second string, when
+               compared using the named collation
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-ends-with">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:error">fn:error</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150"> </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Raises an error.</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-error">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:error">fn:error</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">item() ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150"> </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Raises an error. The string value of the supplied item is used as the error message.</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-error">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:escape-uri">fn:escape-uri</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$uri-part</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120">$escape-reserved</td>
+            <td width="150">xs:boolean </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">string </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Applies the %HH escaping convention to a URI</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-escape-uri">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:exactly-one">fn:exactly-one</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">item() *</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">item() ?</td>
+         </tr>
+      </table>
+      <p><i></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-exactly-one">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:exists">fn:exists</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">item() *</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:boolean </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns true if the given sequence is not empty</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-exists">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:expanded-QName">fn:expanded-QName</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$paramURI</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120">$paramLocal</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:QName </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Constructs a QName value from a URI and local name</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-expanded-QName">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:false">fn:false</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:boolean </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the boolean value false</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-false">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:floor">fn:floor</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">numeric ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">numeric ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Rounds a number towards minus infinity</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-floor">XPath 2.0 Specification</a></p>
+      <p>Implemented. Changed in 7.4 to return the same type as the supplied argument.</p>
+      <hr>
+      <p><b><a name="xslt:format-date">xslt:format-date</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$value</td>
+            <td width="150">xs:date ?</td>
+         </tr>
+         <tr>
+            <td width="120">$picture</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120">$date-format-name</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Formats a date</description></i></p>
+      <p><a href="http://www.w3.org/TR/xslt20/#function-format-date">XSLT 2.0 Specification</a></p>
+      <p>Supported with limitations. The third argument is ignored, the function
+         always formats the date for the current locale. Alphabetic forms of numbers (including
+         ordinals) are not at present localized.
+      </p>
+      <hr>
+      <p><b><a name="xslt:format-date">xslt:format-date</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$value</td>
+            <td width="150">xs:date ?</td>
+         </tr>
+         <tr>
+            <td width="120">$picture</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Formats a date</description></i></p>
+      <p><a href="http://www.w3.org/TR/xslt20/#function-format-date">XSLT 2.0 Specification</a></p>
+      <p>Supported with limitations. The function
+         always formats the date for the current locale. Alphabetic forms of numbers (including
+         ordinals) are not at present localized.
+      </p>
+      <hr>
+      <p><b><a name="xslt:format-dateTime">xslt:format-dateTime</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$value</td>
+            <td width="150">xs:dateTime ?</td>
+         </tr>
+         <tr>
+            <td width="120">$picture</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120">$date-format-name</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Formats a dateTime</description></i></p>
+      <p><a href="http://www.w3.org/TR/xslt20/#function-format-dateTime">XSLT 2.0 Specification</a></p>
+      <p>Supported with limitations. The third argument is ignored, the function
+         always formats the date for the current locale. Alphabetic forms of numbers (including
+         ordinals) are not at present localized.
+      </p>
+      <hr>
+      <p><b><a name="xslt:format-dateTime">xslt:format-dateTime</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$value</td>
+            <td width="150">xs:dateTime ?</td>
+         </tr>
+         <tr>
+            <td width="120">$picture</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Formats a dateTime</description></i></p>
+      <p><a href="http://www.w3.org/TR/xslt20/#function-format-dateTime">XSLT 2.0 Specification</a></p>
+      <p>Supported with limitations. The function
+         always formats the date for the current locale. Alphabetic forms of numbers (including
+         ordinals) are not at present localized.
+      </p>
+      <hr>
+      <p><b><a name="xslt:format-number">xslt:format-number</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$value</td>
+            <td width="150">xs:double </td>
+         </tr>
+         <tr>
+            <td width="120">$picture</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Formats a number as specified by a picture string, using the default decimal format</description></i></p>
+      <p><a href="http://www.w3.org/TR/xslt20/#function-format-number">XSLT 2.0 Specification</a></p>
+      <p>Implemented. Changed in 7.4.1 to use the new XSLT 2.0 specification. This
+         creates slight incompatibilities from the previous version, which remains available
+         under the name format-number-1.0(). There is one known restriction: characters such
+         as the decimal-separator are restricted to be in the Unicode BMP, i.e. below
+         Unicode 0xFFFF. The current implementation does not attempt to cache or precompile
+         the picture string. Also it does not detect the error that occurs when the same
+         character is used in more than one role. Error checking has not been thoroughly tested.
+      </p>
+      <hr>
+      <p><b><a name="xslt:format-number">xslt:format-number</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$value</td>
+            <td width="150">xs:double </td>
+         </tr>
+         <tr>
+            <td width="120">$picture</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120">$decimal-format</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Formats a number as specified by a picture string, using a named decimal format</description></i></p>
+      <p><a href="http://www.w3.org/TR/xslt20/#function-format-number">XSLT 2.0 Specification</a></p>
+      <p>See two-argument version of format-number().</p>
+      <hr>
+      <p><b><a name="xslt:format-time">xslt:format-time</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$value</td>
+            <td width="150">xs:time ?</td>
+         </tr>
+         <tr>
+            <td width="120">$picture</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120">$date-format-name</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Formats a time</description></i></p>
+      <p><a href="http://www.w3.org/TR/xslt20/#function-format-time">XSLT 2.0 Specification</a></p>
+      <p>Supported with limitations. The third argument is ignored, the function
+         always formats the time for the current locale. Alphabetic forms of numbers (including
+         ordinals) are not at present localized.
+      </p>
+      <hr>
+      <p><b><a name="xslt:format-time">xslt:format-time</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$value</td>
+            <td width="150">xs:time ?</td>
+         </tr>
+         <tr>
+            <td width="120">$picture</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Formats a time</description></i></p>
+      <p><a href="http://www.w3.org/TR/xslt20/#function-format-time">XSLT 2.0 Specification</a></p>
+      <p>Supported with limitations. The function
+         always formats the date for the current locale. Alphabetic forms of numbers (including
+         ordinals) are not at present localized.
+      </p>
+      <hr>
+      <p><b><a name="xslt:function-available">xslt:function-available</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$function</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:boolean </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Determines whether a particular function is available in the context</description></i></p>
+      <p><a href="http://www.w3.org/TR/xslt20/#function-function-available">XSLT 2.0 Specification</a></p>
+      <p>Implemented. There is a restriction, namely that if the argument value is
+         not a compile-time constant, then the function has no information about the names
+         of stylesheet functions, so it will return false if the name of a stylesheet
+         function is supplied.
+      </p>
+      <hr>
+      <p><b><a name="xslt:function-available">xslt:function-available</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$function</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120">$arity</td>
+            <td width="150">xs:integer </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:boolean </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Determines whether a particular function is available in the context. The two-argument
+               version of the function was added during the Last Call period.
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xslt20/#function-function-available">XSLT 2.0 Specification</a></p>
+      <p>Implemented in Saxon 7.9. There is a restriction, namely that if the argument value is
+         not a compile-time constant, then the function has no information about the names
+         of stylesheet functions, so it will return false if the name of a stylesheet
+         function is supplied.
+      </p>
+      <hr>
+      <p><b><a name="xslt:generate-id">xslt:generate-id</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns a generated unique identifier of the context node</description></i></p>
+      <p><a href="http://www.w3.org/TR/xslt20/#function-generate-id">XSLT 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="xslt:generate-id">xslt:generate-id</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">node() ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns a generated unique identifier of a given node</description></i></p>
+      <p><a href="http://www.w3.org/TR/xslt20/#function-generate-id">XSLT 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:day-from-date">fn:day-from-date</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:date ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:integer ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Extracts the day component of a date value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-day-from-date">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>The old name get-day-from-date is retained as a synonym
+      </p>
+      <hr>
+      <p><b><a name="fn:day-from-dateTime">fn:day-from-dateTime</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:dateTime ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:integer ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Extracts the day component of a dateTime value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-day-from-dateTime">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>The old name get-day-from-dateTime is retained as a synonym
+      </p>
+      <hr>
+      <p><b><a name="fn:days-from-dayTimeDuration">fn:days-from-dayTimeDuration</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xdt:dayTimeDuration ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:integer ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Extracts the days component of a dayTimeDuration value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-days-from-dayTimeDuration">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>The old name get-days-from-dayTimeDuration is retained as a synonym
+      </p>
+      <hr>
+      <p><b><a name="fn:hours-from-dateTime">fn:hours-from-dateTime</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:dateTime ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:integer ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Extracts the hour component of a dateTime value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-hours-from-dateTime">XPath 2.0 Specification</a></p>
+      <p>Implemented</p>
+      <p><b>Note: </b>The old name get-hours-from-dateTime is retained as a synonym
+      </p>
+      <hr>
+      <p><b><a name="fn:hours-from-dayTimeDuration">fn:hours-from-dayTimeDuration</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xdt:dayTimeDuration ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:integer ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Extracts the hours component of a dayTimeDuration value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-hours-from-dayTimeDuration">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>The old name get-hours-from-dayTimeDuration is retained as a synonym
+      </p>
+      <hr>
+      <p><b><a name="fn:hours-from-time">fn:hours-from-time</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:time ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:integer ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Extracts the hours component of a time value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-hours-from-time">XPath 2.0 Specification</a></p>
+      <p>Implemented; but currently returns the local time value, not the normalized
+         time value.
+      </p>
+      <p><b>Note: </b>The old name get-hours-from-time is retained as a synonym
+      </p>
+      <hr>
+      <p><b><a name="fn:in-scope-prefixes">fn:in-scope-prefixes</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$element</td>
+            <td width="150">element() </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string *</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the names of the namespaces that are in scope for an element</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-in-scope-prefixes">XPath 2.0 Specification</a></p>
+      <p>Implemented. Name changed in 7.8 from get-in-scope-namespaces().</p>
+      <p><b>Note: </b>The old name get-in-scope-prefixes is retained as a synonym
+      </p>
+      <hr>
+      <p><b><a name="fn:local-name-from-QName">fn:local-name-from-QName</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:QName ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">string ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Extracts the local name component of a QName value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-local-name-from-QName">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>The old name get-local-name-from-QName is retained as a synonym
+      </p>
+      <hr>
+      <p><b><a name="fn:minutes-from-dateTime">fn:minutes-from-dateTime</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:dateTime ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:integer ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Extracts the minutes component of a dateTime value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-minutes-from-dateTime">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>The old name get-minutes-from-dateTime is retained as a synonym
+      </p>
+      <hr>
+      <p><b><a name="fn:minutes-from-dayTimeDuration">fn:minutes-from-dayTimeDuration</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xdt:dayTimeDuration ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:integer ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Extracts the minutes component of a dayTimeDuration value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-minutes-from-dayTimeDuration">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>The old name get-minutes-from-dayTimeDuration is retained as a synonym
+      </p>
+      <hr>
+      <p><b><a name="fn:minutes-from-time">fn:minutes-from-time</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:time ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:integer ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Extracts the minutes component of a time value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-minutes-from-time">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>The old name get-minutes-from-time is retained as a synonym
+      </p>
+      <hr>
+      <p><b><a name="fn:month-from-date">fn:month-from-date</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:date ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:integer ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Extracts the month component of a date value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-month-from-date">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>The old name get-month-from-date is retained as a synonym
+      </p>
+      <hr>
+      <p><b><a name="fn:month-from-dateTime">fn:month-from-dateTime</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:dateTime ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:integer ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Extracts the month component of a dateTime value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-month-from-dateTime">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>The old name get-month-from-dateTime is retained as a synonym
+      </p>
+      <hr>
+      <p><b><a name="fn:months-from-yearMonthDuration">fn:months-from-yearMonthDuration</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xdt:yearMonthDuration ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:integer ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Extracts the months component of a yearMonthDuration value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-months-from-yearMonthDuration">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>The old name get-months-from-yearMonthDuration is retained as a synonym
+      </p>
+      <hr>
+      <p><b><a name="fn:namespace-uri-from-QName">fn:namespace-uri-from-QName</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:QName ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">string ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Extracts the namespace URI component of a QName value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-namespace-uri-from-QName">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>The old name get-namespace-from-QName [sic] is retained as a synonym
+      </p>
+      <hr>
+      <p><b><a name="fn:namespace-uri-for-prefix">fn:namespace-uri-for-prefix</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$prefix</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120">$element</td>
+            <td width="150">element() </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">string ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the namespace URI corresponding to a given prefix, using
+               the namespaces that are in scope for a given element
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-namespace-uri-for-prefix">XPath 2.0 Specification</a></p>
+      <p>Implemented. Changed in 7.9 so the prefix is now the first argument, the element node
+         the second.
+      </p>
+      <p><b>Note: </b>The old name get-namespace-uri-for-prefix is retained as a synonym
+      </p>
+      <hr>
+      <p><b><a name="fn:seconds-from-dateTime">fn:seconds-from-dateTime</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:dateTime ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:integer ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Extracts the seconds component of a dateTime value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-seconds-from-dateTime">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>The old name get-seconds-from-dateTime is retained as a synonym
+      </p>
+      <hr>
+      <p><b><a name="fn:seconds-from-dayTimeDuration">fn:seconds-from-dayTimeDuration</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xdt:dayTimeDuration ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:integer ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Extracts the seconds component of a dayTimeDuration value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-seconds-from-dayTimeDuration">XPath 2.0 Specification</a></p>
+      <p>Implemented. Return type should be decimal, not integer.</p>
+      <p><b>Note: </b>The old name get-seconds-from-dayTimeDuration is retained as a synonym
+      </p>
+      <hr>
+      <p><b><a name="fn:seconds-from-time">fn:seconds-from-time</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:time ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:integer ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Extracts the seconds component of a time value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-seconds-from-time">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>The old name get-seconds-from-time is retained as a synonym
+      </p>
+      <hr>
+      <p><b><a name="fn:timezone-from-date">fn:timezone-from-date</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:date ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xdt:dayTimeDuration ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Extracts the timezone component of a date value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-timezone-from-date">XPath 2.0 Specification</a></p>
+      <p>Implemented. Changed in 7.8 to return dayTimeDuration rather than string.</p>
+      <p><b>Note: </b>The old name get-timezone-from-date is retained as a synonym
+      </p>
+      <hr>
+      <p><b><a name="fn:timezone-from-dateTime">fn:timezone-from-dateTime</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:dateTime ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xdt:dayTimeDuration ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Extracts the timezone component of a dateTime value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-timezone-from-dateTime">XPath 2.0 Specification</a></p>
+      <p>Implemented. Changed in 7.8 to return dayTimeDuration rather than string.</p>
+      <p><b>Note: </b>The old name timezone-from-dateTime is retained as a synonym
+      </p>
+      <hr>
+      <p><b><a name="fn:timezone-from-time">fn:timezone-from-time</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:time ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xdt:dayTimeDuration ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Extracts the timezone component of a time value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-timezone-from-time">XPath 2.0 Specification</a></p>
+      <p>Implemented. Changed in 7.8 to return dayTimeDuration rather than string.</p>
+      <p><b>Note: </b>The old name get-timezone-from-time is retained as a synonym
+      </p>
+      <hr>
+      <p><b><a name="fn:year-from-date">fn:year-from-date</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:date ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:integer ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Extracts the year component of a date value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-year-from-date">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>The old name get-year-from-date is retained as a synonym
+      </p>
+      <hr>
+      <p><b><a name="fn:year-from-dateTime">fn:year-from-dateTime</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:dateTime ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:integer ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Extracts the year component of a dateTime value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-year-from-dateTime">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>The old name get-year-from-dateTime is retained as a synonym
+      </p>
+      <hr>
+      <p><b><a name="fn:years-from-yearMonthDuration">fn:years-from-yearMonthDuration</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xdt:yearMonthDuration ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:integer ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Extracts the years component of a yearMonthDuration value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-years-from-yearMonthDuration">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>The old name get-years-from-yearMonthDuration is retained as a synonym
+      </p>
+      <hr>
+      <p><b><a name="fn:id">fn:id</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:string *</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">element() *</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Finds the elements with given ID attribute values</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-id">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>Implemented according to the XPath 1.0 specification
+      </p>
+      <hr>
+      <p><b><a name="fn:idref">fn:idref</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:string *</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">node() *</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Finds the elements that link to the element with a given ID value</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-idref">XPath 2.0 Specification</a></p>
+      <p>Implemented in Saxon 7.9</p>
+      <hr>
+      <p><b><a name="fn:implicit-timezone">fn:implicit-timezone</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xdt:dayTimeDuration </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the implicit timezone</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-implicit-timezone">XPath 2.0 Specification</a></p>
+      <p>Implemented in Saxon 7.8</p>
+      <hr>
+      <p><b><a name="fn:index-of">fn:index-of</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$seqParam</td>
+            <td width="150">xdt:anyAtomicType *</td>
+         </tr>
+         <tr>
+            <td width="120">$srchParam</td>
+            <td width="150">xdt:anyAtomicType </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:integer *</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Finds the positions of items in a sequence that match the second argument</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-index-of">XPath 2.0 Specification</a></p>
+      <p>Implemented.</p>
+      <hr>
+      <p><b><a name="fn:index-of">fn:index-of</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$seqParam</td>
+            <td width="150">xdt:anyAtomicType *</td>
+         </tr>
+         <tr>
+            <td width="120">$srchParam</td>
+            <td width="150">xdt:anyAtomicType </td>
+         </tr>
+         <tr>
+            <td width="120">$collation</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:integer *</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Finds the positions of items in a sequence that match the second argument, using
+               a named collation for the comparison
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-index-of">XPath 2.0 Specification</a></p>
+      <p>Implemented.</p>
+      <hr>
+      <p><b><a name="fn:input">fn:input</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">node() *</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the sequence of nodes established by the calling environment as the current
+               input collection
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-input">XPath 2.0 Specification</a></p>
+      <p>Removed in Saxon 7.8</p>
+      <p><b>Note: </b>This implementation of the input() function is very simple. If the parameter
+         {http://saxon.sf.net/}input has been supplied to the transformation, the function returns the value
+         of this parameter. This must be a node sequence - which means it cannot be supplied from the 
+         command line. If no such parameter has been supplied, it returns the root of the principal source
+         document (the document containing the node that was matched on entry to the transformation).
+      </p>
+      <hr>
+      <p><b><a name="fn:insert-before">fn:insert-before</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$target</td>
+            <td width="150">item() *</td>
+         </tr>
+         <tr>
+            <td width="120">$position</td>
+            <td width="150">xs:integer </td>
+         </tr>
+         <tr>
+            <td width="120">$inserts</td>
+            <td width="150">item() *</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">item() *</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Insert an item into a sequence</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-insert-before">XPath 2.0 Specification</a></p>
+      <p>Implemented. Changed in 7.4 to reflect the latest WD which changes the name
+         from insert to insert-before, and inserts the new items before the selected position, not
+         after it as previously. Changed in 7.8 to allow the insert position to be beyond
+         the end of the original sequence (which causes the new sequence to be appended).
+      </p>
+      <hr>
+      <p><b><a name="fn:item-at">fn:item-at</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$seqParam</td>
+            <td width="150">item() *</td>
+         </tr>
+         <tr>
+            <td width="120">$posParam</td>
+            <td width="150">xs:integer </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">item() ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Return the item at a given position in a sequence</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-item-at">XPath 2.0 Specification</a></p>
+      <p>Removed in Saxon 7.8</p>
+      <hr>
+      <p><b><a name="xslt:key">xslt:key</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$key-name</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120">$key-value</td>
+            <td width="150">xdt:anyAtomicType *</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">node() *</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the nodes identified by a named key declaration in the stylesheet.</description></i></p>
+      <p><a href="http://www.w3.org/TR/xslt20/#function-key">XSLT 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:lang">fn:lang</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$testlang</td>
+            <td width="150">xs:string *</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:boolean </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns true if the xml:lang value for the context node matches the given language</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-lang">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:last">fn:last</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:integer </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the context size (the size of the sequence of items currently being processed)</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-last">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:local-name">fn:local-name</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the local part of the name of the context node</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-local-name">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:local-name">fn:local-name</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">node() ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the local part of the name of a given node</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-local-name">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:lower-case">fn:lower-case</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Translates characters in a string to lower case</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-lower-case">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:matches">fn:matches</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$input</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120">$pattern</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:boolean ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns true if the given string matches the given regular expression</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-matches">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>Upgraded in Saxon 7.9 to match the precise regex syntax and to support all four flags s, m, i, x.
+      </p>
+      <hr>
+      <p><b><a name="fn:matches">fn:matches</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$input</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120">$pattern</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120">$flags</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:boolean ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns true if the given string matches the given regular expression,
+               specifying flags to control the way pattern matching is performed
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-matches">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>Upgraded in Saxon 7.9 to match the precise regex syntax and to support all four flags s, m, i, x.
+      </p>
+      <hr>
+      <p><b><a name="fn:max">fn:max</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xdt:anyAtomicType *</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xdt:anyAtomicType ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the highest value in a sequence of comparable items</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-max">XPath 2.0 Specification</a></p>
+      <p>Implemented. Changed in 7.4 to support any comparable type. Changed in 7.8
+         to convert untyped Atomic values to xs:double, and to return NaN if the input sequence contains a NaN.
+      </p>
+      <hr>
+      <p><b><a name="fn:max">fn:max</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xdt:anyAtomicType *</td>
+         </tr>
+         <tr>
+            <td width="120">$collation</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xdt:anyAtomicType ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the highest value in a sequence of strings, using a specified collation to
+               perform the comparisons
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-max">XPath 2.0 Specification</a></p>
+      <p>Implemented in 7.4. Changed in 7.8
+         to convert untyped Atomic values to xs:double, and to return NaN if the input sequence contains a NaN.
+      </p>
+      <hr>
+      <p><b><a name="fn:min">fn:min</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xdt:anyAtomicType *</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xdt:anyAtomicType ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the lowest value in a sequence of comparable items</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-min">XPath 2.0 Specification</a></p>
+      <p>Implemented. Changed in 7.4 to support any comparable type. Changed in 7.8
+         to convert untyped Atomic values to xs:double, and to return NaN if the input sequence contains a NaN.
+      </p>
+      <hr>
+      <p><b><a name="fn:min">fn:min</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xdt:anyAtomicType *</td>
+         </tr>
+         <tr>
+            <td width="120">$collation</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xdt:anyAtomicType ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the lowest value in a sequence of strings, using a specified collation to
+               perform the comparisons
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-min">XPath 2.0 Specification</a></p>
+      <p>Implemented in 7.4. Changed in 7.8
+         to convert untyped Atomic values to xs:double, and to return NaN if the input sequence contains a NaN.
+      </p>
+      <hr>
+      <p><b><a name="fn:name">fn:name</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the name of the context node, as a string in the lexical form of a QName</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-name">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:name">fn:name</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">node() ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the name of a given node, as a string in the lexical form of a QName</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-name">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:namespace-uri">fn:namespace-uri</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the namespace URI of the name of the context node</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-namespace-uri">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:namespace-uri">fn:namespace-uri</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">node() ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the namespace URI of the name of a given node</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-namespace-uri">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:node-kind">fn:node-kind</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">node() </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Identifies what kind of node the argument is, as a string, for example "element" or
+               "attribute"
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-node-kind">XPath 2.0 Specification</a></p>
+      <p>Removed in Saxon 7.8</p>
+      <hr>
+      <p><b><a name="fn:node-name">fn:node-name</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">node() </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:QName ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the name of the given node, as a QName value (that is, a namespace URI plus
+               local name)
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-node-name">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:normalize-space">fn:normalize-space</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Eliminates redundant spaces from the string value of the context node</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-normalize-space">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:normalize-space">fn:normalize-space</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Eliminates redundant spaces from a string</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-normalize-space">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:normalize-unicode">fn:normalize-unicode</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Converts a string to Unicode normalized form NFC by modifying the way in which
+               combining characters are represented
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-normalize-unicode">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b><a name="fn:normalize-unicode">fn:normalize-unicode</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120">$normalizationForm</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Converts a string to a given Unicode normalized form by modifying the way in which
+               combining characters are represented
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-normalize-unicode">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b><a name="fn:not">fn:not</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">item() *</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:boolean </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns true if the effective boolean value of the argument is false, and vice versa</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-not">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:number">fn:number</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:double </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Converts the string value of the context node to a number</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-number">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>Saxon 7.4 implements some incompatible changes to this function defined in XPath 2.0.
+         When given an empty sequence as the argument, the number function now returns
+         an empty sequence, rather than NaN. When given a value that is not a valid
+         number, it raises an error rather than returning NaN. The strings "INF" and "-INF"
+         are recognized as representations of positive and negative infinity.
+      </p>
+      <hr>
+      <p><b><a name="fn:number">fn:number</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">item() ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:double </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Converts the string value of the given node to a number</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-number">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>Implementation follows the XPath 1.0 specification. Changed in 7.4 so that if the
+         argument is the empty sequence, the result is the empty sequence - this causes some backwards
+         compatibility problems.
+      </p>
+      <hr>
+      <p><b><a name="fn:one-or-more">fn:one-or-more</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">item() *</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">item() ?</td>
+         </tr>
+      </table>
+      <p><i></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-one-or-more">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:position">fn:position</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:integer </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the context position (that is, the position of the context item in the sequence
+               currenly being processed)
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-position">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="xslt:regex-group">xslt:regex-group</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$groupNumber</td>
+            <td width="150">xs:integer </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the contents of the substring that matched the n'th
+               subexpression in a regular expression processed using <code>xsl:analyze-string</code></description></i></p>
+      <p><a href="http://www.w3.org/TR/xslt20/#function-regex-group">XSLT 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:remove">fn:remove</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$target</td>
+            <td width="150">item() *</td>
+         </tr>
+         <tr>
+            <td width="120">$position</td>
+            <td width="150">xs:integer </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">item() *</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Removes the item at a given position in a sequence</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-remove">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:replace">fn:replace</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$input</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120">$pattern</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120">$replacement</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Replaces sequences of characters within a string that match a given regular expression</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-replace">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>Upgraded in Saxon 7.9 to match the precise regex syntax and to support all four flags s, m, i, x.
+         Also changed to disallow a pattern that matches a zero-length string.
+      </p>
+      <hr>
+      <p><b><a name="fn:replace">fn:replace</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$input</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120">$pattern</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120">$replacement</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120">$flags</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Replaces sequences of characters within a string that match a given regular expression,
+               specifying flags to control the way the regular expression is matched
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-replace">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>Upgraded in Saxon 7.9 to match the precise regex syntax and to support all four flags 
+         s, m, i, x. Also changed to disallow a pattern that matches a zero-length string.
+      </p>
+      <hr>
+      <p><b><a name="fn:resolve-QName">fn:resolve-QName</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$qname</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120">$element</td>
+            <td width="150">element() </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:QName </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Expands a lexical QName using the in-scope namespaces from the given element</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-resolve-QName">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:resolve-uri">fn:resolve-uri</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$relative</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Resolves a relative URI against the base URI from the static context</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-resolve-uri">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:resolve-uri">fn:resolve-uri</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$relative</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120">$base</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Resolves a relative URI against a given base URI</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-resolve-uri">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>Current WD still describes the second argument as having type xs:anyURI
+      </p>
+      <hr>
+      <p><b><a name="fn:sum">fn:sum</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">item() *</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">item() *</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Reverses the order of the items in the input sequence.</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-sum">XPath 2.0 Specification</a></p>
+      <p>Implemented in Saxon 7.8</p>
+      <hr>
+      <p><b><a name="fn:root">fn:root</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">node() </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the root node (document node) of the tree containing the context node</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-root">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:root">fn:root</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">node() </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">node() </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the root node (document node) of the tree containing the given node</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-root">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:round">fn:round</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">numeric ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">numeric ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Rounds a numeric value to the nearest whole number, rounding x.5 towards
+               positive infinity.
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-round">XPath 2.0 Specification</a></p>
+      <p>Implemented. Changed in 7.4 to return the same type as the supplied argument.</p>
+      <hr>
+      <p><b><a name="fn:round-half-to-even">fn:round-half-to-even</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">numeric ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">numeric ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Rounds a numeric value to the nearest whole number, rounding x.5 towards
+               the nearest even number.
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-round-half-to-even">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:round-half-to-even">fn:round-half-to-even</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">numeric ?</td>
+         </tr>
+         <tr>
+            <td width="120">$precision</td>
+            <td width="150">xs:integer </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">numeric ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Rounds a numeric value to the nearest integer multiple of 10 the power of minus precision, 
+               rounding x.5 towards the nearest number whose last digit is even.
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-round-half-to-even">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>In the case of doubles and floats, rounding errors may occur giving unexpected effects.
+      </p>
+      <hr>
+      <p><b><a name="fn:sequence-node-identical">fn:sequence-node-identical</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$parameter1</td>
+            <td width="150">node() *</td>
+         </tr>
+         <tr>
+            <td width="120">$parameter2</td>
+            <td width="150">node() *</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:boolean ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Tests whether two sequences contain identical nodes in identical positions</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-sequence-node-identical">XPath 2.0 Specification</a></p>
+      <p>Removed in Saxon 7.8</p>
+      <hr>
+      <p><b><a name="fn:starts-with">fn:starts-with</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$operand1</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120">$operand2</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:boolean ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Tests whether one string starts with another string</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-starts-with">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:starts-with">fn:starts-with</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$operand1</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120">$operand2</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120">$collation</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:boolean ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Tests whether one string starts with another string, using the given
+               collation for comparison
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-starts-with">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:string">fn:string</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the string value of the context node</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-string">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:string">fn:string</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">item() ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the string value of the argument. Saxon implements the argument as
+               type item()* rather than item()?
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-string">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:string-join">fn:string-join</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$sequence</td>
+            <td width="150">xs:string *</td>
+         </tr>
+         <tr>
+            <td width="120">$separator</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Concatenates all the strings in the given sequence, separated by the given separator</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-string-join">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:string-length">fn:string-length</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:integer ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the number of characters in the string value of the context node</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-string-length">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:string-length">fn:string-length</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:integer ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the number of characters in the given string</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-string-length">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:string-pad">fn:string-pad</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$padString</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120">$padCount</td>
+            <td width="150">xs:integer </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns a string obtained by concatenating $padCount occurrences of $padString</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-string-pad">XPath 2.0 Specification</a></p>
+      <p>Removed in Saxon 7.8</p>
+      <hr>
+      <p><b><a name="fn:string-to-codepoints">fn:string-to-codepoints</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:integer *</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns a sequence of integers representing the Unicode codepoints of the 
+               characters in the supplied string
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-string-to-codepoints">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:subsequence">fn:subsequence</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$sourceSeq</td>
+            <td width="150">item() *</td>
+         </tr>
+         <tr>
+            <td width="120">$startingLoc</td>
+            <td width="150">xs:double </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">item() *</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns those items in the given sequence from the given starting position
+               to the end of the sequence
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-subsequence">XPath 2.0 Specification</a></p>
+      <p>Implemented, currently requires integer argument</p>
+      <p><b>Note: </b>Non-integer values, negative values etc for the second argument may not work
+         as defined in the XPath specification.
+      </p>
+      <hr>
+      <p><b><a name="fn:subsequence">fn:subsequence</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$sourceSeq</td>
+            <td width="150">item() *</td>
+         </tr>
+         <tr>
+            <td width="120">$startingLoc</td>
+            <td width="150">xs:double </td>
+         </tr>
+         <tr>
+            <td width="120">$length</td>
+            <td width="150">xs:double </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">item() *</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns those items in the given sequence from the given starting position
+               up to the position implied by the given length
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-subsequence">XPath 2.0 Specification</a></p>
+      <p>Implemented, currently requires integer arguments</p>
+      <p><b>Note: </b>Non-integer values, negative values etc for the second or third argument may not work
+         as defined in the XPath specification.
+      </p>
+      <hr>
+      <p><b><a name="fn:substring">fn:substring</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$sourceString</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120">$startingLoc</td>
+            <td width="150">xs:double </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns a substring of a given string starting at the given starting position
+               and continuing to the end of the string
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-substring">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:substring">fn:substring</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$sourceString</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120">$startingLoc</td>
+            <td width="150">xs:double </td>
+         </tr>
+         <tr>
+            <td width="120">$length</td>
+            <td width="150">xs:double </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns a subtring of a given string, starting at a given position and
+               continuing up to a given length
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-substring">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:substring-after">fn:substring-after</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$operand1</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120">$operand2</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns that part of the given input string that occurs after the first occurrence
+               of the string given in $operand2
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-substring-after">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:substring-after">fn:substring-after</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$operand1</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120">$operand2</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120">$collation</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns that part of the given input string that occurs after the first occurrence
+               of the string given in $operand2, using the given collation to compare strings
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-substring-after">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:substring-before">fn:substring-before</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$operand1</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120">$operand2</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns that part of the given input string that occurs before the first occurrence
+               of the string given in $operand2
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-substring-before">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:substring-before">fn:substring-before</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$operand1</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120">$operand2</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120">$collation</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns that part of the given input string that occurs before the first occurrence
+               of the string given in $operand2, using the given collation to compare strings
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-substring-before">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:subtract-dateTimes-yielding-dayTimeDuration">fn:subtract-dateTimes-yielding-dayTimeDuration</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$operand1</td>
+            <td width="150">xs:dateTime ?</td>
+         </tr>
+         <tr>
+            <td width="120">$operand2</td>
+            <td width="150">xs:dateTime ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xdt:dayTimeDuration ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the difference between two dateTimes as a dayTimeDuration</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-subtract-dateTimes-yielding-dayTimeDuration">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b><a name="fn:subtract-dateTimes-yielding-yearMonthDuration">fn:subtract-dateTimes-yielding-yearMonthDuration</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$operand1</td>
+            <td width="150">xs:dateTime ?</td>
+         </tr>
+         <tr>
+            <td width="120">$operand2</td>
+            <td width="150">xs:dateTime ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xdt:yearMonthDuration ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the difference between two dateTimes as a yearMonthDuration</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-subtract-dateTimes-yielding-yearMonthDuration">XPath 2.0 Specification</a></p>
+      <p>** Not yet implemented **</p>
+      <hr>
+      <p><b><a name="fn:sum">fn:sum</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xdt:anyAtomicType *</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xdt:anyAtomicType ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the total of a sequence of numbers</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-sum">XPath 2.0 Specification</a></p>
+      <p>Implemented. In 7.4, works on all numeric types and returns the same type as the
+         arguments. Not implemented for other addable types, e.g. duration. The new optional
+         second parameter is not implemented. Changed in 7.8 to return integer 0 for an empty
+         sequence, rather than double 0.0.
+      </p>
+      <hr>
+      <p><b><a name="xslt:system-property">xslt:system-property</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$propertyName</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the value of a system property</description></i></p>
+      <p><a href="http://www.w3.org/TR/xslt20/#function-system-property">XSLT 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:tokenize">fn:tokenize</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$input</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120">$pattern</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string *</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns a sequence of strings formed by breaking the input string at any substring
+               that matches the given regular expression
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-tokenize">XPath 2.0 Specification</a></p>
+      <p>Implemented. The facility to split a string into its individual characters
+         by supplying a regex that matches a zero-length string is newly implemented in Saxon 7.7.
+      </p>
+      <p><b>Note: </b>Upgraded in Saxon 7.9 to match the precise regex syntax and to support all four flags 
+         s, m, i, x. Also changed to disallow a pattern that matches a zero-length string.
+      </p>
+      <hr>
+      <p><b><a name="fn:tokenize">fn:tokenize</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$input</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120">$pattern</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120">$flags</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string *?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns a sequence of strings formed by breaking the input string at any substring
+               that matches the given regular expression, using flags to control the way regular expression matching
+               is performed
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-tokenize">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>Upgraded in Saxon 7.9 to match the precise regex syntax and to support all four flags 
+         s, m, i, x. Also changed to disallow a pattern that matches a zero-length string.
+      </p>
+      <hr>
+      <p><b><a name="fn:trace">fn:trace</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$value</td>
+            <td width="150">item() *</td>
+         </tr>
+         <tr>
+            <td width="120">$label</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">item() *</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the value of the first argument after outputting a diagnostic message</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-trace">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>The Saxon implementation outputs the value of each item in a sequence as it is evaluated (except
+         when the sequence is empty, in which case it outputs "empty sequence" at the start). Atomic values are
+         output by converting them to a string, nodes by calling getPath() to generate a path expression to the node.
+         With complex expressions the order of evaluation may be rather different from the expected order. The
+         trace output is directed to System.err, this may be redirected by using "2&gt;log.txt" on the command line.
+      </p>
+      <hr>
+      <p><b><a name="fn:translate">fn:translate</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120">$mapString</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120">$transString</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns a string formed by replacing individual characters that appear in the second
+               argument with the characters that appear at the corresponding position in the third argument
+            </description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-translate">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:true">fn:true</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:boolean </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Return the boolean value true</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-true">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="xslt:unparsed-entity-uri">xslt:unparsed-entity-uri</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Return the system ID of an unparsed entity, given its name</description></i></p>
+      <p><a href="http://www.w3.org/TR/xslt20/#function-unparsed-entity-uri">XSLT 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="xslt:unparsed-entity-public-id">xslt:unparsed-entity-public-id</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Return the public ID of an unparsed entity, given its name</description></i></p>
+      <p><a href="http://www.w3.org/TR/xslt20/#function-unparsed-entity-public-id">XSLT 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="xslt:unparsed-text">xslt:unparsed-text</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$uri</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the contents of an external text file, given its URI and encoding</description></i></p>
+      <p><a href="http://www.w3.org/TR/xslt20/#function-unparsed-text">XSLT 2.0 Specification</a></p>
+      <p>Not implemented. The encoding parameter is currently mandatory.</p>
+      <hr>
+      <p><b><a name="xslt:unparsed-text">xslt:unparsed-text</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$uri</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120">$encoding</td>
+            <td width="150">xs:string </td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string </td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns the contents of an external text file, given its URI and encoding</description></i></p>
+      <p><a href="http://www.w3.org/TR/xslt20/#function-unparsed-text">XSLT 2.0 Specification</a></p>
+      <p>Implemented. Changed at 7.5 so it no longer processes multiple URIs ina single call.</p>
+      <hr>
+      <p><b><a name="fn:unordered">fn:unordered</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$sequence</td>
+            <td width="150">item() *</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">item() *</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Returns a random permutation of its argument</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-unordered">XPath 2.0 Specification</a></p>
+      <p><b>Note: </b>In practice the only important case where this function has any effect in the Saxon
+         implementation is where the sequence supplied as argument is a Step using a reverse axis: for example,
+         unordered(ancestor::*) returns the ancestors in reverse document order. But applications should
+         not rely on the actual order; the function is intended to be used by applications that do not care about
+         the order of the results.
+      </p>
+      <hr>
+      <p><b><a name="fn:upper-case">fn:upper-case</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">xs:string ?</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">xs:string ?</td>
+         </tr>
+      </table>
+      <p><i>
+            <description>Converts a string to upper case</description></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-upper-case">XPath 2.0 Specification</a></p>
+      <hr>
+      <p><b><a name="fn:zero-or-one">fn:zero-or-one</a></b></p>
+      <p><i>Function signature</i></p>
+      <table>
+         <tr>
+            <td width="120">$srcval</td>
+            <td width="150">item() *</td>
+         </tr>
+         <tr>
+            <td width="120"><b>Result</b></td>
+            <td width="150">item() ?</td>
+         </tr>
+      </table>
+      <p><i></i></p>
+      <p><a href="http://www.w3.org/TR/xpath-functions/#func-zero-or-one">XPath 2.0 Specification</a></p>
+      <hr>
+      <p align="center"><a HREF="mailto:michael.h.kay@ntlworld.com">Michael H. Kay</a><br>
+         7 March 2004
+      </p>
+   </body>
+</html>
+
+ 
+

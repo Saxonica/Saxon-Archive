@@ -1,0 +1,452 @@
+<html>
+
+<head>
+<title>Sample Saxon Applications</title>
+  <link rel="stylesheet" type="text/css" href="saxon-style.css">
+</head>
+
+<body>
+<div align=right><a href="index.html">Saxon home page</a></div>
+
+
+<h1>Sample Saxon Applications</h1>
+
+<p>Several sample applications are included in the Saxon distribution.</p>
+
+<table width="100%">
+  <tr>
+    <td class="head"><b>Contents</b></td>
+  </tr>
+
+  <tr>
+    <td VALIGN="top" class="body">
+    <a href="#tour">Knight's Tour</a><br>
+    <a href="#trax">JAXP 1.1 Examples</a><br>
+    <a href="#servlet">Sample Servlet</a><br>
+    <a href="#books">The Book List Stylesheet</a><br>
+    <a href="sql-extension.html">SQL Extensions</a><br>
+    <a href="#shakespeare">Shakespeare Example Stylesheet</a><br>
+    <a href="#xpath-example">Shakespeare Example XPath Application</a><br>    
+    <a href="#bible">Bible Example</a><br>
+    <a href="#applet">Applet Examples</a><br>
+    <a href="#jdom">JDOM Example</a><br>
+    </td>
+  </tr>
+</table>
+
+
+<p><i>Note: the example commands here are for the Windows platform, using the SUN
+Java Virtual Machine. UNIX users will
+have little difficulty in adapting the commands; the only real change is to use "/" instead
+of "\" in path names (this affects the command line only: the Java code itself
+ should work on any platform). Running Java applications
+on a Macintosh is a little more complicated, because of the absence of a
+conventional command line.</i></p> 
+
+
+<hr>
+
+<h2><a name="tour">Knight's Tour</a></h2>
+
+<p>This is a stylesheet whose output is a knight's tour of the chessboard (the knight can start
+on any square, and has to visit each square exactly once). This was published as an example
+stylesheet in my book <i>XSLT Programmers Reference</i> (<a href="www.wrox.com">Wrox Press</a>)
+but has been completely reworked so it now makes extensive use of XSLT 2.0 and XPath 2.0
+features. It is worth studying this stylesheet as an introduction to the use of XSLT 2.0 functions,
+and XPath 2.0 <code>for</code> and <code>if</code> expressions.</p>
+
+<p>The stylesheet can be found in the file <code>samples\tour.xsl</code>. It takes no input
+from the source document, so you can supply any XML document as input, for example the 
+stylesheet itself. You can run this example with a command of the form:</p>
+
+<p>
+<p><code><strong><font color="#FF0080">
+java -jar saxon7.jar -a samples\styles\tour.xsl start=e5 &gt;tour.html<br />
+</font></strong></code></p>
+
+<p>When you display the resulting HTML file in your browser it should look like this:</p>
+
+      <div align="center">
+         <p><b><big>Knight's tour starting at e5</big></b></p>
+         <table border="1" cellpadding="4" size="64">
+            <tr>
+               <td align="center" bgcolor="white">6</td>
+               <td align="center" bgcolor="xffff44">3</td>
+               <td align="center" bgcolor="white">8</td>
+               <td align="center" bgcolor="xffff44">21</td>
+               <td align="center" bgcolor="white">42</td>
+               <td align="center" bgcolor="xffff44">51</td>
+               <td align="center" bgcolor="white">18</td>
+               <td align="center" bgcolor="xffff44">39</td>
+            </tr>
+            <tr>
+               <td align="center" bgcolor="xffff44">9</td>
+               <td align="center" bgcolor="white">22</td>
+               <td align="center" bgcolor="xffff44">5</td>
+               <td align="center" bgcolor="white">2</td>
+               <td align="center" bgcolor="xffff44">19</td>
+               <td align="center" bgcolor="white">40</td>
+               <td align="center" bgcolor="xffff44">43</td>
+               <td align="center" bgcolor="white">50</td>
+            </tr>
+            <tr>
+               <td align="center" bgcolor="white">4</td>
+               <td align="center" bgcolor="xffff44">7</td>
+               <td align="center" bgcolor="white">20</td>
+               <td align="center" bgcolor="xffff44">41</td>
+               <td align="center" bgcolor="white">52</td>
+               <td align="center" bgcolor="xffff44">49</td>
+               <td align="center" bgcolor="white">38</td>
+               <td align="center" bgcolor="xffff44">17</td>
+            </tr>
+            <tr>
+               <td align="center" bgcolor="xffff44">23</td>
+               <td align="center" bgcolor="white">10</td>
+               <td align="center" bgcolor="xffff44">27</td>
+               <td align="center" bgcolor="white">48</td>
+               <td align="center" bgcolor="xffff44">1</td>
+               <td align="center" bgcolor="white">44</td>
+               <td align="center" bgcolor="xffff44">55</td>
+               <td align="center" bgcolor="white">60</td>
+            </tr>
+            <tr>
+               <td align="center" bgcolor="white">26</td>
+               <td align="center" bgcolor="xffff44">31</td>
+               <td align="center" bgcolor="white">24</td>
+               <td align="center" bgcolor="xffff44">53</td>
+               <td align="center" bgcolor="white">56</td>
+               <td align="center" bgcolor="xffff44">61</td>
+               <td align="center" bgcolor="white">16</td>
+               <td align="center" bgcolor="xffff44">37</td>
+            </tr>
+            <tr>
+               <td align="center" bgcolor="xffff44">11</td>
+               <td align="center" bgcolor="white">28</td>
+               <td align="center" bgcolor="xffff44">47</td>
+               <td align="center" bgcolor="white">34</td>
+               <td align="center" bgcolor="xffff44">45</td>
+               <td align="center" bgcolor="white">54</td>
+               <td align="center" bgcolor="xffff44">59</td>
+               <td align="center" bgcolor="white">64</td>
+            </tr>
+            <tr>
+               <td align="center" bgcolor="white">32</td>
+               <td align="center" bgcolor="xffff44">25</td>
+               <td align="center" bgcolor="white">30</td>
+               <td align="center" bgcolor="xffff44">13</td>
+               <td align="center" bgcolor="white">62</td>
+               <td align="center" bgcolor="xffff44">57</td>
+               <td align="center" bgcolor="white">36</td>
+               <td align="center" bgcolor="xffff44">15</td>
+            </tr>
+            <tr>
+               <td align="center" bgcolor="xffff44">29</td>
+               <td align="center" bgcolor="white">12</td>
+               <td align="center" bgcolor="xffff44">33</td>
+               <td align="center" bgcolor="white">46</td>
+               <td align="center" bgcolor="xffff44">35</td>
+               <td align="center" bgcolor="white">14</td>
+               <td align="center" bgcolor="xffff44">63</td>
+               <td align="center" bgcolor="white">58</td>
+            </tr>
+         </table>
+      </div>
+      
+<hr>
+
+<h2><a name="trax">JAXP 1.1 examples</a></h2>
+
+<p>Saxon supports the Java JAXP 1.1 API, also known as TrAX (package javax.xml.transform)
+ for invoking the stylesheet processor.
+This API is useful when you want to write your own Java applications that invoke Saxon.</p>
+
+<p>A sample program that illustrates many features of the TrAX interface is included in
+the distribution as <b>TraxExamples.java</b>. Source XML and XSLT files for use with this
+program are included in the <b>trax</b> directory. To run the program, use the command:
+
+<p class="highlight">
+cd $saxonhome/samples/trax
+java TraxExamples <br>
+</p>
+
+<p>You can supply an argument to indicate which of the examples you want to run; see the source
+code for details. By default, they are all executed in turn.</p>
+
+<p>One of the examples shows how to use TrAX to process input from a third-party (non-Saxon)
+DOM document, and how to
+send output to a third-party DOM document. This example tests to see if either Crimson or
+Xerces is present on the classpath; if not, it should fail cleanly. You will need to change the
+source code and recompile if you want to
+use it with a different DOM implementation.</p>
+
+
+<hr>
+
+<h2><a name="servlet">SaxonServlet</a></h2>
+
+<p>This is a general-purpose servlet that takes the name of a source document and stylesheet
+as URL parameters, and uses the stylesheet to process the source document, creating a result
+ document which is sent back to the browser for display. 
+ The result document may have any media type, though HTML and XML are the most likely.</p>
+
+<p>The servlet maintains a cache of prepared stylesheets; if the same stylesheet is used repeatedly,
+it is only parsed and validated once, which will often greatly improve performance. Prepared style
+sheets are thread-safe so they can be used to serve documents to several users concurrently.</p>
+
+<p>The URLs for the source document and the stylesheet document are supplied in the URL,
+which will typically take the form:</p>
+
+<p class="highlight">
+http://server.com/servlets/SaxonServlet?source=doc.xml&style=sheet.xsl
+</p>
+
+<p><i>Note: Internet Explorer assumes that if the URL ends with ".xml" or ".xsl", as in
+the above example, then the returned file will be XML - even if the media type in the HTTP header
+is set to "text/html". You can prevent this behaviour by adding an extra dummy parameter, for example
+"&amp;x=y".</i></p>
+
+<p>The source and style parameters identify the source document and stylesheet by URL.
+These are interpreted relative to the servlet context. This means that specifying
+say "style=/styles/styleone.xsl" in the URL will locate the stylesheet in this file relative to the
+root directory for the web server.</p>
+
+<p>The stylesheet is prepared the first time it is used, and held in memory in a cache. The cache may
+be cleared (for example, if a stylesheet has been changed) using a URL such as:</p>
+
+<p class="highlight">
+http://server.com/servlets/SaxonServlet?clear-stylesheet-cache=yes
+</p>
+
+<p>This code is provided purely as a sample, in the expectation that you will customise it to your
+particular site requirements.</p>
+
+<hr>
+
+<h2><a name="books">The Book List Stylesheet</h2>
+
+<p>This is a very simple sample stylesheet to illustrate several Saxon extensions.
+It uses the XML file <b>books.xml</b> (derived from a file issued originally by Microsoft).
+You will find this in the samples\data directory. The DTD is in <b>books.dtd</b></p>
+
+<p> There is a style sheet <b>books.xsl</b> that can be used to display the data: run this as
+follows, with the samples directory as the current directory:<p>
+
+<p class="highlight">
+java net.sf.saxon.Transform data\books.xml styles\books.xsl ><i>output.html</i><br>
+</p>
+
+<p>This produces an HTML page showing the data. (The output isn't very pretty, if you have
+time to write an improved version, please send it in).</p>
+
+<p>The stylesheet takes a parameter named "top-author". This is the name of the "author of the week",
+and the default value is "Bonner". To run the stylesheet with a different top author, try:</p>
+
+<p class="highlight">
+java net.sf.saxon.Transform data\books.xml styles\books.xsl top-author=Danzig ><i>output.html</i><br>
+</p>
+
+<p>It is possible (under those operating systems I know of) to write the author's name in quotes if
+it contains spaces, e.g. top-author="A. A. Milne".
+
+<p>There is another style sheet, books-csv.xsl, which
+converts the data into a comma-separated-values file.</p>
+
+<hr>
+
+
+
+<h2><a name="shakespeare">Shakespeare Example</a></h2>
+
+<p>This example works on an input file
+containing a Shakespeare play. You can use any of the Shakespeare plays in Jon Bosak's
+distribution at <a href="http://metalab.unc.edu/bosak/xml/eg/shaks200.zip">
+http://metalab.unc.edu/bosak/xml/eg/shaks200.zip</a>,
+but for convenience one of them, <em>Othello</em>, is included in the Saxon distribution
+(in the samples\data directory).</p>
+
+<h3>Shakespeare stylesheet</h3>
+
+<p>There is an XSLT stylesheet, play.xsl, which processes an input play in XML and
+generates a set of linked HTML files (one for the play and one for each scene) in an
+output directory. To run this, create a directory (say playhtml) and execute the following
+from the command line:</p>
+
+<p class="highlight">
+cd samples<br>
+java net.sf.saxon.Transform data\othello.xml styles\play.xsl dir=playhtml
+</p>
+
+<p>The last parameter sets the value of the constant <strong>dir</strong> to the value <strong>playhtml</strong>;
+this constant is referenced from the style sheet when creating output files.</p>
+
+<p>As well as showing how to produce multiple output files using the new XSLT 2.0
+<code>xsl:result-document</code> element, this example stylesheet shows how to use
+<code>saxon:preview</code> to reduce the memory requirements when processing the
+source document sequentially.</p>
+
+<h3><a name="xpath-example">Shakespeare XPath Sample Application</a></h3>
+
+<p>In the <code>samples/java</code> directory is an example application called
+<code>XPathExample.java</code>. This is designed to illustrate the use of Saxon's XPath API
+from a Java application. It searches a Shakespeare play for all occurrences of a word
+entered from the console, displaying the lines containing that word, and the context where
+they appear.</p>
+
+<p>To run this example, first ensure that it is on your classpath, and find the location of
+the <code>othello.xml</code> file in the <code>samples/data</code> directory. Open a command-line
+console, and run the application using the command:</p>
+
+<p class="highlight">
+cd samples<br>
+java XPathExample data\othello.xml
+</p>
+
+<p>The application prompts for a word. Enter the word (try "castle" or "handkerchief"). The lines
+containing the chosen word are displayed on the console. Exit the application by entering ".".</p>
+
+<!--
+<h4>Shakespeare play splitter</h4>
+
+<p>The Java application <strong>Loadplay.java</strong> splits a large XML document into
+several smaller linked XML documents.</p>
+
+<p>LoadPlay is a free-standing Java application which you can run from the command line.
+It takes as input a full Shakespeare play (for example <b>othello.xml</b> which is
+included in the distribution) and splits it into a number of separate XML files, one for
+the &quot;front material&quot; of the play, and one for each scene in the play.</p>
+
+<p>To run the program:</p>
+
+<ul>
+  <li>Ensure it is on your CLASSPATH </li>
+  <li>Ensure you have installed a SAX parser and registered it in the <code>ParserManager.properties</code>
+    file </li>
+  <li>Change directory to the <code>samples/data</code> directory containing the file <code>othello.xml</code>
+  </li>
+  <li>Enter the command line:<br>
+    <font color="#FF0080"><code>java LoadPlay othello</code></font> </li>
+</ul>
+
+<p>A directory called &quot;othello&quot; is created and the play and scene files are
+generated within it. The program creates an output directory with the same name (othello)
+as the input file (othello.xml). The parameter should therefore be the name of the play
+file without its &quot;.xml&quot; suffix.</p>
+
+<h4>Shakespeare servlets</h4>
+
+<p>There are two programs (ShowPlay and ShowScene) for displaying the generated plays and scenes at a web browser.
+They are written as Java servlets, and can be run in any web server that supports the
+servlet interface.</p>
+
+<p>To run them, follow the following steps:</p>
+
+<ol>
+  <li>Ensure your web server is properly configured to run servlets</li>
+  <li>Copy the two files <strong>ShowPlay.class</strong> and <strong>ShowScene.class</strong>
+    into the relevant servlets directory, which depends on which web server you are using. It
+    may well be a directory called <strong>servlets</strong>.</li>
+  <li>Create an HTML page which references the <strong>ShowPlay</strong> servlet. It should
+    contain a hyperlink such as:<br>
+    <strong><small><font color="#FF0080">&lt;a
+    href=servlets/ShowPlay?dir=plays&amp;play=othello&gt;Othello, the Moor of Venice&lt;/a&gt;</font></small></strong><br>
+    Here the <strong>dir</strong> parameter is a directory containing all the Shakespeare
+    plays, and the <strong>play</strong> parameter is a subdirectory containing the various
+    XML files constituting the text of <em>Othello</em>, which you prevoiusly created using
+    the <strong>LoadPlay</strong> program.</li>
+  <li>Select this HTML page from your browser and click on the link to <em>Othello</em>. You
+    should be able to view the front page of the play, and browse through its individual
+    scenes.</li>
+</ol>
+
+<p>If you have problems getting this to work, and there seem to be no useful diagnostics
+visible at the web browser, check in the web server log files. Also, try getting any
+sample servlets supplied with the web server to work first: this will ensure that the
+environment is OK. The most likely cause of problems is that the code you need (servlets,
+Saxon, the XML parser) is not all on the class path used by the web server: this is not
+necessarily the same class path as you use from the command line.<code><br>
+</code></p>
+-->
+<hr>
+
+<h2 align="left"><a name="bible">The Bible</a></h2>
+
+<p align="left">The stylesheet <b>bible.xsl</b> takes as input an XML file containing the text of the Old
+or New Testament. These files are not included in the Saxon distribution for space
+reasons, but can be downloaded from
+ <a href="http://metalab.unc.edu/bosak/xml/eg/rel200.zip">
+ http://metalab.unc.edu/bosak/xml/eg/rel200.zip</a>
+or from various mirror sites. They were prepared by Jon Bosak.</p>
+
+<p align="left">The output of the stylesheet is a set of 292 HTML files in a single
+directory, which together provide a frames-oriented rendition of the text. You can see the
+result (for the New Testament) at <a href="http://www.wokchorsoc.freeserve.co.uk/bible-nt/index.html">http://www.wokchorsoc.freeserve.co.uk/bible-nt/index.html</a>.
+The application also works with the Old Testament text, but not with the other religious
+texts included in Jon Bosak's distribution.</p>
+
+<p align="left">To run the stylesheet first create an output
+directory (say htmldir), then execute the following from the command line:</p>
+
+<p align="left"><strong><small><font color="#FF0080">java&nbsp; net.sf.saxon.Transform
+&nbsp; data\nt.xml&nbsp; styles\bible.xsl&nbsp; dir=htmldir</font></small></strong></p>
+
+<p align="left">The final parameter sets the value of the XSLT parameter &quot;dir&quot; to
+the value &quot;htmldir&quot;, which is referenced within the stylesheet to select a
+directory for output files.</p>
+
+<hr>
+
+<h2><a name="applet">Applet Examples</a></h2>
+
+<p>The directory samples/applet contains two demonstrations showing how to use
+Saxon from an applet embedded in an HTML page. Note that because this release
+of Saxon requires JDK 1.2 or later, you cannot run these applets with the default
+Microsoft JVM used by Internet Explorer. Instead, you will have to download and
+install the Sun Java plugin, obtainable from 
+<a href="http://java.sun.com/getjava">http://java.sun.com/getjava</a>.</p>
+
+<p>The subdirectory /demo contains a demonstration taken straight from the Xalan
+sample application, showing a window with three frames, containing the source document,
+stylesheet, and result. Click on "index.html" to open this in the browser, then click on the
+"Transform" button to run a transformation. Note that the HTML page is written in such
+a way that expects the saxon7.jar file to be located in the same directory as the HTML
+files; you will need to change the HTML to reflect its actual location. The SUN Java VM
+uses a security architecture that is fussy about where the file is located, even when
+you are running everything on your local machine: I found I had to move saxon7.jar into 
+the data directory to make it work.</p>
+
+<p>The subdirectory /family-tree contains a demonstration showing some members of
+the Kennedy family; open the HTML file to view the data. This demonstration is adapted
+from the one in my book <i>XSLT Programmer's Reference</i>. It illustrates how repeated
+transformations using the same source document and the same stylesheet can be used to
+browse around a data-set, without making repeated visits to the server.</p>
+
+<hr>
+
+<h2><a name="jdom">JDOM Example</a></h2>
+
+<p>Saxon includes an adapter that allows the source tree to be a JDOM document.</p>
+
+<p>To use this facility:</p>
+
+<ul>
+<li>The JAR file saxon-jdom.jar must be on the classpath</li>
+<li>JDOM version 0.7 must be installed and on the classpath</li>
+<li>You must be using JDK 1.2 or later.</li>
+</ul>
+
+<p>The sample application JDOMExample.java illustrates how a JDOM tree can be used
+with Saxon. It combines two scenarios: running XPath expressions directly against a
+JDOM tree, from the Java application; and invoking a transformation with the JDOM document
+supplied as the Source object.</p>
+
+<p>The application is designed to take two arguments, the <code>books.xml</code> file
+in the samples/data directory, and the <code>total.xsl</code> file in the samples/styles
+directory. The application builds a JDOM tree, modifies it <i>in situ</i> to add extra
+attributes, and then references these attributes from the stylesheet.</p>
+
+<hr />
+
+<p align="center">Michael H. Kay<br>
+2 May 2003</p>
+</body>
+</html>

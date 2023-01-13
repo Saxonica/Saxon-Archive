@@ -1,0 +1,109 @@
+<html>
+
+<head>
+
+<title>Limitations in Saxon 6.5.4</title>
+
+<body leftmargin="150" bgcolor="#ddeeff"><font face="Arial, Helvetica, sans-serif">
+<div align=right><a href="index.html">SAXON home page</a></div>
+
+<p><b><font FACE="Arial, Helvetica, sans-serif" color="#FF0080" size="7">
+Limitations</font></b></p>
+
+<p>This page lists areas where Saxon 6.5.4 is known to be non-conformant with
+W3C specifications.</p>
+
+<p>Since Saxon 6.5.4 is now stable and generally reliable, there are no plans to remove these limitations.</p>
+
+<h2>XSLT 1.0 conformance</h2>
+
+
+<ol>
+<li><p>The characters used in the <code>xsl:decimal-format</code> element and the
+picture string of <code>format-number</code> must have Unicode code points
+less than 65535.</p></li>
+
+<li><p>The picture string of
+<code>format-number</code> behaves as implemented in the Java 
+<code>DecimalFormat</code> class for the JDK version in use, whereas
+the XSLT specification mandates that it should behave as specified in JDK 1.1.</p></li>
+
+<li><p>When the <code>version</code> attribute is set to <code>1.1</code>, Saxon
+recognizes certain constructs that were defined in the draft XSLT 1.1 specification;
+XSLT 1.0 requires that such constructs are treated as errors.</p></li>
+
+
+<li><p>An erratum to the XSLT 1.0 specification states that <code>xsl:copy</code> and <code>xsl:copy-of</code>
+may be used to add a namespace node to a newly constructed element. This works correctly in Saxon, provided
+that the name of the namespace node does not clash with the namespace prefix that Saxon has allocated to the
+element for serialization purposes. (In principle, this namespace prefix should not be present in the result
+tree, and should therefore be incapable of causing a conflict.) More details: see bug 
+<a href="http://sourceforge.net/tracker/index.php?func=detail&aid=637117&group_id=29872&atid=397617">637117</a>.</p></li>
+
+<li><p>Saxon's checking of the characters used in a QName is an approximation to the rules in the XML specification.
+Some rarely-used characters are permitted when they should be rejected, and there may also be a few cases where
+valid characters are rejected.</p></li>
+
+<li><p>Saxon does not allow attribute and namespace nodes to be numbered using <code>&lt;xsl:number level="single"&gt;</code>.
+This should be permitted according to the specification, and 
+if the <code>count</code> and <code>from</code> patterns are omitted the result should always be 1 (one).<p>
+
+<p>This bug can be fixed by the following source change: in module <code>com.icl.saxon.om.Navigator</code>,
+delete line 172 (the call on <code>checkNumberable()</code>).</p></li>
+</ol>
+
+<h2>XML 1.0 Conformance</h2>
+
+<p>The default parser is a version of &AElig;lfred. There is one known non-conformance in
+the version of the AElfred parser provided with the Saxon product: it does not enforce the
+constraint that the contents of a general entity must be well-formed. Note, however, that this
+parser does not perform XML validation.</p>
+
+<h2>JAXP Conformance</h2>
+
+<ol>
+
+<li><p>When stylesheet output is sent to a user-provided ContentHandler, it's best only to send
+a well-formed document. If the result tree is not well-formed, Saxon tries to tell the 
+<code>ContentHandler</code> about it by means of a <code>saxon:warning</code> processing instruction. 
+However, failures
+are likely to follow whether the application responds to this warning or not. It's not clear what
+the right thing to do is here; it doesn't seem right to send a ContentHandler an ill-formed
+event stream, as it's likely to break. Saxon 7.x adopts the cleaner approach of defining an output
+property saxon:require-well-formed="no" to indicate that the ContentHandler is prepared to accept
+an ill-formed event stream.</p></li>
+
+<li><p>If the command line (<code>com.icl.saxon.StyleSheet</code>) is invoked with the source document
+and/or stylesheet specified as URLs, and a user-written URIResolver is used, and the resolve() method
+returns null for the URIs on the command line, then Saxon doesn't try to use the standard URIResolver
+instead.</p></i>
+
+<li><p>Whitespace stripping does not take place when the transformation is executed using a JAXP
+<code>TransformerHandler</code>.</p></li>
+
+<li><p>When the output file name supplied to a <code>StreamResult</code> contains spaces or other special characters,
+then under Java 5 (or JAXP 1.3) the file that is actually created will contain these special characters in %HH notation.
+For example, if the output is created as <code>new StreamResult('test.out')</code>, and the current directory is
+<code>c:\My Documents\</code>, then the resulting output file will be in <code>c:\My%20Documents\test.out</code>.
+This problem also occurs when the transformation is run from the command line. The cause of the problem is that
+JAXP 1.3 corrects a long-standing bug whereby spaces and other special characters were not %HH encoded when 
+converting the supplied filename to a URI; unfortunately Saxon doesn't attempt to reverse the %HH encoding when
+converting the URI back to a filename. This is partly because the JVM methods to do this were introduced only
+in JDK 1.4, and Saxon 6.5.4 is supported also on JDK 1.2 and JDK 1.3.</p>
+
+<p>The code that needs to be fixed is in method <code>urlToFileName</code> in class <code>GeneralOutputter</code>.
+No fix is currently available. For JDK 1.4 and later, the method can be replaced by a call on 
+<code>new File(new URI(base)).toString()</code>, with suitable exception handling, but a correct solution
+for JDK 1.3 and earlier would require implementation of a URI decoder that handles all %HH escape sequences.</p>
+
+<p>Note that this problem affects Saxon 6.5.3 as well as 6.5.4. It is not present in Saxon 8.x.</li>
+
+</ol>
+
+
+
+<hr>
+<p align="center">Michael H. Kay<br>
+15 August 2005</p>
+</body>
+</html>

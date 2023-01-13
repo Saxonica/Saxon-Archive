@@ -1,0 +1,704 @@
+<html>
+
+<head>
+<title>XPath 2.0 Expression Syntax</title>
+
+<body leftmargin="150" bgcolor="#ddeeff">
+<div align=right><a href="index.html">Saxon home page</a></div>
+
+<h1><font FACE="Arial, Helvetica, sans-serif" color="#FF0080" size="7">XPath 2.0 Expression Syntax</font></h1>
+
+
+<hr>
+<font FACE="Arial, Helvetica, sans-serif" SIZE="3">
+
+<table width="100%">
+  <tr>
+    <td width="100%" bgcolor="#0000FF"><font color="#FFFFFF"><big><b>Contents</b></big></font></td>
+  </tr>
+
+  <tr>
+    <td VALIGN="top"  bgcolor="#00FFFF" width="100%">
+    <a href="#Introduction">Introduction</a><br>
+    <a href="#Literals">Constants</a><br>
+    <a href="#VariableReferences">Variable References</a><br>
+    <a href="#Parentheses">Parentheses and operator precedence</a><br>
+    <a href="#StringExpressions">String Expressions</a><br>
+    <a href="#BooleanExpressions">Boolean Expressions</a><br>
+    <a href="#NumericExpressions">Numeric Expressions</a><br>
+    <a href="#SequenceExpressions">Sequence Expressions</a><br>
+    <a href="#TypeConversion">Type Conversion Expressions</a>
+    </td>
+
+  </tr>
+</table>
+
+<h2><a name="Introduction">Introduction</a></h2>
+
+<p>This document is an informal guide to the syntax of XPath 2.0 expressions, which are used in Saxon both within
+XSLT stylesheets, and in the Java API. For formal specifications, see the
+ <a href="http://www.w3.org/TR/xpath20">XPath 2.0 specification</a>,
+except where differences are noted here.</p>
+
+<p>This summary has been updated to include brief descriptions of those XPath 2.0 constructs
+that are implemented in the Saxon product.</p>
+
+<p>Saxon expressions may be used either in an XSL stylesheet, or as a parameter to various Java
+interfaces. The syntax is the same in both cases. In the Java interface, expressions are encapsulated
+by the <b>net.sf.saxon.expr.Expression</b> class, and are parsed using a call such as
+Expression.make("$a + $b"). To exploit the full power of XPath expressions in the Java API, you will
+need to supply some support classes to perform functions such as resolving namespace references:
+this cannot be done automatically because there is no stylesheet to use as a reference point. </p>
+
+<p>An important change in XPath 2.0 is that all values are now considered as sequences. A sequence
+consists of zero or more items; an item may be a node or a simple-value. Examples of simple-values
+are integers, strings, booleans, and dates (not supported yet in Saxon). A single value such as
+a number is considered as a sequence of length 1. The empty sequence is written as <code>()</code>;
+a singleton sequence may be written as <code>"a"</code> or <code>("a")</code>, and a general
+sequence is written as <code>("a", "b", "c")</code>.</p>
+
+<p>The node-sets of XPath 1.0 are replaced in XPath 2.0 by sequences of nodes. Path expressions
+will return node sequences whose nodes are in document order with no duplicates, but other kinds
+of expression may return sequences of nodes in any order, with duplicates permitted.</p> 
+
+<hr>
+
+<a name="Literals"><h2>Constants</h2></a>
+
+<p><b>String literals</b> are written as "London" or 'Paris'. In each case you can use the opposite
+kind of quotation mark within the string: 'He said "Boo"', or "That's rubbish". In a stylesheet
+XSL expressions always appear within XML attributes, so it is usual to use one kind of delimiter for
+the attribute and the other kind for the literal. Anything else can be written using XML character
+entities. <b>From Saxon 7.1, string delimiters can be doubled within the string to represent the
+delimiter itself: for example </b><code>&lt;xsl:value-of select='"He said, ""Go!"""'/&gt;</code></p>
+
+<p><b>Numeric constants</b> follow the Java rules for decimal literals: for example, 12 or 3.05; a
+negative number can be written as (say) -93.7, though technically the minus sign is not part of the
+literal. (Also, note that you may need a space before the minus sign to avoid it being treated as
+a hyphen within a preceding name). The numeric literal is taken as a double precision floating 
+point number if it uses scientific notation (e.g.) <code>1.0e7</code>), as fixed point decimal
+if it includes a full stop, or as a integer otherwise. Decimal values in Saxon have unlimited 
+precision, integers are limited to 64 bits.</p>
+
+<p>There are no boolean constants as such: instead use the function calls true() and false().</p>
+
+<p>Constants of other data types can be written using constructors, which look like function calls
+but require a string literal as their argument. For example, <code>float("10.7")</code> produces
+a single-precision floating point number. Saxon implements constructors for many of the data types
+defined in XML Schema Part 2, but most of them are essentially dummy implementations at present.</p>
+
+<p>Two exceptions are for <b>date</b> and <b>dateTime</b> values: for example
+you can write constants for these data types as <code>date("2002-04-30")</code>
+or <code>dateTime("1966-07-31T15:00:00Z")</code>.</p>
+
+<hr>
+<a name="VariableReferences"><h2>Variable References</h2></a>
+
+<p>The value of a variable (local or global variable, local or global parameter) may be referred to
+using the construct $<i>name</i>, where <i>name</i> is the variable name.</p>
+
+<p>The variable is always evaluated at the textual place where the expression containing it appears;
+for example a variable used within an xsl:attribute-set must be in scope at the point where the
+ attribute-set is defined, not the point where it is used.</p>
+
+<p>A variable may take a value of any data type, and in general it is not possible to 
+determine its data type statically.</p>
+
+<p>It is an error to refer to a variable that has not been declared.</p>
+
+<p>Starting with XPath 2.0, variables (known as range variables) may be declared within
+an XPath expression, not only using <code>xsl:variable</code> elements in the stylesheet. The
+expressions that declare variables are the <code>for</code>, <code>some</code>, and <code>every</code>
+expressions.</p>
+
+
+<hr>
+<a name="#Parentheses"><h2>Parentheses and operator precedence</h2></a>
+
+<p>In general an expression may be enclosed in parentheses without changing its meaning.</p>
+
+<p>If parentheses are not used, operator precedence follows the sequence below, starting with the
+operators that bind most tightly. Within each group the operators are evaluated left-to-right</p>
+
+<table>
+<tr><td width=200><b>Operator</b></td><td><b>Meaning</b></td></tr>
+<tr><td>[]</td><td>predicate</td></tr>
+<tr><td>/, //</td><td>path operator</td></tr>
+<tr><td>|, except, intersect</td><td>operations on sets</td></tr>
+<tr><td>*, div, mod</td><td>multiply, divide, modulo</td></tr>
+<tr><td>+, -</td><td>plus, minus</td></tr>
+<tr><td>&lt;, &lt=;, &gt;, &gt=;</td><td>Less-than, less-or-equal, greater-than, greater-or-equal</td></tr>
+<tr><td>=, !=, is, isnot</td><td>equality and identity tests</td></tr>
+<tr><td>for, if, some, every</td><td>iterations and conditionals</td></tr>
+<tr><td>and</td><td>Boolean and</td></tr>
+<tr><td>or</td><td>Boolean or</td></tr>
+</table>
+<hr>
+
+<p><i>The operators eq, ne, lt, le, gt, ge are also available: the precedence of these may
+not be correct, so use parentheses to be safe.</i></p>
+
+<a name="StringExpressions"><h2>String Expressions</h2></a>
+
+<font FACE="Arial, Helvetica, sans-serif" SIZE="3">
+
+<p>There are some constructs that are specifically string expressions, but in addition any other
+kind of expression can be used in a context where a string expression is required:</p>
+
+<ul>
+<li>According to the XPath 2.0 specification,
+ numeric expression is converted to a string using the canonical lexical representation
+for the particular numeric type as defined in XML Schema. For example, the integer 2 is displayed
+as "2", but the decimal 2.0 is displayed as "2.0". In Saxon, however, for the time being
+the string representation never ends with ".0", to reduce backwards compatibility problems.</li>
+<li>A boolean expression is displayed as one of the strings "true" or "false".
+<li>When a sequence expression is used in a string context, only the first item of the sequence
+ is used: the value of this item is converted to a string. The string-value of a text node
+ is the character content of the node; the string-value of an element node or document (root) node
+ is the concatenation of all its descendant text nodes.</li>
+
+ </ul>
+
+<p>The specific string expressions are as follows:</p>
+
+<table>
+
+<tr><td width=40%><b>Construct</b></td><td><b>Meaning</b></td></tr>
+
+<tr><td valign=top>string(<i>expression</i>)</td>
+<td valign=top>This performs an explicit type conversion
+to a string, which will always give the same result as the implicit conversion described above.
+The main case where explicit conversion is useful is when assigning a value to a variable.</td></tr>
+
+<tr><td valign=top>concat(<i>expression1</i>, <i>expression2</i> {,<i>expression3</i>}*)</td>
+<td valign=top>This concatenates the
+string values of the arguments. There may be any number of arguments (two or more).</td></tr>
+
+<tr><td valign=top>substring(<i>expression1</i>, <i>expression2</i> [,<i>expression3</i>])</td>
+<td valign=top>This extracts a substring of the string value of expression1. Expression2 gives
+the start position (starting at 1), expression 3 gives the length: if omitted, the rest of the
+string is used. For example, substring("Michael", 2, 4) is "icha".</td></tr>
+
+<tr><td valign=top>substring-before(<i>expression1</i> ,<i>expression2</i>)</td>
+<td valign=top>This returns the substring of expression1 that precedes the first occurrence of
+expression2. If expression1 does not contain expression2, it returns the empty string. For
+example, substring-before("c:\dir", ":\") returns "c".</td></tr>
+
+<tr><td valign=top>substring-after(<i>expression1</i> ,<i>expression2</i>)</td>
+<td valign=top>This returns the substring of expression1 that follows the first occurrence of
+expression2. If expression1 does not contain expression2, it returns the empty string. For
+example, substring-before("c:\dir", ":\") returns "dir".</td></tr>
+
+<tr><td valign=top>normalize-space(<i>expression1</i>)</td>
+<td valign=top>This removes leading and trailing white space, and converts all other sequences
+of white space to a single space character. For example, 'normalize(" Mike &nbsp; Kay ")' returns
+"Mike Kay"</td></tr>
+
+<tr><td valign=top>translate(<i>expression1</i>, <i>expression2</i>, <i>expression3</i>)</td>
+<td valign=top>This replaces any character in expression1 that also occurs in expression2 with
+the corresponding character from expression3. For example, translate ("ABBA", "ABC", "123")
+ returns "1221". If there is no corresponding character in expression3 (because it is shorter than
+expression2), the character is removed from the string.</td></tr>
+
+<tr><td valign=top>upper-case(<i>string</i>)</td>
+<td valign=top>Converts a string to upper case, using the rules for the default Java locale.</td></tr>
+
+<tr><td valign=top>lower-case(<i>string</i>)</td>
+<td valign=top>Converts a string to lower case, using the rules for the default Java locale.</td></tr>
+
+<tr><td valign=top>string-pad(<i>string</i>, <i>number</i>)</td>
+<td valign=top>Returns n occurrences of the string, concatenated. For example, <code>string-pad("ab", 3)</code>
+returns <code>"ababab"</code>.</td></tr>
+
+<tr><td valign=top>name(<i>node</i>)</td>
+<td valign=top>Returns the name of the given node, or the current
+node if the argument is omitted. The name here is the "display name"; it will use the same
+namespace prefix as in the original source document.</td></tr>
+
+<tr><td valign=top>local-name(<i>node</i>)</td>
+<td valign=top>Returns the local part (after the colon) of the name of the
+ given node, or the current node if the argument is omitted</td></tr>
+
+<tr><td valign=top>namespace-uri(<i>node</i>)</td>
+<td valign=top>Returns the URI of the namespace of the name of the
+ given node, or the current node if the argument is omitted</td></tr>
+
+<tr><td valign=top>unparsed-entity-uri(<i>string-expression</i>)</td>
+<td valign=top>Returns the URI of the unparsed entity with the given name in the
+current document, if there is one; otherwise the empty string</td></tr>
+
+<tr><td valign=top>generate-id(<i>node</i>)</td>
+<td valign=top>Returns a system-generated identifier for the
+ given node, or the current node if the argument is omitted. 
+ The generated identifiers are always alphanumeric (except
+for the document node, where the identifier is the empty string).
+</ul>
+</td></tr>
+</table>
+
+</font>
+
+<hr>
+
+<a name="NumericExpressions"><h2>Numeric Expressions</h2></a>
+
+<font FACE="Arial, Helvetica, sans-serif" SIZE="3">
+
+<p>There are some constructs that are specifically numeric expressions, but in addition any string
+whose value is convertible to a number can be used as a number. A string that does not represent
+any number is treated as the double value NaN (not a number).</p>
+
+<p>A boolean is converted to a number by treating false as 0 and true as 1.</p>
+
+<p>XPath 2.0 (and Saxon) now support four numeric types: integer, decimal, float, and double.</p>
+
+<p>The specific numeric expressions are as follows:</p>
+
+<table>
+
+<tr><td width=40%><b>Construct</b></td><td><b>Meaning</b></td></tr>
+
+<tr><td valign=top>number(<i>expression</i>)</td>
+<td valign=top>This performs an explicit type conversion
+to a number, which will always give the same result as the implicit conversion described above.
+Explicit conversion can be useful when assigning a value to a variable. It is also useful when
+creating an qualifier in a nodeset expression, since the meaning of a numeric qualifier is different
+from a boolean one. At present in Saxon this always converts to a double.</td></tr>
+
+<tr><td valign=top>count(<i>sequence</i>)</td>
+<td valign=top>This returns the number of items in the sequence.</td></tr>
+
+<tr><td valign=top>sum(<i>sequence</i>)</td>
+<td valign=top>This converts the value of each item in the sequence to a number, and totals
+the result.</td></tr>
+
+<tr><td valign=top>avg(<i>sequence</i>)</td>
+<td valign=top>This converts the value of each item in the sequence to a number, and returns the average of
+the result.</td></tr>
+
+<tr><td valign=top>min(<i>sequence</i>)</td>
+<td valign=top>This converts the value of each item in the sequence to a number, and returns the minimum
+the result.</td></tr>
+
+<tr><td valign=top>max(<i>sequence</i>)</td>
+<td valign=top>This converts the value of each item in the sequence to a number, and returns the maximum
+the result.</td></tr>
+
+<tr><td valign=top>string-length(<i>string</i>)</td>
+<td valign=top>This returns the number of characters in the string value of expression.
+Characters are counted using the Java length() function, which does not necessarily give the
+same answer as the XPath rules, particularly when combining characters are used.</td></tr>
+
+<tr><td valign=top><i>number</i> <i>op</i> <i>numeric-expression2</i></td>
+<td valign=top>This performs an arithmetic operation on the two values. The operators
+are + (plus), - (minus), * (multiply), div (divide), and mod (modulo). Note
+that div currently does a floating-point division, and mod also uses floating point.
+The other operators are evaluated according to the data type of their operands, for example
+adding two integers gives an integer, adding an integer to a decimal gives a decimal.</td></tr>
+
+<tr><td valign=top>- <i>number</i></td><td>changes the sign of the number.</td></tr>
+
+<tr><td valign=top>floor(<i>number</i>)</td>
+<td valign=top>This returns the largest integer that is &lt;= the argument</td></tr>
+
+<tr><td valign=top>ceiling(<i>number</i>)</td>
+<td valign=top>This returns the smallest integer that is &gt;= the argument</td></tr>
+
+<tr><td valign=top>round(<i>number</i>)</td>
+<td valign=top>This returns the closest integer to the argument. The rounding rules follow
+Java conventions which are not quite the same as the XSL rules.</td></tr>
+
+<tr><td valign=top>position()</td>
+<td valign=top>This returns the position of the current item in the list of items being
+processed. Positions
+are numbered from one.</td></tr>
+
+<tr><td valign=top>last()</td>
+<td valign=top>This returns the number of items in the list of items being
+processed.</td></tr>
+
+</table>
+
+<hr>
+
+<a name="BooleanExpressions"><h2>Boolean Expressions</h2></a>
+
+<font FACE="Arial, Helvetica, sans-serif" SIZE="3">
+
+<p>Expressions of other types are converted to booleans as follows:<ul>
+
+    <li>Numeric values: 0 is treated as false, everything else as true.</li>
+
+    <li>String values: the zero-length string is treated as false, everything else as true.
+    Note this changes in XPath 2.0 so that "0" and "false" are also treated as false.</li>
+
+    <li>Sequences: the empty sequence is treated as false. A sequence consisting of
+    a single boolean is treated as the value of that boolean. 
+    A sequence containing at least one node is treated as true. Converting any other
+    sequence throws an error.</li>
+
+</ul>
+
+</p>
+
+<p>The specific boolean expressions are as follows:</p>
+
+<table>
+
+<tr><td width=40%><b>Construct</b></td><td><b>Meaning</b></td></tr>
+
+<tr><td valign=top>boolean(<i>expression</i>)</td>
+<td valign=top>This performs an explicit type conversion
+to a boolean, which will always give the same result as the implicit conversion described above.
+The main case where explicit conversion is useful is when assigning a value to a variable.</td></tr>
+
+<tr><td valign=top>false(), true()</td>
+<td valign=top>These function calls return false and true respectively.</td></tr>
+
+<tr><td valign=top>A and B, A or B</td>
+<td valign=top>These operators perform boolean conjunction and disjunction. Saxon currently
+implements them with three-valued logic as in SQL, though this is not in sync with the
+XPath Working Draft as published.</td></tr>
+
+<tr><td valign=top>not(<i>boolean</i>)</td>
+<td valign=top>This returns the logical negation of the argument.</td></tr>
+
+<tr><td valign=top>not3(<i>boolean</i>)</td>
+<td valign=top>This returns the logical negation of the argument, but adapted to use three-valued
+logic as in SQL. The difference is that not(()) is true, whereas not3(()) is (). Note
+that the empty sequence, (), plays the same rule as the null value in SQL.</td></tr>
+
+<tr><td valign=top><i>expression1</i> ( "=" | "!=" )  <i>expression2</i></td>
+<td valign=top>This tests whether the two values are equal (or not-equal). More strictly,
+it considers both operands as sequences, and returns true if there is a value in the first
+sequence that is equal (not-equal) to some value in the second sequence.
+</td></tr>
+
+<tr><td valign=top><i>expression1</i> ( "is" | "isnot" )  <i>expression2</i></td>
+<td valign=top>This tests whether the two nodes are identical (or not-identical). The operands
+must be single nodes. If either operand is an empty sequence, the result is an empty sequence;
+if either operand is a sequence of two or more items, an error is thrown.
+</td></tr>
+
+<tr><td valign=top><i>numeric-expression1</i> <i>op</i> <i>numeric-expression2</i></td>
+<td valign=top>This performs a numeric comparison of the two values. If both expressions
+are sequences, the result is true if there is a pair of values from the two sequences that
+satisfies the comparison. If one expression is a sequence, the result is true if there is
+a value in that nodeset that satisfies the comparison with the other operand. The operators
+are &lt; (less-than), &lt;= (less-or-equal), &gt; (greater-than), &gt;= (greater-or-equal).
+The operators, when used in an XSL stylesheet, will need to be written using XML entities
+such as "&amp;lt;". <b>From Saxon 7.1, comparison of nodes or strings performs a lexicographic
+comparison using the default collating sequence; it no longer attempts to convert the values to
+numbers unless one of the values is already numeric. This means that an expression such as
+<code>@price &gt; @discount</code> needs to be rewritten as <code>number(@price) &gt; number(@discount)</b></code></td></tr>
+
+<tr><td valign=top>if ( <i>condition</i> ) then <i>expr1</i> else <i>expr</i></td>
+<td valign=top>This returns the value of expr1 or expr2 depending on whether the condition
+is true or false.
+</td></tr>
+
+<tr><td valign=top>some $<i>var</i> in <i>sequence</i> satisfies <i>condition</i></td>
+<td valign=top>This returns true if there is an item in the sequence for which the condition
+is true. For example, <code>some $i in //empl satisfies exists($i/@desc)</code> returns
+true if some &lt;empl&gt; element in the source document has an <code>@desc</code> attribute.
+Note that the item being tested in the condition does NOT become the context item: you could
+nto replace the <code>$i/@desc</code> in this example with <code>@desc</code> or <code>./@desc</code></li>
+</td></tr>
+
+<tr><td valign=top>every $<i>var</i> in <i>sequence</i> satisfies <i>condition</i></td>
+<td valign=top>This returns true if there is no item in the sequence for which the condition
+is false. For example, <code>every $i in //empl satisfies exists($i/@desc)</code> returns
+true if no &lt;empl&gt; element in the source document has no <code>@desc</code> attribute.
+Note that the item being tested in the condition does NOT become the context item: you could
+nto replace the <code>$i/@desc</code> in this example with <code>@desc</code> or <code>./@desc</code></li>
+</td></tr>
+
+<tr><td valign=top>exists(<i>sequence)</i></td>
+<td valign=top>This returns true if the sequence contains at least one item.</td></tr>
+
+<tr><td valign=top>empty(<i>sequence)</i></td>
+<td valign=top>This returns true if the sequence is empty.</td></tr>
+
+<tr><td valign=top>lang(<i>string-expression</i>)</td>
+<td valign=top>This returns true if the xml:lang attribute on (or inherited by) the current node
+is equal to the argument, or if it contains a suffix starting with "-" and ending with the argument,
+ignoring case.</td></tr>
+
+<tr><td valign=top><i>expression</i> instance of <i>type</i></td>
+<td valign=top>This returns true if the value of the expression is an instance of the given type.
+For example <code>(3,4,5) instance of xsd:integer*</code> returns true. The type must be a built-in simple type
+defined in XML Schema (and any namespace prefix must be declared), or it may be one of the keywords <code>item</code>,
+<code>node</code>, <code>element</code> (etc). It is not at present possible to refer to named complex
+types defined in an XML Schema.</td></tr>
+
+</table>
+
+<hr>
+
+<a name="SequenceExpressions"><h2>Sequence Expressions</h2></a>
+
+<p>Sequence expressions can be written as follows:</p>
+
+<table>
+
+<tr><td width=40%><b>Construct</b></td><td><b>Meaning</b></td></tr>
+
+<tr><td valign=top><i>expression1</i> | <i>expression2</i></td>
+<td valign=top>This forms the union of the two sequences. In Saxon the two operands must currently
+be sequences of nodes. The result is in document order with duplicates eliminated. The operator
+"union" is a synonym of "|". </td></tr>
+
+<tr><td valign=top><i>expression1</i> intersect <i>expression2</i></td>
+<td valign=top>This forms the intersection of the two sequences. These
+must currently consist entirely of nodes. The result is in document order, with
+no duplicates.</td>
+
+<tr><td valign=top><i>expression1</i> except <i>expression2</i></td>
+<td valign=top>This forms the intersection of the two sequences. These
+must currently consist entirely of nodes. The result is in document order, with
+no duplicates. For example, <code>@* except @name</code> gives you all
+the attributes of the context element, except for the <code>@name</code> attribute.</td>
+
+<tr><td valign=top><i>sequence</i> [ <i>predicate</i> ]</i></td>
+<td valign=top>This returns the set of all items in the supplied sequence that satisfy the
+predicate. The predicate may be a boolean expression (which is evaluated with the particular
+item as context item); or it may be a numeric expression,
+which is a shorthand for the boolean expression position()=predicate. The sequence
+may of course itself have one or more predicates, so a chain of filters can be set up.</td></tr>
+
+<tr><td valign=top>for $<i>var</i> in <i>sequence</i> return <i>expression</i></td>
+<td valign=top>This evaluates the given expression once for each item in the supplied
+sequence, and returns a new sequence containing the concatenation of the results, in order.
+For example, <code>sum(for $i in ./orderline return $i/@qty * $i/@price)</code> returns the total
+value of an order by summing over the individual order lines.</td></tr>
+
+<tr><td valign=top><i>nodeset-expression1</i> / <i>nodeset-expression2</i></td>
+<td valign=top>This follows the given path for each node in nodeset-expression1
+ (the "original nodes"), and returns
+all the nodes reached (the "target nodes"). The two operands may be any expression
+that returns a sequence of nodes. For example, at XPath 2.0 it is permitted to write
+<code>document('abc.xml')/key('k', 123)</code>, or <code>book/(chapter|appendix)/section.</code>
+Most commonly, the second expression will be a step that navigates from the context node
+to other nodes by following axes.
+Examples include:<ul>
+    <li><i>name</i> - Select all the element children of the original nodes
+                        with the given element name</li>
+    <li><i>prefix:*</i> - Select all the element children of the original nodes
+                        with the given namespace prefix</li>
+   <li><i>*</i> - Select all the element children of the original nodes
+                        regardless of element name</li>
+    <li><i>*:local-name</i> - Select all the element children of the original nodes
+                        with the given local-name, irrespective of namespace</li>
+    <li><i>@name</i> - Select all the attributes of the original nodes
+                        with the given attribute name</li>
+    <li><i>@prefix:*</i> - Select all the attributes of the original nodes
+                        with the given namespace prefix</li>
+    <li><i>@*</i> - Select all the attributes of the original nodes
+                        regardless of attribute name</li>
+    <li>text() - Select all the text node children of the original nodes</li>
+    <li>.. - Select the parents of the original nodes</li>    
+    <li>node() - Select all the children of the original nodes</li>
+    <li><i>axis-name</i> :: <i>node-test</i> <i>optional-predicates</i> ) - a generalised construct
+        for navigating in any direction. The axis-name may be any of the following:
+
+<table><tr><td>ancestor</td><td>Selects ancestor nodes starting with the current node and ending
+with the document node</td></tr>
+<tr><td>ancestor-or-self</td><td>Selects the current node plus all ancestor nodes</td></tr>
+<tr><td>attribute</td><td>Selects all attributes of the current node (if it is an element)</td></tr>
+<tr><td>child</td><td>Selects the children of the current node, in documetn order</td></tr>
+<tr><td>descendant</td><td>Selects the children of the current node and their children, recursively
+(in document order)</td></tr>
+<tr><td>descendant-or-self</td><td>Selects the current node plus all descendant nodes</td></tr>
+<tr><td>following</td><td>Selects the nodes that follow the current node in document order,
+other than its descendants</td></tr>
+<tr><td>following-sibling</td><td>Selects all subsequent child nodes of the same
+parent node</td></tr>
+<tr><td>parent</td><td>Selects the parent of the current node</td></tr>
+<tr><td>preceding</td><td>Selects the nodes that precede the current node in document order,
+other than its ancestors</td></tr>
+<tr><td>preceding-sibling</td><td>Selects all preceding child nodes of the same
+parent node</td></tr>
+<tr><td>self</td><td>Selects the current node</td></tr></table>
+
+        <p>The node-test may be:</p>
+
+            <ol><li>a node name</li>
+            <li>"prefix:*" to select nodes with a given namespace prefix</li> 
+            <li>"text()" (to select text nodes)</li>
+            <li>"node()" (to select any node)</li>
+            <li>"processing-instruction()" (to select any processing instruction)</li>
+            <li>"processing-instruction('literal')" to select processing instructions with the given name
+            (target)</li>
+            <li>comment()</li> to select comment nodes</li></ol>
+
+        <p>The optional-predicates is a sequence
+        of zero-or-more predicates, each enclosed in square brackets, each being either a boolean
+        expression or a numeric expression (as a shorthand for testing position()).</p></li>
+    </ul>
+    </td></tr>
+
+<tr><td valign=top><i>nodeset-expression1</i> // <i>relative-path</i></td>
+<td valign=top>This is a shorthand for
+ nodeset-expression1/descendant-or-self::node()/relative-path<br>
+ In effect "//" selects descendants, where "/" selects immediate children: but where predicates
+ are used, the expansion above defines the precise meaning.</td></tr>
+
+<tr><td valign=top><i>.</i></td>
+<td valign=top>This selects the context item (which at XPath 2.0 is not necessarily a node)</td></tr>
+
+<tr><td valign=top><i>insert(sequence, integer, sequence)</i></td>
+<td valign=top>This creates a new sequence by inserting the second supplied sequence at the
+given position of the first supplied sequence.</td></tr>
+
+<tr><td valign=top><i>remove(sequence, integer)</i></td>
+<td valign=top>This creates a new sequence by removing the item at the
+given position of the supplied sequence.</td></tr>
+
+<tr><td valign=top><i>index-of(sequence, item)</i></td>
+<td valign=top>This returns a sequence of integers giving the positions within the supplied
+sequence where the given item occurs.</td></tr>
+
+<tr><td valign=top><i>sublist(sequence, start, length)</i></td>
+<td valign=top>This returns part of the given sequence, starting at the given start position,
+and of the given length.</td></tr>
+
+<tr><td valign=top><i>/</i></td>
+<td valign=top>This selects the document root node. Note that this nodeset-expression cannot be
+followed by the "/" or "//" operator or by a predicate.</td></tr>
+
+<tr><td valign=top><i> / <i>relative-path</i></td>
+<td valign=top>This is a shorthand for "root()/relative-path" where root() is an imaginary
+designation of the document root node.</td></tr>
+
+<tr><td valign=top><i> // <i>relative-path</i></td>
+<td valign=top>This is a shorthand for
+ "root()//relative-path" where root() is an imaginary
+designation of the document root node.</td></tr>
+
+<tr><td valign=top>document(<i>expression1</i>, <i>expression2</i>?)</td>
+<td valign=top>The first string expression is a URL, or a nodeset containing a set of URLs;
+ the function returns the nodeset consisting of the root nodes of the documents referenced
+  (which must be XML documents). The optional second argument is node-set used to provide a base URL for resolving
+  relative URLs: the default is the URL of the document containing the relative URL, which
+  may be either a source document or a stylesheet document. Saxon allows the first argument
+  to contain a fragment identifier, e.g. "my.xml#xyz", or simply "#xyz", in which case
+  "xyz" must be the value of an ID attribute of an element within the referenced document.
+  The effect is to retrieve a tree rooted at this element.</td></tr>
+
+<tr><td valign=top>id(<i>expression</i>)</td>
+<td valign=top>This returns the node, if any, that has an ID attribute equal to the given
+value,a nd which is in the same document as the current node.
+ To use ID attributes, there must be a DTD that defines the attribute as being of
+type ID, and you must use a SAX parser that notifies ID attributes to the application.
+If the argument is a nodeset, the function returns the set of nodes that have an id
+ attribute equal to a value held in any of the nodes in the nodeset-expression: each node
+  in the nodeset expression
+is converted to a string and treated as a white-space-separated list of id values.
+If the argument is of any other type, its value is converted to a string and
+treated as a white-space-separated list of id values.</td></tr>
+
+<tr><td valign=top>key(<i>string-expression1</i>, <i>expression2</i>)</td>
+<td valign=top>The first string expression is a key name; the function returns the set
+ of nodes in the current document that have a key with this name, with the key value given
+  by the second expression. If this is a nodeset, the key values are the values of the nodes
+   in the nodeset; othewise, the key value is the string value of the argument.
+     Note that keys must be registered using the xsl:key element.</td></tr>
+
+</table>
+
+
+
+<p>Some examples of NodeSet Expressions are listed below:</p>
+</font>
+
+<table BORDER="1" CELLSPACING="1" CELLPADDING="7" WIDTH="590">
+  <tr>
+    <td WIDTH="24%" VALIGN="TOP"><font SIZE="2"><b>Expression</b></font></td>
+    <td WIDTH="76%" VALIGN="TOP"><font SIZE="2"><b>Meaning</b></font></td>
+  </tr>
+  <tr>
+    <td WIDTH="24%" VALIGN="TOP"><font SIZE="2">XXX</font></td>
+    <td WIDTH="76%" VALIGN="TOP"><font SIZE="2">Selects all immediate child elements with tag XXX</font></td>
+  </tr>
+  <tr>
+    <td WIDTH="24%" VALIGN="TOP"><font SIZE="2">*</font></td>
+    <td WIDTH="76%" VALIGN="TOP"><font SIZE="2">Selects all immediate child elements
+     (but not character data within the element)</font></td>
+  </tr>
+  <tr>
+    <td WIDTH="24%" VALIGN="TOP"><font SIZE="2">../TITLE</font></td>
+    <td WIDTH="76%" VALIGN="TOP"><font SIZE="2">Selects the TITLE children of the parent element</font></td>
+  </tr>
+  <tr>
+    <td WIDTH="24%" VALIGN="TOP"><font SIZE="2">XXX[@AAA]</font></td>
+    <td WIDTH="76%" VALIGN="TOP"><font SIZE="2">Selects all XXX child elements having
+    an attribute named AAA</font></td>
+  </tr>
+  <tr>
+    <td WIDTH="24%" VALIGN="TOP"><font SIZE="2">*[last()]</font></td>
+    <td WIDTH="76%" VALIGN="TOP"><font SIZE="2">Selects the last child of the current element</font></td>
+  </tr>
+  <tr>
+    <td WIDTH="24%" VALIGN="TOP"><font SIZE="2">*/ZZZ</font></td>
+    <td WIDTH="76%" VALIGN="TOP"><font SIZE="2">Selects all grandchild ZZZ elements </font></td>
+  </tr>
+  <tr>
+    <td WIDTH="24%" VALIGN="TOP"><font SIZE="2">XXX[ZZZ]</font></td>
+    <td WIDTH="76%" VALIGN="TOP"><font SIZE="2">Selects all child XXX elements that have a child ZZZ</font></td>
+  </tr>
+  <tr>
+    <td WIDTH="24%" VALIGN="TOP"><font SIZE="2">XXX[@WIDTH and not(@WIDTH="20")]</font></td>
+    <td WIDTH="76%" VALIGN="TOP"><font SIZE="2">Selects all child XXX elements that have a WIDTH attribute whose
+     value is not "20"</font></td>
+  </tr>
+  <tr>
+    <td WIDTH="24%" VALIGN="TOP"><font SIZE="2">/*</font></td>
+    <td WIDTH="76%" VALIGN="TOP"><font SIZE="2">Selects the outermost element of the document</font></td>
+  </tr>
+  <tr>
+    <td WIDTH="24%" VALIGN="TOP"><font SIZE="2">//TITLE</font></td>
+    <td WIDTH="76%" VALIGN="TOP"><font SIZE="2">Selects all TITLE elements anywhere in the document</font></td>
+  </tr>
+  <tr>
+    <td WIDTH="24%" VALIGN="TOP"><font SIZE="2">ancestor::SECTION</font></td>
+    <td WIDTH="76%" VALIGN="TOP"><font SIZE="2">Selects the innermost containing SECTION element</font></td>
+  </tr>  
+  <tr>
+    <td WIDTH="24%" VALIGN="TOP"><font SIZE="2">ancestor::SECTION/@TITLE</font></td>
+    <td WIDTH="76%" VALIGN="TOP"><font SIZE="2">Selects the TITLE attribute of the innermost containing SECTION element</font></td>
+  </tr>
+  <tr>
+    <td WIDTH="24%" VALIGN="TOP"><font SIZE="2">./@*</font></td>
+    <td WIDTH="76%" VALIGN="TOP"><font SIZE="2">Selects all attributes of the current element</font></td>
+  </tr> 
+
+</table>
+
+<hr>
+
+<a name="TypeConversion"><h2>Type Conversion Expressions</h2></a>
+
+<p>This release of Saxon implements the two XPath expressions:</p>
+
+<ul>
+<li><code>cast as <i>type</i> ( <i>expression</i> )</code></li>
+<li><code>treat as <i>type</i> ( <i>expression</i> )</code></li>
+</ul>
+
+<p><b>cast as</b> performs a conversion of the supplied value to the specified type, for
+example it can be used to convert a date to a string.</p>
+
+<p><b>treat as</b> is a way of asserting that the value is already of the required type;
+if it is not, an error is reported. For example, <code>treat as xsd:integer (my:func())</code>
+is a way of telling the system that <code>my:func</code> is expected to return an integer.</p>
+
+<p>Saxon also implements the <code>instance of</code> operator which tests whether a value
+is of a specified type.</p>
+
+</font>
+
+<hr>
+<p align="center"><a HREF="mailto:michael.h.kay@ntlworld.com">Michael H. Kay</a> <br>
+30 April 2002</p>
+</body>
+</html>

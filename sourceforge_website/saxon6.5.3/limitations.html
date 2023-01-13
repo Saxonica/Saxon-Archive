@@ -1,0 +1,158 @@
+<html>
+
+<head>
+
+<title>Limitations</title>
+
+<body leftmargin="150" bgcolor="#ddeeff"><font face="Arial, Helvetica, sans-serif">
+<div align=right><a href="index.html">SAXON home page</a></div>
+
+<p><b><font FACE="Arial, Helvetica, sans-serif" color="#FF0080" size="7">
+Limitations</font></b></p>
+
+<p>This page lists areas where Saxon 6.5.3 is known to be non-conformant with
+W3C specifications.</p>
+
+<p>Since Saxon 6.5.3 is now stable and generally reliable, I have no intention of
+removing these limitations.</p>
+
+<h2>XSLT 1.0 conformance</h2>
+
+
+<ol>
+<li><p>The characters used in the <code>xsl:decimal-format</code> element and the
+picture string of <code>format-number</code> must have Unicode code points
+less than 65535.</p></li>
+
+<li><p>When Saxon is run with a Java version later than 1.1, the picture string of
+<code>format-number</code> behaves as implemented in that version of the Java 
+<code>DecimalFormat</code> class, whereas
+the XSLT specification mandates that it should behave as specified in JDK 1.1.</p></li>
+
+<li><p>The output of <code>generate-id</code> for an attribute or namespace node
+may contain non-ASCII or non-alphanumeric characters if the name of the attribute
+or namespace node contains such characters.</p></li>
+
+<li><p>When the <code>version</code> attribute is set to <code>1.1</code>, Saxon
+recognizes certain constructs that were defined in the draft XSLT 1.1 specification;
+XSLT 1.0 requires that such constructs are treated as errors.</p></li>
+
+
+<li><p>An erratum to the XSLT 1.0 specification states that <code>xsl:copy</code> and <code>xsl:copy-of</code>
+may be used to add a namespace node to a newly constructed element. This works correctly in Saxon, provided
+that the name of the namespace node does not clash with the namespace prefix that Saxon has allocated to the
+element for serialization purposes. (In principle, this namespace prefix should not be present in the result
+tree, and should therefore be incapable of causing a conflict.) More details: see bug 
+<a href="http://sourceforge.net/tracker/index.php?func=detail&aid=637117&group_id=29872&atid=397617">637117</a>.</p></li>
+
+<li><p>Saxon's checking of the characters used in a QName is an approximation to the rules in the XML specification.
+Some rarely-used characters are permitted when they should be rejected, and there may also be a few cases where
+valid characters are rejected.</p></li>
+
+
+<li><p>When comparing two nodes for identity (e.g. when evaluating the union operator <code>|</code>),
+an element, text, comment or PI node may be considered identical to an attribute or namespace node
+if they happen to be at the same offset in their respective data structures. This problem applies
+to the TinyTree only.</p>
+
+<p>The fix for this (tested with 7.6.5) is to add the test:<br />
+<code>if (this.getNodeType() != other.getNodeType()) return false;</code><br />
+at line 63 of module <code>com.icl.saxon.tinytree.TinyNodeImpl</code></p></li>
+
+<li><p>When the format attribute of <code>xsl:number</code> contains a punctuation token but no formatting tokens
+(for example <code>format="*"</code>) Saxon fails with an ArrayIndexOutOfBoundsException. {Test case numb26}</p></li>
+
+<li><p>Saxon reports no error when two named templates in different stylesheet modules have the same name
+and the same import precedence. It simply uses the one that comes last.</p></li>
+
+<li><p>If one of the namespace prefixes declared in the <code>exclude-result-prefixes</code> or
+<code>extension-element-prefixes</code> attribute of the <code>xsl:stylesheet</code> element of an
+included or imported stylesheet module is not the prefix of a declared namespace, then no error is
+reported, and all the prefixes in the attribute are ignored.</p></li>
+
+<li><p>Within <code>xsl:for-each</code>, Saxon reports no error if <code>xsl:sort</code> elements
+are preceded by other instructions. It behaves as if the <code>xsl:sort</code> elements appeared
+first.</p></li>
+
+<li><p>Saxon reports no error if the <code>xsl:with-param</code> element is misspelt, for example as
+<code>xsl:width-param</code>. The misspelt element is silently ignored.</p></li>
+
+<li><p>Saxon may report a spurious circularity in attribute-set definitions. The problem occurs if two
+attribute-sets in different stylesheet modules happen to share the same node-identifier within their
+respective documents, and if one references the other directly or indirectly.</p>
+
+<p>The fix for this (tested but not regression tested) is: in <code>com.icl.saxon.Controller</code>, in 
+methods <code>getUserData()</code> and <code>setUserData()</code> (lines 830/843), change the lines 
+declaring the variable key to:</p>
+
+<p><code>String key = name + " " + 
+                      getDocumentPool().getDocumentNumber(node.getDocumentRoot()) + 
+                      node.generateId();</code></p>
+
+
+<li><p>Saxon returns incorrect results for <code>&lt;xsl:number level="any"&gt;</code> when the
+context node is an attribute that does not match the <code>count</code> pattern, and when its parent
+is an element that does match the <code>count</code> pattern. The error occurs
+only when using the tiny tree model.</p></li> 
+
+<li><p>Saxon treats all non-alphanumeric tokens in the format string of <code>&lt;xsl:number&gt;</code> 
+as separator tokens. This means that if multiple numbers are output (using <code>level="multiple"</code>)
+with a format such as <code>(1)</code>, the output has the form <code>(3(5(1)</code> whereas the correct
+interpretation of the specification produces <code>(3.5.1)</code>.</p><!-- test case: numb35 -->
+
+<p>The fix for this (tested but not regression tested) is: in <code>com.icl.saxon.number.NumberFormatter</code>,
+at line 110, replace the line <code>sb.append((String)separators.elementAt(tok));</code> by:</p>
+
+<p><code><pre>
+                if (tok==0 && startsWithSeparator) {
+                    // The first punctuation token isn't a separator if it appears before the first
+                    // formatting token. Such a punctuation token is used only once, at the start.
+                    sb.append(".");
+                } else {
+                    sb.append((String)separators.get(tok));
+                }
+</pre></code></p></li>
+
+<li><p>When sorting is applied to a the result of an expression that should return a node-set, duplicate nodes
+are not always removed from the node-set. For example, this happens if sorting is applied to the result of the
+id() function, if the argument to the id() function is such that the same node is selected several times. If the
+result is not sorted, duplicates are eliminated correctly.</p>
+
+<p>The fix for this (tested but not regression tested) is in line 136 of SortedSelection.java: change 
+<code>selection.enumerate(context, false)</code> to <code>selection.enumerate(context,true)</code>.</p></li>                   
+
+</ol>
+
+
+<h2>XML 1.0 Conformance</h2>
+
+<p>The default parser is a version of &AElig;lfred. There is one known non-conformance in
+the version of the AElfred parser provided with the Saxon product: it does not enforce the
+constraint that the contents of a general entity must be well-formed. Note, however, that this
+parser does not perform XML validation.</p>
+
+<h2>JAXP Conformance</h2>
+
+<p>When stylesheet output is sent to a user-provided ContentHandler, it's best only to send
+a well-formed document. If the result tree is not well-formed, Saxon tries to tell the 
+<code>ContentHandler</code> about it by means of a <code>saxon:warning</code> processing instruction. 
+However, failures
+are likely to follow whether the application responds to this warning or not. It's not clear what
+the right thing to do is here; it doesn't seem right to send a ContentHandler an ill-formed
+event stream, as it's likely to break. Saxon 7.x adopts the cleaner approach of defining an output
+property saxon:require-well-formed="no" to indicate that the ContentHandler is prepared to accept
+an ill-formed event stream.</p> 
+
+<p>If the command line (<code>com.icl.saxon.StyleSheet</code>) is invoked with the source document
+and/or stylesheet specified as URLs, and a user-written URIResolver is used, and the resolve() method
+returns null for the URIs on the command line, then Saxon doesn't try to use the standard URIResolver
+instead.</p>
+
+<p>Whitespace stripping does not take place when the transformation is executed using a JAXP
+<code>TransformerHandler</code>.</p>
+
+<hr>
+<p align="center"><a HREF="mailto:michael.h.kay@ntlworld.com">Michael H. Kay</a> <br>
+6 June 2005</p>
+</body>
+</html>

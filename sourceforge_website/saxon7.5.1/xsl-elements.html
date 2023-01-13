@@ -1,0 +1,1971 @@
+<html>
+
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>XSLT Elements</title>
+<link rel="stylesheet" type="text/css" href="saxon-style.css">
+
+<body>
+
+<div align=right><a href="index.html">Saxon home page</a></div>
+
+<h1>XSLT Elements</h1>
+
+<hr>
+
+<p>This page lists the standard XSLT elements, all of which are supported in Saxon Stylesheets. For
+extension elements provided with the Saxon product, see
+ <a href="extensions.html">extensions.html</a>.</p>
+
+<p>Saxon implements the XSLT version 1.0 specification from the World Wide Web Consortium:
+ see <a href="conformance.html">Conformance</a>. This page is designed to
+ give a summary of the features: for the full specification, consult the official standard.</p>
+
+
+<table width="100%">
+  <tr>
+    <td class="head" colspan="3"><b>Contents</b></td>
+  </tr>
+
+  <tr>
+
+    <td VALIGN="top" width="33%" class="body">
+    <a href="#xsl:analyze-string">xsl:analyze-string</a><br>
+    <a href="#xsl:apply-imports">xsl:apply-imports</a><br>
+    <a href="#xsl:apply-templates">xsl:apply-templates</a><br>
+    <a href="#xsl:attribute">xsl:attribute</a><br>
+    <a href="#xsl:attribute-set">xsl:attribute-set</a><br>
+    <a href="#xsl:call-template">xsl:call-template</a><br>
+    <a href="#xsl:choose">xsl:choose</a><br>
+    <a href="#xsl:comment">xsl:comment</a><br>
+    <a href="#xsl:copy">xsl:copy</a><br>
+    <a href="#xsl:copy-of">xsl:copy-of</a><br>
+    <a href="#xsl:decimal-format">xsl:decimal-format</a><br>
+    <a href="#xsl:element">xsl:element</a><br>   
+    <a href="#xsl:fallback">xsl:fallback</a><br>      
+    <a href="#xsl:for-each">xsl:for-each</a><br> 
+    <a href="#xsl:function">xsl:function</a><br>     
+    <a href="#xsl:if">xsl:if</a><br>
+</td><td VALIGN="top" width="33%" class="body">
+
+    <a href="#xsl:include">xsl:include</a><br> 
+    <a href="#xsl:import">xsl:import</a><br> 
+    <a href="#xsl:import">xsl:import-schema</a><br>     
+    <a href="#xsl:key">xsl:key</a><br>
+    <a href="#xsl:matching-substring">xsl:matching-substring</a><br>
+    <a href="#xsl:message">xsl:message</a><br>
+    <a href="#xsl:namespace">xsl:namespace</a><br>    
+    <a href="#xsl:next-match">xsl:next-match</a><br>        
+    <a href="#xsl:namespace-alias">xsl:namespace-alias</a><br>
+    <a href="#xsl:non-matching-substring">xsl:non-matching-substring</a><br>
+    <a href="#xsl:number">xsl:number</a><br>
+    <a href="#xsl:otherwise">xsl:otherwise</a><br>
+    <a href="#xsl:output">xsl:output</a><br>
+    <a href="#xsl:param">xsl:param</a><br>
+</td><td VALIGN="top" width="33%" class="body">
+
+    <a href="#xsl:processing-instruction">xsl:processing-instruction</a><br>
+    <a href="#xsl:preserve-space">xsl:preserve-space</a><br>
+    <a href="#xsl:result-document">xsl:result-document</a><br>
+    <a href="#xsl:sequence">xsl:sequence</a><br>    
+    <a href="#xsl:sort">xsl:sort</a><br>
+    <a href="#xsl:sort-key">xsl:sort-key</a><br>    
+    <a href="#xsl:strip-space">xsl:strip-space</a><br>
+    <a href="#xsl:stylesheet">xsl:stylesheet</a><br>
+    <a href="#xsl:template">xsl:template</a><br>
+    <a href="#xsl:text">xsl:text</a><br>
+    <a href="#xsl:value-of">xsl:value-of</a><br>
+    <a href="#xsl:variable">xsl:variable</a><br>
+    <a href="#xsl:when">xsl:when</a><br>
+    <a href="#xsl:with-param">xsl:with-param</a><br>
+    <br>
+    <a href="#Literal Result Elements">Literal Result Elements</a><br>
+    </td>
+
+
+  </tr>
+</table>
+
+<h2>Standard XSLT Elements</h2>
+
+<h3><a name="xsl:analyze-string">xsl:analyze-string</a></h3>
+
+
+<p>The <code class="bold">xsl:analyze-string</code> element is new in XSLT 2.0. It applies a regular expression to
+a supplied string value. The string is split into a sequence of substrings, each of which is
+classified as either a matching substring (if it matches the regular expression) or a non-matching
+substring (if it doesn't). The substrings are then processed individually: the matching substrings by
+a <code>xsl:matching-substring</code> element that appears as a child of the <code>xsl:analyze-string</code>
+instruction, the non-matching substrings by a similar <code>xsl:non-matching-substring</code> element.
+If either of these is omitted, the relevant substrings are not processed.</p>
+
+<p>The element has three attributes: <code>select</code> is an XPath expression whose value is the string
+to be analyzed; <code>regex</code> is the regular expression (which may be given as an attribute value
+template), and <code>flags</code> provides one or more Perl-like flags to control the way in which
+regular expression matching is performed, for example the value "m" indicates multi-line mode.</p>
+
+<p>When processing matching substrings, it is possible to call the <code>regex-group()</code> function
+to find the parts of the matching substring that matched particular parenthesized groups within the
+regular expression.</p>
+
+<p>There are <a href="http://www.w3.org/TR/xslt20/#section-Examples-of-Regular-Expression-Matching">examples</a> of this element in the XSLT 2.0 Working Draft.</p>
+
+<hr />
+
+<h3><a name="xsl:apply-imports">xsl:apply-imports</a></h3>
+
+
+<p>The <code class="bold">xsl:apply-imports</code> element is used in conjunction with imported stylesheets. There
+are no attributes. The element may contain zero or more <code>xsl:with-param</code> elements (as permitted
+in XSLT 2.0).</p>
+
+<p>At run-time, there must be a <i>current template</i>. A current template is established when
+a template is activated as a result of a call on <code>xsl:apply-templates</code>. 
+Calling <code>xsl:call-template</code>
+does not change the current template. Calling <code>xsl:for-each</code> or
+<code>xsl:for-each-group</code> causes the current template to become null.</p>
+
+<p>The effect is to search for a template that matches the current node and that is defined in
+a stylesheet that was imported (directly or indirectly, possibly via <code>xsl:include</code>) from the
+stylesheet containing the current template, and whose mode matches the current mode.
+ If there is such a template, it is activated using the current node. If not, the call on
+ <code>xsl:apply-imports</code> has no effect.</p>
+
+<p>To supply parameters to the called template, one or more <a href="#xsl:with-param">xsl:with-param</a> elements
+may be included. The values of these parameters are available to the called template.</p>
+
+
+<hr>
+
+
+
+
+<h3><a name="xsl:apply-templates">xsl:apply-templates</a></h3>
+
+<p>The <code class="bold">xsl:apply-templates</code> element causes navigation from the current element, usually
+but not necessarily to process its children. Each selected node is processed using
+the best-match <code>xsl:template</code> defined for that node. </p>
+
+<p>The <code>xsl:apply-templates</code> element takes an optional attribute, <code>mode</code>, which identifies the
+processing mode. If this attribute is present, only templates with a matching <code>mode</code> parameter will
+be considered when searching for the rule to apply to the selected elements.</p>
+
+<p>It also takes an optional attribute, <code>select</code>.</p>
+
+<p>If the <code>select</code> attribute is <i>omitted</i>, apply-templates causes all the immediate
+children of the current node to be processed: that is, child elements and
+character content, in the order in which it appears. Character content must be processed by
+a template whose match pattern will be something like <code>*/text()</code>. Child elements similarly
+ are processed using the appropriate template,
+ selected according to the rules given below under <a href="#xsl:template">xsl:template</a>.</p>
+
+<p>If the <code>select</code> attribute is <i>included</i>, the result must be a sequence of nodes. 
+All nodes selected by the expression are processed.</p>
+
+<p>The <code>xsl:apply-templates</code> element is usually empty, in which case the selected nodes are
+processed in the order they are selected (this will usually be document order, but this depends on the
+<code>select</code> expression that is used). However the element may include <code>xsl:sort</code> and/or
+<code>xsl:param</code> elements: <ul>
+
+<li>For sorted processing, one or more
+child <a href="#xsl:sort">xsl:sort</a> elements may be included. These define the sort order to be applied to the
+selection. The sort keys are listed in major-to-minor order.</li>
+
+<li>To supply parameters to the called template, one or more <a href="#xsl:with-param">xsl:with-param</a> elements
+may be included. The values of these parameters are available to the called template.</li>
+</ul></p>
+
+<p>The selected nodes are processed in a particular <i>context</i>. This context includes:<ul>
+
+<li>A current node: the node being processed</li>
+<li>A current node list: the list of nodes being processed, in the order they are processed (this affects the
+ value of the position() and last() functions)</li>
+<li>A set of variables, which initially is those variable defined as parameters</li>
+</ul></p>
+
+
+<p>Some examples of the most useful forms of select expression are listed below:</p>
+
+<table BORDER="1" CELLSPACING="1" CELLPADDING="7" WIDTH="590">
+  <tr>
+    <td WIDTH="24%" VALIGN="TOP"><b>Expression</b></td>
+    <td WIDTH="76%" VALIGN="TOP"><b>Meaning</b></td>
+  </tr>
+  <tr>
+    <td WIDTH="24%" VALIGN="TOP">XXX</td>
+    <td WIDTH="76%" VALIGN="TOP">Process all immediate child elements with tag XXX</td>
+  </tr>
+  <tr>
+    <td WIDTH="24%" VALIGN="TOP">*</td>
+    <td WIDTH="76%" VALIGN="TOP">Process all immediate child elements
+     (but not character data within the element)</td>
+  </tr>
+  <tr>
+    <td WIDTH="24%" VALIGN="TOP">../TITLE</td>
+    <td WIDTH="76%" VALIGN="TOP">Process the TITLE children of the parent element</td>
+  </tr>
+  <tr>
+    <td WIDTH="24%" VALIGN="TOP">XXX[@AAA]</td>
+    <td WIDTH="76%" VALIGN="TOP">Process all XXX child elements having
+    an attribute named AAA</td>
+  </tr>
+  <tr>
+    <td WIDTH="24%" VALIGN="TOP">@*</td>
+    <td WIDTH="76%" VALIGN="TOP">Process all attributes of the current element</td>
+  </tr>
+  <tr>
+    <td WIDTH="24%" VALIGN="TOP">*/ZZZ</td>
+    <td WIDTH="76%" VALIGN="TOP">Process all grandchild ZZZ elements </td>
+  </tr>
+  <tr>
+    <td WIDTH="24%" VALIGN="TOP">XXX[ZZZ]</td>
+    <td WIDTH="76%" VALIGN="TOP">Process all child XXX elements that have a child ZZZ</td>
+  </tr>
+  <tr>
+    <td WIDTH="24%" VALIGN="TOP">XXX[@WIDTH and not(@WIDTH="20")]</td>
+    <td WIDTH="76%" VALIGN="TOP">Process all child XXX elements that have a WIDTH attribute whose
+     value is not "20"</td>
+  </tr>
+  <tr>
+    <td WIDTH="24%" VALIGN="TOP">AUTHOR[1]</td>
+    <td WIDTH="76%" VALIGN="TOP">Process the first child AUTHOR element</td>
+  </tr>
+  <tr>
+    <td WIDTH="24%" VALIGN="TOP">APPENDIX[@NUMBER][last()]</td>
+    <td WIDTH="76%" VALIGN="TOP">Process the last child APPENDIX element having a NUMBER
+     attribute</td>
+  </tr>
+  <tr>
+    <td WIDTH="24%" VALIGN="TOP">APPENDIX[last()][@NUMBER]</td>
+    <td WIDTH="76%" VALIGN="TOP">Process the last child APPENDIX element provided
+    it has a NUMBER attribute</td>
+  </tr>
+  
+</table>
+
+
+<p>The full syntax of select expressions is given in <a href="expressions.html">XPath Expression Syntax</a></h3>
+
+
+<hr>
+
+<h3><a name="xsl:attribute">xsl:attribute</a></h3>
+
+<p>The <code class="bold">xsl:attribute</code> element is used to add an attribute value to an
+<code>xsl:element</code> element or general formatting element, or to an element created using <code>xsl:copy</code>.
+The attribute must be output immediately after the element, with no intervening character data.
+ The name of the attribute is indicated by the
+<code>name</code> attribute and the value by the content of the <code>xsl:attribute</code> element.</p>
+
+<p>The attribute name is interpreted as an <i>attribute value template</i>, so it may contain string expressions
+within curly braces. The full syntax of string expressions is given in <a href="expressions.html">XPath Expression Syntax</a>
+</p>
+
+<p>For example, the following code creates a &lt;FONT&gt; element with several attributes:</p>
+
+<p>
+<table border="1" width="100%" class="code">
+  <tr>
+    <td width="100%" bgcolor="#00FFFF"><pre>
+&lt;xsl:element name="FONT"&gt;
+    &lt;xsl:attribute name="SIZE"&gt;4&lt;/xsl:attribute&gt;
+    &lt;xsl:attribute name="FACE"&gt;Courier New&lt;/xsl:attribute&gt;
+Some output text
+&lt;/xsl:element&gt;
+    </pre></td>
+  </tr>
+</table>
+</p>
+
+<p>A new attribute <code>type-annotation</code> is available in XSLT 2.0. This indicates the
+data type of the value of the attribute. In Saxon 7.3, the value must be a built-in type defined
+in XML Schema, for example <code>xs:integer</code> or <code>xs:date</code>. Type annotations
+are only accessible if the attribute is added to a temporary tree that specifies 
+<code>type-information="preserve"</code>. The value given to the attribute must be a string
+that conforms to the rules for the data type, as defined in XML Schema.</p>
+
+<p>There are two main uses for the <code>xsl:attribute</code> element: </p>
+<ul>
+<li>It is the only way to set attributes on an element generated dynamically using xsl:element</li>
+<li>It allows attributes of a literal result element to be calculated using xsl:value-of.</li>
+</ul>
+
+<p>The <code>xsl:attribute</code> must be output immediately after the relevant element is generated: there must
+be no intervening character data (other than white space which is ignored). Saxon outputs the closing
+"&gt;" of the element start tag as soon as something other than an attribute is written to the output
+stream, and rejects an attempt to output an attribute if there is no currently-open start tag. Any special
+characters within the attribute value will automatically be escaped (for example, "&lt;" will be output as
+"&amp;lt;")</p>
+
+<p>If two attributes are output with the same name, the second one takes precedence.</p>
+
+<p>The attribute <code>disable-output-escaping</code> is new in XSLT 2.0. If this is set to
+the value "yes", then the attribute value will be output as-is, without escaping of special
+characters. This affects both the normal XML escaping (e.g. of ampersand) and the special URL
+escaping that occurs with non-ASCII characters in HTML URL attributes (e.g. href) which normally causes
+a space to be output as %20. Saxon's extension attribute <code>saxon:disable-output-escaping</code>, which
+served the same purpose in previous Saxon releases, is no longer available.</p>
+
+
+<hr>
+<h3><a name="xsl:attribute-set">xsl:attribute-set</a></h3>
+
+
+<p>The <code class="bold">xsl:attribute-set</code> element is used to declare a named collection of attributes, which will often
+be used together to define an output style. It is declared at the top level (subordinate to <code>xsl:stylesheet</code>).</p>
+
+<p>An attribute-set contains a collection of <code>xsl:attribute</code> elements.</p>
+
+<p>The attributes in an attribute-set can be used in several ways:<ul>
+<li>They can be added to a literal result element by specifying <code>xsl:use-attribute-sets</code> in the list of attributes
+for the element. The value is a space-separated list of attribute-set names. Attributes specified explicitly on
+the literal result element, or added using <code>xsl:attribute</code>, override any that are specified in the attribute-set
+definition.</li>
+<li>They can be added to an element created using <code>xsl:element</code>, by specifying use-attribute-sets in the list of attributes
+for the xsl:element element. The value is a space-separated list of attribute-set names. Attributes specified explicitly on
+the literal result element, or added using <code>xsl:attribute</code>, override any that are specified in the attribute-set
+definition.</li>
+<li>One attribute set can be based on another by specifying <code>use-attribute-sets</code> in the list of attributes
+for the <code>xsl:attribute-set</code> element. Again, attributes defined explicitly in the attribute set override any that
+are included implicitly from another attribute set.</li>
+</ul></p>
+
+<p>Attribute sets named in the <code>xsl:use-attribute-sets</code> or <code>use-attribute-sets</code> attribute 
+are applied in the order given: if the same attribute is generated more than once, the later value always takes
+precedence.</p>
+
+
+<hr>
+
+
+<h3><a name="xsl:call-template">xsl:call-template</a></h3>
+
+
+<p>The <code class="bold">xsl:call-template</code> element is used to invoke a named template.</p>
+
+<p>The <code>name</code> attribute is mandatory and must match the name defined on an <code>xsl:template</code> element.<p>
+
+<p>Saxon supports an additional attribute <code class="bold">saxon:allow-avt</code>. If this is present and is set to the
+value "yes", then the <code>name</code> attribute may be written as an attribute value template, allowing
+the called template to be decided at run-time. The string result of evaluating the attribute value
+template must be a valid QName that identifies a named template somewhere in the stylesheet.</p>
+
+<p>Parameters to the called template may be defined using <a href="#xsl:with-param">xsl:with-param</a>
+ elements nested within the <code>xsl:call-template</code> element.</p>
+
+<p>The context of the called template (for example the current node and current node list) is the same as
+that for the calling template; however the variables defined in the calling template are not accessible in
+the called template.</p>
+
+
+
+<hr>
+
+
+<h3><a name="xsl:choose">xsl:choose</a></h3>
+
+
+<p>The <code class="bold">xsl:choose</code> element is used to choose one of a number of alternative outputs. The element
+typically contains a number of <a href="#xsl:when">xsl:when</a> elements, each with a separate test condition. The first
+<code>xsl:when</code> element whose condition matches the current element in the source document is expanded, the others
+are ignored. If none of the conditions is satisfied, the <a href="#xsl:otherwise">xsl:otherwise</a> child element, if any, is
+expanded.</p>
+
+<p>The test condition in the <code>xsl:when</code> element is a boolean expression.
+The full syntax of expressions is given in <a href="expressions.html">XPath Expression Syntax</a></h3>
+
+
+<p>Example:</p>
+
+<p>
+<table border="1" width="100%" class="code">
+  <tr>
+    <td width="100%" bgcolor="#00FFFF"><pre>
+&lt;xsl:choose&gt;
+    &lt;xsl:when test="@cat='F'"&gt;Fiction&lt;/xsl:when&gt;
+    &lt;xsl:when test="@cat='C'"&gt;Crime&lt;/xsl:when&gt;
+    &lt;xsl:when test="@cat='R'"&gt;Reference&lt;/xsl:when&gt;
+    &lt;xsl:otherwise&gt;General&lt;/xsl:otherwise&gt;
+&lt;/xsl:choose&gt;
+    </pre></td>
+  </tr>
+</table>
+</p>
+
+
+
+
+
+<hr>
+
+
+<h3><a name="xsl:comment">xsl:comment</a></h3>
+
+
+<p>The <code class="bold">xsl:comment</code> element can appear anywhere within an <code>xsl:template</code>. It indicates
+text that is to be output to the current output stream in the form of an XML or HTML
+comment.</p>
+
+<p>For example, the text below inserts some JavaScript into a generated HTML document:</p>
+<div align="left">
+
+<table border="1" width="100%" class="code">
+  <tr>
+    <td width="100%" bgcolor="#00FFFF"><pre>
+&lt;script language=&quot;JavaScript&quot;&gt;
+    &lt;xsl:comment&gt;
+        function bk(n) {
+            parent.frames['content'].location=&quot;chap&quot; + n + &quot;.1.html&quot;;
+        }
+    //&lt;/xsl:comment&gt;
+&lt;/script&gt;
+</pre></td>
+  </tr>
+</table>
+</div>
+
+<p>Note that special characters occurring within the comment text will <i>not</i>
+be escaped.</p>
+
+<p>The <code>xsl:comment</code> element will normally contain text only but it may contain other
+elements such as <a href="#xsl:if">xsl:if</a> or <a href="#xsl:value-of">xsl:value-of</a>.
+However, it should not contain literal result elements.
+</p>
+
+<p><i>Tip: the <code>xsl:comment</code> element can be very useful for debugging your stylesheet. Use comments in the generated
+output as a way of tracking which rules in the stylesheet were invoked to produce the output.</i></p>
+
+
+<hr>
+
+
+
+<h3><a name="xsl:copy">xsl:copy</a></h3>
+
+
+<p>The <code class="bold">xsl:copy</code> element causes the current XML node in the source document to be copied to the
+output. The actual effect depends on whether the node is an element, an attribute, or a text node.<p>
+
+<p>For an element, the start and end element tags are copied; the attributes, character content and child elements
+are copied only if <code>xsl:apply-templates</code> is used within <code>xsl:copy</code>.</p>
+
+<p>Attributes of the generated element can be defined by reference to a named attribute set.
+The optional use-attribute-sets attribute contains a white-space-separated list of attribute set names. They
+are applied in the order given: if the same attribute is generated more than once, the later value always takes
+precedence.</p>
+
+<p>The following example is a template that copies the input element to the output, together with all its
+child elements, character content, and attributes:</p>
+
+<p><table border="1" width="100%" class="code">
+  <tr>
+    <td width="100%" bgcolor="#00FFFF">
+<pre>
+&lt;xsl:template match="*|text()|@*"&gt;
+    &lt;xsl:copy&gt;
+        &lt;xsl:apply-templates select="@*"/&gt;
+        &lt;xsl:apply-templates/&gt;
+    &lt;/xsl:copy&gt;
+&lt;/xsl:template&gt;
+</pre>
+    </td>
+  </tr>
+</table></p>
+
+
+
+
+
+<hr>
+
+<h3><a name="xsl:copy-of">xsl:copy-of</a></h3>
+
+
+<p>The <code class="bold">xsl:copy-of</code> element copies of the value of the
+expression in the mandatory <code class="bold">select</code> attribute to the result tree</p>
+
+<p>If this expression is a string, a number, or a boolean, the effect is the same as using
+<code>xsl:value-of</code>. It is usually used where the value is a nodeset or a result tree fragment.</p>
+
+<p>There is an optional attribute <code>copy-namespaces</code> whose value is "yes" or "no". The default
+is "yes". This controls whether the in-scope namespaces of any element nodes copied by this instruction
+are automatically copied to the result tree. If the value is "no", then namespaces will only be copied
+if they are actually used in the names of elements or attributes. This allows you, for example, to
+copy the contents of a SOAP message without copying the namespaces declared in its envelope.</p>
+
+<p>There is an optional attribute <code>copy-type-annotations</code> whose value is "yes" or "no". The default
+is "yes". This controls whether the type annotations of any element or attribute nodes copied by this instruction
+are automatically copied to the result tree. Note that this has no effect unless the destination tree
+specifies <code>type-information="preserve"</code>.</p>
+
+<p>There is an optional <code>separator</code> attribute. All the items in the sequence are output,
+separated by the value of the <code>separator</code> attribute (which may be specified
+as an <i>attribute value template</i>). The default separator is "" (a zero-length string).</p>
+
+<hr>
+
+
+
+<h3><a name="xsl:decimal-format">xsl:decimal-format</a></h3>
+
+
+<p>The <code class="bold">xsl:decimal-format</code> element is used at the top level of a stylesheet to indicate a set of localisation
+parameters. If the <code>xsl:decimal-format</code> element has a <code>name</code> attribute, it identifies a named format; if not, it identifies the
+default format.</p>
+
+<p>In practice decimal formats are used only for formatting numbers using the
+ <code>format-number()</code> function in XPath expressions.
+For details of the attributes available, see the XSLT specification.</p>
+
+<p><i>Saxon currently implements <code>format-number()</code> according to the XSLT 1.0 specifications,
+it does not implement the changes introduced in XSLT 2.0.</i></p>
+
+<hr>
+
+
+
+<h3><a name="xsl:element">xsl:element</a></h3>
+
+<p>The <code class="bold">xsl:element</code> is used to create an output element whose name might be calculated at run-time.</p>
+
+<p>The element has a mandatory attribute, <code>name</code>, which is the name of the generated element.
+ The name attribute is an <i>attribute value template</i>, so it may contain string expressions inside
+ curly braces.</p>
+
+<p>The attributes of the generated element are defined by subsequent <code>xsl:attribute</code> elements. The
+content of the generated element is whatever is generated between the <code>&lt;xsl:element&gt;</code> and
+<code>&lt;/xsl:element&gt;</code> tags.</p>
+
+<p>Additionally, attributes of the generated element can be defined by reference to a named attribute set.
+The optional use-attribute-sets attribute contains a white-space-separated list of attribute set names. They
+are applied in the order given: if the same attribute is generated more than once, the later value always takes
+precedence.</p>
+
+<p>For example, the following code creates a &lt;FONT&gt; element with several attributes:</p>
+
+<p>
+<table border="1" width="100%" class="code">
+  <tr>
+    <td width="100%" bgcolor="#00FFFF"><pre>
+&lt;xsl:element name="FONT"&gt;
+    &lt;xsl:attribute name="SIZE"&gt;4&lt;/xsl:attribute&gt;
+    &lt;xsl:attribute name="FACE"&gt;Courier New&lt;/xsl:attribute&gt;
+Some output text
+&lt;/xsl:element&gt;</pre></td>
+  </tr>
+</table>
+</p>
+
+<p>A new attribute <code>type-annotation</code> is available in XSLT 2.0. This indicates the
+data type of the value of the element. In Saxon 7.3, the value must be a built-in type defined
+in XML Schema, for example <code>xs:integer</code> or <code>xs:date</code>. Type annotations
+are only accessible if the attribute is added to a temporary tree that specifies 
+<code>type-information="preserve"</code>. The value given to the element must be a string
+that conforms to the rules for the data type, as defined in XML Schema. In particular
+this means that the element must not have any element children.</p>
+
+<hr>
+
+
+<h3><a name="xsl:fallback">xsl:fallback</a></h3>
+
+
+<p>The <code class="bold">xsl:fallback</code> element is used to define recovery action to be taken when an instruction
+element is used in the stylesheet and no implementation of that element is available. An element is an
+instruction element if its namespace URI is the standard URI for XSLT elements
+or if its namespace is identified in the
+<code>xsl:extension-element-prefixes</code> attribute of a containing literal result element, or in the
+<code>extension-element-prefixes</code> attribute of the <code>xsl:stylesheet</code> element.</p>
+
+<p>If the <code>xsl:fallback</code> element appears in
+any other context, it is ignored, together with all its child and descendant elements.</p>
+
+<p>There are no attributes.<p>
+
+<p>If the parent element can be instantiated and processed, the <code>xsl:fallback</code> element
+and its descendants are ignored. If the parent element is not recognised of if any failure occurs
+ instantiating it,
+ all its xsl:fallback children are processed in turn. If there are no xsl:fallback children, an
+ error is reported.</p>
+
+<hr>
+
+
+
+<h3><a name="xsl:for-each">xsl:for-each</a></h3>
+
+
+<p>The <code class="bold">xsl:for-each</code> element causes iteration over the nodes selected by a node-set expression.
+It can be used as an alternative to <code>xsl:apply-templates</code> where the child nodes of the
+current node are known in advance. There is a mandatory attribute, <code>select</code>, which defines
+the nodes over which the statement will iterate. The XSLT statements subordinate to the <code>xsl:for-each</code> element
+are applied to each source node seleced by the node-set expression in turn.<p>
+
+<p>The full syntax of node-set expressions is given in <a href="expressions.html">XPath Expression Syntax</a></h3>
+
+<p>The <code>xsl:for-each</code> element may have one or more <code>xsl:sort</code> child elements to define the order of
+ sorting. The sort keys are specified in major-to-minor order.</p>
+
+<p>The expression used for sorting can be any string expressions. The following are
+particularly useful:</p>
+
+<ul>
+<li>element-name, e.g. TITLE: sorts on the value of a child element</li>
+<li>attribute-name, e.g. @CODE: sorts on the value of an attribute</li>
+<li>".": sorts  on the character content of the element</li>
+<li>"qname(.)": sorts on the name of the element</li>
+</ul>
+
+<p>Example 1:</p>
+
+<p>
+<table border="1" width="100%" class="code">
+  <tr>
+    <td width="100%" bgcolor="#00FFFF"><pre>
+&lt;xsl:template match="BOOKLIST"&gt;
+    &lt;TABLE&gt;
+    &lt;xsl:for-each select="BOOK"&gt;
+        &lt;TR&gt;
+        &lt;TD&gt;&lt;xsl:value-of select="TITLE"/&gt;&lt;/TD&gt;
+        &lt;TD&gt;&lt;xsl:value-of select="AUTHOR"/&gt;&lt;/TD&gt;
+        &lt;TD&gt;&lt;xsl:value-of select="ISBN"/&gt;&lt;/TD&gt;
+        &lt;/TR&gt;        
+    &lt;/xsl:for-each&gt;
+    &lt;/TABLE&gt;
+&lt;/xsl:template&gt;</pre>
+    </td>
+  </tr>
+</table>
+</p>
+
+<p>Example 2: sorting with xsl:for-each. This example also shows a template for a BOOKLIST
+element which processes all the child BOOK elements in order of their child AUTHOR elements.</p>
+
+<table border="1" width="100%" class="code">
+  <tr>
+    <td width="100%" bgcolor="#00FFFF"><pre>
+&lt;xsl:template match=&quot;BOOKLIST&quot;&gt;
+    &lt;h2&gt;
+        &lt;xsl:for-each select="BOOK"&gt;
+            &lt;xsl:sort select="AUTHOR"/&gt;
+            &lt;p&gt;AUTHOR: &ltxsl:value-of select="AUTHOR"/&gt;&lt;/p&gt;
+            &lt;p&gt;TITLE: &ltxsl:value-of select="TITLE"/&gt;&lt;/p&gt;
+            &lt;hr/&gt;
+        &lt;/xsl:for-each&gt;            
+    &lt;/h2&gt;
+&lt;/xsl:template&gt;</pre>
+    </td>
+  </tr>
+</table>
+</div>
+
+
+
+<hr>
+
+
+<h3><a name="xsl:function">xsl:function</a></h3>
+
+
+<p>The <code class="bold">xsl:function</code> element defines a function within a stylesheet. The function is written
+in XSLT but it may be called from any XPath expression in the stylesheet. It must have a non-default
+namespace prefix.</p>
+
+
+<p>Example:</p>
+<div align="left">
+
+<table border="1" width="100%" class="code">
+  <tr>
+    <td width="100%" bgcolor="#00FFFF"><pre>
+&lt;xsl:function name="my:factorial">
+&lt;xsl:param name="number" type="xs:integer"/> 
+&lt;xsl:sequence as="xs:integer" 
+            select="if ($number=0) then 1 else $number * my:factorial($number-1)"/></pre>
+    </td>
+  </tr>
+</table>
+</div>
+
+<p>At Saxon 7.5, the content model for <code>xsl:function</code> is changed - instead of a special
+<code>xsl:result</code> element, it can now take any sequence constructor. As with <code>xsl:template</code>,
+any <code>xsl:param</code> elements must come first. Unlike <code>xsl:template</code>, all parameters are
+mandatory, so the <code>xsl:param</code> elements must be empty and must have no <code>select</code>
+attribute.</p>
+
+<p><i>Ignore what follows - tail recursion is not working at the moment</i></p>
+
+<p>In limited circumstances, stylesheet functions (<code>xsl:function</code>) now optimise tail-recursion.
+The circumstances are that the <code>select</code> expression of the <code>xsl:result</code> instruction
+must contain a call on the same function as the <code>then</code> or <code>else</code> part of a
+conditional expression (which may be nested in further conditional expressions). It may require a little
+care to write functions to exploit this. The example above is not tail-recursive, because
+the recursive call is within an arithmetic expression: the multiplication takes place on return
+from the recursive call. It can be recast in tail-recursive form by adding an extra parameter (which should
+be set to 1 on the initial call):</p>
+
+<div align="left">
+
+<table border="1" width="100%" class="code">
+  <tr>
+    <td width="100%" bgcolor="#00FFFF"><pre>
+&lt;xsl:function name="x:factorial">
+    &lt;xsl:param name="acc" as="xs:integer?"/>
+    &lt;xsl:param name="n" as="xs:integer"/>
+    &lt;xsl:sequence as="xs:integer" 
+         select="if ($n = 1) 
+                 then $acc
+                 else x:factorial($acc*$n, $n - 1)" />
+&lt;/xsl:function></pre>
+    </td>
+  </tr>
+</table>
+</div>
+
+<p>The call <code>x:factorial(1, 5)</code> returns 120.</p>
+
+<p>Saxon defines an extra attribute on <code>xsl:function</code>: <code>saxon:memo-function="yes"</code>
+indicates that Saxon should remember the
+results of calling the function in a cache, and if the function is called again
+with the same arguments, the result is retrieved from the cache rather than being
+recalculated. Further details: see <a href="extensions.html#memo-function">extensions.html</a>.</p>
+
+
+<hr>
+
+
+
+
+
+<h3><a name="xsl:if">xsl:if</a></h3>
+
+
+<p>The <code class="bold">xsl:if</code> element is used for conditional processing. It takes a mandatory <code>test</code>
+attribute, whose value is a boolean expression. The contents of the xsl:if element are expanded only
+of the expression is true.</p>
+
+<p>The full syntax of boolean expressions is given in <a href="expressions.html">XPath Expression Syntax</a></h3>
+</p>
+
+<p>Example:</p>
+<div align="left">
+
+<table border="1" width="100%" class="code">
+  <tr>
+    <td width="100%" bgcolor="#00FFFF"><pre>
+&lt;xsl:if test=&quot;@preface&quot;&gt;
+        &lt;a href=&quot;preface.html&quot;&gt;Preface&lt;/a&gt;
+&lt;/xsl:if&gt;</pre>
+    </td>
+  </tr>
+</table>
+</div>
+
+<p>This includes a hyperlink in the output only if the current element has a <code>preface</code>
+attribute.</p>
+
+
+<hr>
+
+
+
+
+<h3><a name="xsl:include">xsl:include</a></h3>
+
+
+<p>The <code class="bold">xsl:include</code> element is always used at the top level of the stylesheet. It has a
+mandatory <code>href</code> attribute, which is a URL (absolute or relative) of another stylesheet
+to be textually included within this one. The top-level elements of the included stylesheet
+effectively replace the xsl:include element.</p>
+
+<p><code>xsl:include</code> may also be used at the top level of the included stylesheet, and so
+on recursively.</p>
+
+
+<hr>
+
+
+<h3><a name="xsl:import">xsl:import</a></h3>
+
+
+<p>The <code class="bold">xsl:import</code> element is always used at the top level of the stylesheet, and it must
+ appear before all other elements at the top level. It has a
+mandatory <code>href</code> attribute, which is a URL (absolute or relative) of another stylesheet
+to be textually included within this one. The top-level elements of the included stylesheet
+effectively replace the xsl:import element.</p>
+
+<p>The <code>xsl:import</code> element may also be used at the top level of the included stylesheet, and so
+on recursively.</p>
+
+<p>The elements in the imported stylesheet have lower precedence than the elements in the
+importing stylesheet. The main effect of this is on selection of a template when xsl:apply-templates
+is used: if there is a matching template with precedence X, all templates with precedence less than
+X are ignored, regardless of their priority.</p>
+
+
+<hr>
+
+
+<h3><a name="xsl:import-schema">xsl:import-schema</a></h3>
+
+<p>Saxon does not yet implement the <code>xsl:import-schema</code> declaration.</p>
+
+<hr>
+
+
+<h3><a name="xsl:key">xsl:key</a></h3>
+
+
+<p>The <code class="bold">xsl:key</code> element is used at the top level of the stylesheet to declare an attribute, or other value,
+that may be used as a key to identify nodes using the <code>key()</code> function within an expression. Each xsl:key
+definition declares a named key, which must match the name of the key used in the <code>key()</code> function.</p>
+
+<p>The set of nodes to which the key applies is defined by a pattern in the match attribute: for example,
+if <code>match="ACT|SCENE"</code> then every <code>ACT</code> element and every <code>SCENE</code> element is indexed by this key.</p>
+
+<p>The value of the key, for each of these matched elements, is determined by the <code>use</code> attribute.
+This is an expression, which is evaluated for each matched element. If the expression returns a node-set,
+the string value of each node in this node-set acts as a key value. For example, if <code>use="AUTHOR"</code>, then each
+AUTHOR child of the matched element supplies one key value. If the expression returns any other value, the value
+is converted to a string and that string acts as the key.</p>
+
+<p>Note that<ol>
+<li>Keys are not unique: the same value may identify many different nodes</li>
+<li>Keys are multi-valued: each matched node may have several (zero or more) values of the key, any one
+of which may be used to locate that node</li>
+<li>Keys can only be used to identify nodes within a single XML document: the key() function will return nodes
+ that are in the same document as the current node.
+</ol></p>
+
+<p>All three attributes, name, match, and use, are mandatory.</p>
+
+<p><i>Saxon does not yet implement the <code>as</code> and <code>collation</code> attributes.</i></p>
+
+
+<hr>
+
+<h3><a name="xsl:matching-substring">xsl:matching-substring</a></h3>
+
+
+<p>The <code class="bold">xsl:matching-substring</code> element is used within an <code>xsl:analyze-string</code> element
+ to indicate the
+default action to be taken with substrings that match a regular expression.</p>
+
+<p>See <a href=#xsl:analyze-string>xsl:analyze-string</a>.</p>
+
+<hr>
+
+
+
+<h3><a name="xsl:message">xsl:message</a></h3>
+
+
+<p>The <code class="bold">xsl:message</code> element causes a message to be displayed. The message
+is the contents of the <code>xsl:message</code> element.</p>
+
+<p>There is an optional attribute <code>terminate</code> with permitted values yes and no; the default is no. If the
+value is set to yes, processing of the stylesheet is terminated after issuing the message. This
+attribute may be supplied as an attribute value template.</p>
+
+<p>By default the message is displayed on the standard error output stream. You can supply your
+own message Emitter if you want it handled differently. This must be a class that implements
+the net.sf.saxon.output.Emitter interface. The content of the message is in general an
+XML fragment. You can supply the emitter using the -m option on the command line, or the
+setMessageEmitter() method of the Controller class.</p>
+
+<p>No newline is added to the message that is passed to the message emitter. The default message emitter
+adds a newline itself. 
+If you want to be sure of getting a newline, add one from the application, as shown below.</p>
+
+<p>Example: This example displays an error message.</p>
+ 
+<div align="left">
+
+<table border="1" width="100%" class="code">
+  <tr>
+    <td width="100%" bgcolor="#00FFFF"><pre>
+    &lt;xsl:template match="BOOK"&gt;
+        &lt;xsl:if test="not(@AUTHOR)"&gt;
+            &lt;xsl:message&gtError: BOOK found with no AUTHOR!&amp;#xa;&lt;/xsl:message&gt
+        &lt;/xsl:if&gt;
+    ...
+    &lt;/xsl:template&gt;
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+
+
+<hr>
+
+
+
+
+<h3><a name="xsl:namespace-alias">xsl:namespace-alias</a></h3>
+
+
+<p>The <code class="bold">xsl:namespace-alias</code> element is a top-level element that is used to control the mapping
+between a namespace URI used in the stylesheet and the corresponding namespace URI used in the result
+ document.</p>
+
+<p>Normally when a literal result element is encountered in a template, the namespace used for the element
+name and attribute names in the result document is the same as the namespace used in the stylesheet. If
+a different namespace is wanted (e.g. because the result document is a stylesheet using the XSLT namespace),
+then xsl:namespace-alias can be used to define the mapping.</p>
+
+<p>Example: This example allows the prefix outxsl to be used for output elements that are to be
+associated with the XSLT namespace. It assumes that both namespaces xsl and outxsl have been declared
+and are in scope.</p>
+ 
+<div align="left">
+
+<table border="1" width="100%" class="code">
+  <tr>
+    <td width="100%" bgcolor="#00FFFF"><pre>
+    &lt;xsl:namespace stylesheet-prefix="outxsl" result-prefix="xsl"/&gt;
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+
+<hr>
+
+
+<h3><a name="xsl:next-match">xsl:next-match</a></h3>
+
+<p>The <b><code class="bold">xsl:next-match</code></b> instruction is very similar to <code>xsl:apply-imports</code>,
+but with a different algorithm for choosing the next template to execute. It chooses the template rule
+that matches the current node and that would have been chosen if the current template rule and all
+higher precedence/priority rules were not there.</p>
+
+<hr>
+
+<h3><a name="xsl:non-matching-substring">xsl:non-matching-substring</a></h3>
+
+
+<p>The <code class="bold">xsl:non-matching-substring</code> element is used within an <code>xsl:analyze-string</code> element
+ to indicate the
+default action to be taken with substrings that do not match a regular expression.</p>
+
+<p>See <a href=#xsl:analyze-string>xsl:analyze-string</a>.</p>
+
+<hr>
+
+
+
+<h3><a name="xsl:number">xsl:number</a></h3>
+
+
+<p>The <code class="bold">xsl:number</code> element outputs the sequential number of a node in the source document.
+ It takes an attribute <code>count</code> whose value is a pattern indicating which nodes to count;
+ the default is to match all nodes of the same type and name as the current node.</p>
+
+ <p>The <code>level</code> attribute may take three values: "single", "any", or "multiple".
+  The default is "single".</p>
+
+ <p>There is also an optional <code>from</code> attribute, which is also a pattern. 
+  The exact meaning of this depends on the level.</p>
+
+
+  <p>The calculation is as follows:</p>
+
+ <table>
+ <tr><td valign=top>level=single</td><td><ol>
+ <li>If the current node matches the pattern, the counted node is the current node. Otherwise the
+ counted node is the innermost ancestor of the current node that matches the pattern. If no ancestor
+ matches the pattern, the result is zero. If the from attribute is present, the counted node must be
+ a descendant of a node that matches the "from" pattern.</li>
+ <li>The result is one plus the number of elder siblings of the counted node that match the count pattern.</li>
+ </ol></td></tr>
+
+ <tr><td valign=top width="20%">level=any</td><td>
+ The result is the number of nodes in the document that match the count pattern, that are at or before
+ the current node in document order, and that follow in document order the most recent node that matches the "from"
+ pattern, if any. Typically this is used
+ to number, say, the diagrams or equations in a document, or in some section or chapter of a document, regardless
+ of where the diagrams or equations appear in the hierarchic structure.
+ </td></tr>
+
+ <tr><td valign=top width="20%">level=multiple</td><td>
+ The result of this is not a single number, but a list of numbers. There is one number in the list for each
+ ancestor of the current element that matches the count pattern and that is a descendant of the anchor element.
+ Each number is one plus the number of elder siblings of the relevant element that match the count pattern. The
+ order of the numbers is "outwards-in".</td></tr></table>
+
+<p>There is an optional <code>format</code> attribute which controls the output format. This contains an alternating
+sequence of format-tokens and punctuation-tokens. A format-token is any sequence of alphanumeric characters,
+a punctuation-token is any other sequence. The following
+values (among others) are supported for the format-token:</p>
+
+<table>
+<tr><td width="60">1</td><td>Sequence 1, 2, 3, ... 10, 11, 12, ...</td></tr>
+<tr><td width="60">001</td><td>Sequence 001, 002, 003, ... 010, 011, 012, ... (any number of
+leading zeroes)</td></tr>
+<tr><td>a</td><td>Sequence a, b, c, ... aa, ab, ac, ...</td></tr>
+<tr><td>A</td><td>Sequence A, B, C, ... AA, AB, AC, ...</td></tr>
+<tr><td>i</td><td>Sequence i, ii, iii, iv, ... x, xi, xii, ...</td></tr>
+<tr><td>I</td><td>Sequence I, II, III, IV, ... X, XI, XII, ...</td></tr>
+</table>
+
+<p>There is also support for various Japanese sequences (Hiragana, Katakana, and Kanji) using
+the format tokens &amp;#x3042, &amp;#x30a2, &amp;#x3044, &amp;#x30a4, &amp;#x4e00, and
+for Greek and Hebrew sequences.</p>
+
+<p>The format token "one" gives the sequence "one", "two", "three", ... , while "ONE" gives
+the same in upper-case.</p>
+
+<p>The default format is "1".</p>
+
+<p>Actually, any sequence of ASCII digits in the format is treated in the same way: writing 999
+ has the same effect as writing 001. A sequence of Unicode digits other than ASCII
+digits (for exaple, Tibetan digits) can also be used, and will result in decimal numbering using those
+digits.</p>
+
+<p>Similarly, any other character classified as a letter can be used, and will result in "numbering" using
+all consecutive Unicode letters following the one provided. For example, specifying "x" will give the
+sequence x, y, z, xx, xy, xz, yx, yy, yz, etc. Specifying the Greek letter alpha (&amp;#178;) will
+ cause "numbering" using the Greek letters up to "Greek letter omega with tonos" (&amp;#206;).
+ Only "i" and "I" (for roman numbering), and the Japanese characters listed above, are exceptions to this rule.</p>
+
+<p>Successive format-tokens in the format are used to process successive numbers in the list.
+If there are more format-tokens in the format than numbers in the list,
+the excess format-tokens and punctuation-tokens are ignored. If there are fewer format-tokens
+in the format than numbers in the list, the last format-token and the punctuation-token that
+ precedes it are used to format all excess numbers, with the final punctuation-token being used
+  only at the end.</p>
+
+  <p>Examples:<p>
+
+  <table>
+  <tr><td width=150><b>Number(s)</td>
+  <td width=150><b>Format</td>
+  <td width=150><b>Result</td></tr>
+  
+  <tr><td>3</td>                <td>(1)</td>        <td>(3)</td></tr>
+  <tr><td>12</td>               <td>I</td>          <td>XII</td></tr>
+  <tr><td>2,3</td>              <td>1.1</td>        <td>2.3</td></tr>
+  <tr><td>2,3</td>              <td>1(i)</td>       <td>2(iii)</td></tr>
+  <tr><td>2,3</td>              <td>1.</td>         <td>2.3.</td></tr>
+  <tr><td>2,3</td>              <td>A.1.1</td>      <td>B.3.</td></tr>
+  <tr><td>2,3,4,5</td>          <td>1.1</td>        <td>2.3.4.5</td></tr>
+  </table>
+  
+<p>This character may be preceded or followed by arbitrary punctuation (anything other than
+these characters or XML special characters such as "&lt;") which is copied to the output verbatim.
+For example, the value 3 with format "(a)" produces output "(c)".</p>
+
+<p>It is also possible to use xsl:number to format a number obtained from an expression. This is achieved
+using the value attribute of the xsl:number element. If this attribute is present, the count, level, and from
+attributes are ignored.</p>
+
+<p>With large numbers, the digits may be split into groups. For example, specify grouping-size="3" and
+grouping-separator="/" to have the number 3000000 displayed as "3/000/000".</p>
+
+<p>Negative numbers are always output in conventional decimal notation,
+ regardless of the format specified.</p>
+
+<p>Example: This example outputs the title child of an H2 element preceded by a composite number
+ formed from the sequential number of the containing H1 element and the number of the containing H2 element.</p>
+<div align="left">
+
+<table border="1" width="100%" class="code">
+  <tr>
+    <td width="100%" bgcolor="#00FFFF"><pre>
+    &lt;xsl:template match="H2/TITLE"&gt;
+        &lt;xsl:number count="H1"&gt;.&lt;xsl:number count="H2"&gt;
+        &lt;xsl:text&gt &lt;/xsl:text&gt
+        &lt;xsl:apply-templates/&gt;
+    &lt;/xsl:template&gt;
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+
+
+<hr>
+
+
+
+
+
+<h3><a name="xsl:otherwise">xsl:otherwise</a></h3>
+
+
+<p>The <code class="bold">xsl:otherwise</code> element is used within an <code>xsl:choose</code> element to indicate the
+default action to be taken if none of the other choices matches.</p>
+
+<p>See <a href=#xsl:choose>xsl:choose</a>.</p>
+
+<hr>
+
+<h3><a name="xsl:output">xsl:output</a></h3>
+
+
+<p>The <code class="bold">xsl:output</code> element is used to control the format of serial output files resulting
+from the transformation. It is always a top-level element immediately below the<code>xsl:stylesheet</code> element.
+There may be multiple <code>xsl:output</code> elements; their values are accumulated as described in the
+XSLT specification.</p>
+
+<p>The following attributes may be specified:</p>
+
+<table cellpadding="5">
+
+<tr>
+<td valign=top width="20%">name</td>
+<td>This provides a name for this output format, which may be referenced
+in the <code>xsl:result-document</code> elements.
+By default, the unnamed output format is used.</td></tr>
+
+
+<td valign=top width="20%">method</td>
+<td><p>This indicates the format or destination of the output. The value "xml" indicates
+XML output (though if disable-output-escaping is used there is no guarantee that it is well-formed).
+A value of "html" is used for HTML output. The value "text" indicates plain text output: in this case
+no markup may be written to the file using constructs such as literal result elements, xsl:element,
+xsl:attribute, or xsl:comment.</p>
+<p><i>The value "xhtml" is supported, however, the output of this method doesn't follow all the rules
+defined in the XSLT 2.0 specification, for example, no META element is created in the output.</i></p> 
+<!--The value "xx:fop" (xx is any non-default namespace)
+ indicates that output will be directed to the
+<a href="http://xml.apache.org/fop">Formatting Object Processor</a> (FOP): this
+must be separately installed, it is not part of Saxon.--> 
+<p>Alternatively output can be directed
+ to a user-defined
+Java program by specifying the name of the class as the value of the method attribute, prefixed by
+a namespace prefix, for example "xx:com.me.myjava.MyEmitter". The class must be
+on the classpath, and must implement either the org.xml.sax.DocumentHandler interface, the
+org.xml.sax.ContentHandler interface, or the
+ net.sf.saxon.output.Emitter interface. The last of these, though proprietary, is a richer interface that
+  gives access to additional information.</p></td>
+</tr>
+
+<tr>
+<td valign=top>cdata-section-elements</td>
+<td valign=top>This is used only for XML output. It is a whitespace-separated list of
+ element names. Character data belonging to these output elements will be written within CDATA
+ sections.</td></tr>
+
+
+<tr>
+<td valign=top>doctype-system</td>
+<td>This is used only for XML output: it is copied into the DOCTYPE declaration
+as the system identifier</td>
+</tr>
+
+<tr>
+<td valign=top>doctype-public</td>
+<td>This is used only for XML output: it is copied into the DOCTYPE declaration
+as the public identifier. It is ignored if there is no system identifier.</td>
+</tr>
+
+<tr>
+<td valign=top>encoding</td>
+<td>A character encoding, e.g. iso-8859-1 or utf-8. The value must be one recognised
+both by the Java run-time system and by Saxon itself: the encoding names that Saxon recognises are ASCII,
+US-ASCII, iso-8859-1, utf-8, utf8, KOI8R, cp1251. It is used for three distinct purposes: to control character conversion
+by the Java I/O routines; to determine which characters will be represented as character entities; and
+to document the encoding in the output file itself. The default (and fallback) is utf-8.</td>
+</tr>
+
+<tr>
+<td valign=top>escape-uri-attributes</td>
+<td>New in XSLT 2.0: values "yes" or "no" are accepted. This affects HTML output only.
+It controls whether non-ASCII characters in HTML URI-valued attributes (for example, <code>href</code>)
+are escaped using the %HH convention. The default is "yes".</td>
+</tr>
+
+<tr>
+<td valign=top>include-content-type</td>
+<td>New in XSLT 2.0: values "yes" or "no" are accepted. This affects HTML output only.
+It controls whether a <code>meta</code> tag is inserted into the HTML <code>head</code>
+element. The default is "yes".</td>
+</tr>
+
+<tr>
+<td valign=top>indent</td>
+<td>as in the XSLT spec: values "yes" or "no" are accepted. The indentation
+algorithm is different for HTML and XML. For HTML it avoids outputting extra space before or
+after an inline element, but will indent text as well as tags, except in elements such as PRE
+and SCRIPT. For XML, it avoids outputting extra whitespace except between two tags. The
+emphasis is on conformance rather than aesthetics!</td>
+</tr>
+
+<tr>
+<td valign=top>media-type</td>
+<td>For example, "text/xml" or "text/html". This is largely documentary. However,
+the value assigned is passed back to the calling application in the OutputDetails object, where
+is can be accessed using the getMediaType() method. The supplied servlet application SaxonServlet
+uses this to set the media type in the HTTP header.</td>
+</tr>
+
+<tr>
+<td valign=top>omit-xml-declaration</td>
+<td>The values are "yes" or "no".
+For XML output this controls whether an xml declaration should be output; the default is "no".
+</td>
+</tr>
+
+<tr>
+<td valign=top>standalone</td>
+<td>This is used only for XML output: if it is present, a standalone attribute
+is included in the XML declaration, with the value "yes" or "no".</td>
+</tr>
+
+<tr>
+<td valign=top>version</td>
+<td>Determines the version of XML or HTML to be output. Currently this is
+documentary only.</td>
+</tr>
+
+
+</table>
+
+<p>See <a href="extensions.html">extensions.html</a> for descriptions of additional attributes
+supported by Saxon on the <code>xsl:output</code> declaration.</p>
+
+
+
+
+<hr>
+
+
+
+<h3><a name="xsl:param">xsl:param</a></h3>
+
+
+<p>The <code class="bold">xsl:param</code> element is used to define a formal parameter to a template,
+or to the stylesheet.</p>
+
+<p>As a template parameter, it must be used as an immediate child of the <code>xsl:template</code> element.
+As a stylesheet parameter, it must be used as an immediate child of the <code>xsl:stylesheet</code> element.</p>
+
+<p>There is a mandatory attribute, <code>name</code>, to define the name
+of the parameter. The default value of the parameter may be defined either by a <code>select</code> attribute, or by the
+contents of the <code>xsl:param</code> element, in the same way as for <code>xsl:variable</code>. The default value is ignored
+if an actual parameter is supplied with the same name.</p>
+
+<p>There is an optional attribute, <code>as</code>, to define the type of the parameter. The actual supplied
+parameter will be converted to this type if required. If the parameter is omitted, the default value must
+conform to the type. Note that if no default is specified, the default is a zero-length string, which may
+conflict with the required type.</p>
+
+<p>The <code>type-information</code> attribute is removed at Saxon 7.5</p>
+
+<p>The <code>required</code> attribute can take the values "yes" or "no". This isn't allowed
+for function parameters, which are always required. If the parameter is required, no default
+value may be specified. Failure to supply a value for a required parameter gives a run-time error
+(the specification says that in the case of call-template, it should be a static error).</p>
+
+
+<hr>
+
+
+
+
+<h3><a name="xsl:preserve-space">xsl:preserve-space</a></h3>
+
+
+<p>The <code class="bold">xsl:preserve-space</code> element is used at the top level of the stylesheet to define elements in the source
+document for which white-space nodes are significant and should be retained.</p>
+
+<p>The <code>elements</code> attribute is mandatory, and defines a space-separated list of element names.
+The value "*" may be used to mean "all elements"; in this case any elements where whitespace is not
+to be preserved may be indicated by an <a href="#xsl:strip-space">xsl:strip-space</a> element.</p>
+
+
+
+<hr>
+
+
+
+<h3><a name="xsl:processing-instruction">xsl:processing-instruction</a></h3>
+
+
+<p>The <code class="bold">xsl:processing-instruction</code> element can appear anywhere within an 
+<code>xsl:template</code>.
+ It causes an XML processing
+instruction to be output.</p>
+
+<p>There is a mandatory <code>name</code> attribute which gives the name of the PI. This attribute is interpreted
+as an <i>attribute value template</i>, so it may contain string expressions within curly braces.</p>
+
+<p>The content of the <code>xsl:processing-instruction</code> element is expanded to form the data part of the PI.<p>
+
+<p>For example:</p>
+<p>
+<table border="1" width="100%" class="code">
+  <tr>
+    <td width="100%" bgcolor="#00FFFF"><pre>
+&lt;xsl:processing-instruction name="submit-invoice"&gt;version="1.0"&lt;/xsl:processing-instruction&gt;
+</pre></td>
+  </tr>
+</table>
+</div>
+
+<p>Note that special characters occurring within the PI text will <i>not</i>
+be escaped.</p>
+
+
+
+
+<hr>
+
+
+
+<h3><a name="xsl:result-document">xsl:result-document</a></h3>
+
+<p>The <code class="bold">xsl:result-document</code> element is new in XSLT 2.0, and replaces the previous extension element
+<code>saxon:output</code>. It is used to direct output to a secondary output destination. </p>
+
+<p>The <code>format</code> attribute is optional. If present,
+it gives the name of an <code>xsl:output</code> element that describes the serialization
+format for this output document; if absent, the unnamed <code>xsl:output</code> declaration
+is used.</p>
+
+<p>The <code>href</code> attribute gives the URI for the result document. If this is a relative
+URI, it is interpreted relative to the stylesheet (or more precisely, to the base URI of the
+<code>xsl:result-document</code> element in the stylesheet).</p>
+
+<p>This must yield a writable location, which will only be the case if the stylesheet has been
+accessed using the "file://" protocol. If this fails, Saxon will attempt to create the file
+relative to the current working directory.</p>
+
+<p>The optional <code>type-information</code> attribute determines what
+happens to any type annotations on element or attribute nodes. The values currently supported are
+<code>none</code> and <code>preserve</code>. If the value is <code>none</code>, type annotations are
+discarded; if it is <code>preserve</code>, they are retained. This is only relevant if the tree
+is processed by further applications, rather than being serialized; the serializer takes no notice
+of the type annotations.</p>
+
+<p>Here is an example that uses xsl:result-document:</p>
+<div align="left">
+
+<table border="1" width="100%" class="code">
+  <tr>
+    <td width="100%" bgcolor="#00FFFF"><pre>
+&lt;xsl:template match=&quot;preface&quot;&gt;
+    &lt;xsl:result-document href="{$dir}\preface.html"&gt;
+        &lt;html&gt;&lt;body bgcolor=&quot;#00eeee&quot;&gt;&lt;center&gt;
+            &lt;xsl:apply-templates/&gt;
+        &lt;/center&gt;&lt;hr/&gt;&lt;/body&gt;&lt;/html&gt;
+    &lt;/xsl:result-document&gt;
+    &lt;a href="{$dir}\preface.html"&gt;Preface&lt;/a&gt;
+&lt;/xsl:template&gt;</pre>
+</td>
+  </tr>
+</table>
+</div>
+
+
+<p>Here the body of the preface is directed to a file called preface.html (prefixed
+by a constant that supplies the directory name). Output then reverts to the previous destination,
+where an HTML hyperlink to the newly created file is inserted.</p>
+
+<hr>
+
+<h3><a name="xsl:sequence">xsl:sequence</a></h3>
+
+<p>The <code class="bold">xsl:sequence</code> element is used to construct arbitrary sequences.
+It may select any sequence of nodes and/or atomic values, and essentially adds these to the result
+sequence. The input may be specified either by a <code>select</code> attribute, or by the instructions
+contained in the <code>xsl:sequence</code> instruction, or both (the <code>select</code> attribute
+is processed first). Nodes and atomic values are included in the result sequence directly. Unlike
+<code>xsl:copy-of</code>, no copy is made.</p>
+
+<p>The <code>as</code> attribute may be used to define the required type of the sequence. The actual
+value is converted to the required type if necessary, using the conversions that are permitted on
+function calls. (Specifically, atomization of nodes, casting of untyped atomic values, and numeric
+promotion.) If the type cannot be converted, a run-time error occurs.</p>
+
+<p>There are two main usage scenarios. The first is copying atomic values into a tree. For example:
+
+<table border="1" width="100%" class="code">
+  <tr>
+    <td width="100%" bgcolor="#00FFFF"><pre>
+&lt;e&gt;
+    &lt;xsl:sequence select="1 to 5"/&gt;
+    &lt;br/&gt;
+    &lt;xsl:sequence select="6 to 10"/&gt;    
+&lt;/e&gt;</pre>
+    </td>
+  </tr>
+</table>
+
+<p>which produces the output <code>&lt;e&gt;1 2 3 4 5&lt;br/&gt;6 7 8 9 10&lt;/e&gt;</code>.</p>
+
+<p>The second, more important, is constructing a sequence-valued variable. A variable
+is sequence-valued if the variable binding element (e.g. <code>xsl:variable</code>
+has non-empty content, an <code>as</code> attribute, and no <code>select</code> attribute.
+For example:</p>
+
+<table border="1" width="100%" class="code">
+  <tr>
+    <td width="100%" bgcolor="#00FFFF"><pre>
+&lt;xsl:variable name="seq" as="xs:integer *"&gt;
+    &lt;xsl:for-each select="1 to 5">&gt;
+       &lt;xsl:sequence select=". * ."/&gt;
+    &lt;/xsl:for-each/&gt;    
+&lt;/xsl:variable&gt;</pre>
+    </td>
+  </tr>
+</table>
+
+<p>This produces the sequence (1, 4, 9, 16, 25) as the value of the variable.</p>
+
+<p>The <code>xsl:sequence</code> instruction may be used to produce any sequence of nodes and/or
+atomic values.</p>
+
+<p>If nodes are constructed within a sequence-valued variable, they will be <b>parentless</b>. For
+example, the following code creates a variable whose value is a sequence of three parentless 
+attributes:</p>
+
+<table border="1" width="100%" class="code">
+  <tr>
+    <td width="100%" bgcolor="#00FFFF"><pre>
+&lt;xsl:variable name="seq" as="attribute() *"&gt;
+    &lt;xsl:attribute name="a"&gt;10&lt;/xsl:attribute&gt;
+    &lt;xsl:attribute name="b"&gt;20&lt;/xsl:attribute&gt;
+    &lt;xsl:attribute name="a"&gt;30&lt;/xsl:attribute&gt;
+&lt;/xsl:variable&gt;</pre>
+    </td>
+  </tr>
+</table>
+
+<p>It is quite legitimate to have two attributes in the sequence with the same name; there is
+no conflict until an attempt is made to add them both to the same element. The attributes can
+be added to an element by using <code>&lt;xsl:copy-of select="$seq"/&gt;</code> within an
+<code>xsl:element</code> instruction or within a literal result element. At this stage the usual
+rule applies: if there are duplicate attributes, the last one wins.</p>
+
+<p>At present it is probably more efficient in Saxon to use XPath facilities (<code>for</code>
+ expressions, etc) to construct sequences, rather than doing it at the XSLT level.</p>
+
+<hr>
+
+
+<h3><a name="xsl:sort">xsl:sort</a></h3>
+
+
+<p>The <code class="bold">xsl:sort</code> element is used within an <code>xsl:for-each</code> or <code>xsl:apply-templates</code>
+or <code>saxon:group</code> element to indicate the order in which the selected elements are processed.</p>
+
+<p>The <code>select</code> attribute (default value ".") is a string expression that calculates the sort
+key.</p>
+
+<p>The <code>order</code> attribute (values "ascending" or "descending", default "ascending") determines
+the sort order. There is no control over language, collating sequence, or data type.</p>
+
+<p>The <code>data-type</code> attribute determines whether collating is based
+on alphabetic sequence or numeric sequence. The permitted values are either "text" or "number", or
+a built-in type in XML Schema, such as <code>xs:date</code> or <code>xs:decimal</code>.</p>
+
+<p>The <code>collation</code> attribute is the name of a collating sequence. If present it must refer to a name
+established using the <a href="extensions.html#saxon:collation">saxon:collation</a> declaration in the stylesheet.</p>
+
+<p>The <code>case-order</code> attribute (values "upper-first" and "lower-first") is relevant only for
+data-type="text"; it determines whether uppercase letters are sorted before their lowercase equivalents,
+or vice-versa.</p>
+
+<p>The value of the <code>lang</code> attribute can be an ISO language code such as "en" (English) or
+ "de" (German). It determines the algorithm used for alphabetic collating. The default is based on
+ the Java system locale. The only collating sequence supplied with the Saxon product is "en" (English),
+ but other values may be supported by writing a user-defined comparison class. If no comparison class
+ is found for the specified language, a default algorithm is used which simply sorts according
+ to Unicode binary character codes. The value of lang does not have to be a recognized language
+ code, it is also possible to use values such as "month" to select a data-type-specific collating
+ algorithm.</p>
+
+<p>Several sort keys are allowed: they are written in major-to-minor order.</p>
+
+<p>Example 1: sorting with xsl:apply-templates. This example shows a template for a BOOKLIST
+element which processes all the child BOOK elements in order of their child AUTHOR elements; books
+with the same author are in descending order of the DATE attribute.</p>
+
+<table border="1" width="100%" class="code">
+  <tr>
+    <td width="100%" bgcolor="#00FFFF"><pre>
+&lt;xsl:template match=&quot;BOOKLIST&quot;&gt;
+    &lt;h2&gt;
+        &lt;xsl:apply-templates select="BOOK"&gt;
+            &lt;xsl:sort select="AUTHOR"/&gt;
+            &lt;xsl:sort select="@DATE" order="descending" lang="GregorianDate"/&gt;
+        &lt;/xsl:apply-templates&gt;            
+    &lt;/h2&gt;
+&lt;/xsl:template&gt;</pre>
+    </td>
+  </tr>
+</table>
+</div>
+
+
+
+<p>Example 2: sorting with xsl:for-each. This example also shows a template for a BOOKLIST
+element which processes all the child BOOK elements in order of their child AUTHOR elements.</p>
+
+<table border="1" width="100%" class="code">
+  <tr>
+    <td width="100%" bgcolor="#00FFFF"><pre>
+&lt;xsl:template match=&quot;BOOKLIST&quot;&gt;
+    &lt;h2&gt;
+        &lt;xsl:for-each select="BOOK"&gt;
+            &lt;xsl:sort select="AUTHOR"/&gt;
+            &lt;p&gt;AUTHOR: &lt;xsl:value-of select="AUTHOR"&gt;&lt;/p&gt;
+            &lt;p&gt;TITLE: &lt;xsl:value-of select="TITLE"&gt;&lt;/p&gt;
+            &lt;hr/&gt;
+        &lt;/xsl:for-each&gt;            
+    &lt;/h2&gt;
+&lt;/xsl:template&gt;</pre>
+    </td>
+  </tr>
+</table>
+</div>
+
+
+
+<hr>
+
+
+
+<h3><a name="xsl:sort-key">xsl:sort-key</a></h3>
+
+<p>The <code class="bold">xsl:sort-key</code> element is a new feature of XSLT 2.0. It defines a named
+sort key, for use with the <code>sort</code> function in XPath expressions.</p>
+
+<p>The element is a top-level declaration. It contains one or more <code>xsl:sort</code> elements to
+define the sort key. Its use is illustrated by the following example:</p>
+
+<table border="1" width="100%" class="code">
+  <tr>
+    <td width="100%" bgcolor="#00FFFF"><pre>
+&lt;xsl:sort-key name=&quot;by-author&quot;&gt;
+    &lt;xsl:sort select="author/last-name"/&gt;
+    &lt;xsl:sort select="author/first-name"/&gt;
+&lt;/xsl:sort-key&gt;
+    ...    
+    &lt;xsl:copy-of select="sort(BOOK, 'by-author')"/&gt;
+</pre>
+    </td>
+  </tr>
+</table>
+
+<p>This example sorts books by author's last name as the primary sort key, and author's first name
+as the secondary sort key.</p>
+
+<p><i>In Saxon 7.4 the arguments to the <code>sort()</code> function are first, the sequence to be
+sorted, and second, the name of the sort key.</i></p>
+
+<hr>
+<h3><a name="xsl:strip-space">xsl:strip-space</a></h3>
+
+
+<p>The <code class="bold">xsl:strip-space</code> element is used at the top level of the stylesheet to define elements in the source
+document for which white-space nodes are insignificant and should be removed from the tree before processing.</p>
+
+<p>The <code>elements</code> attribute is mandatory, and defines a space-separated list of element names.
+The value "*" may be used to mean "all elements"; in this case any elements where whitespace is not
+to be stripped may be indicated by an <a href="#xsl:preserve-space">xsl:preserve-space</a> element.</p>
+
+
+<hr>
+
+
+
+
+
+<h3><a name="xsl:stylesheet">xsl:stylesheet</a></h3>
+
+
+<p>The <code class="bold">xsl:stylesheet</code> element is always
+ the top-level element of an XSLT stylesheet. The
+name <code>xsl:transform</code> may be used as a synonym.</p>
+
+<p>The following attributes may be specified:</p>
+
+<table cellpadding="5">
+
+<tr>
+<td valign=top>version</td>
+<td>Mandatory. A value other than "1.0" invokes forwards compatibility mode.</td>
+</tr>
+
+
+<tr>
+<td valign=top>saxon:trace</td>
+<td>Value "yes" or "no": default no. If set to "yes", causes activation
+of templates to be traced on System.err for diagnostic purposes. The value may be overridden
+by specifying a saxon:trace attribute on the individual template.</td>
+</tr>
+
+
+</table>
+
+
+
+<hr>
+
+
+
+<h3><a name="xsl:template">xsl:template</a></h3>
+
+
+<p>The <code class="bold">xsl:template</code> element defines a processing rule for source elements or other nodes of a
+particular type.</p>
+
+<p>The type of node to be processed is identified by a pattern, written in the
+mandatory <code>match</code> attribute. The most common form of pattern is simply an
+element name. However, more complex patterns may also be used:
+The full syntax of patterns is given in <a href="patterns.html">XSLT Pattern Syntax</a></h3>
+
+<p>The following examples show some of the possibilities:</p>
+
+
+<table BORDER="1" CELLSPACING="1" CELLPADDING="7" WIDTH="590">
+  <tr>
+    <td WIDTH="50%" VALIGN="TOP"><b>Pattern</b></td>
+    <td WIDTH="50%" VALIGN="TOP"><b>Meaning</b></td>
+  </tr>
+  <tr>
+    <td WIDTH="50%" VALIGN="TOP">XXX</td>
+    <td WIDTH="50%" VALIGN="TOP">Matches any element whose name (tag) is XXX</td>
+  </tr>
+  <tr>
+    <td WIDTH="50%" VALIGN="TOP"><b>*</b></td>
+    <td WIDTH="50%" VALIGN="TOP">Matches any element</td>
+  </tr>
+  <tr>
+    <td WIDTH="50%" VALIGN="TOP">XXX/YYY</i></td>
+    <td WIDTH="50%" VALIGN="TOP">Matches any YYY element 
+    whose parent is an XXX</td>
+  </tr>
+  <tr>
+    <td WIDTH="50%" VALIGN="TOP">XXX//YYY</td>
+    <td WIDTH="50%" VALIGN="TOP">Matches any YYY element that has an ancestor named XXX</td>
+  </tr>
+  <tr>
+    <td WIDTH="50%" VALIGN="TOP">/*/XXX</td>
+    <td WIDTH="50%" VALIGN="TOP">Matches any XXX element that is immediately below
+    the root (document) element</td>
+  </tr>
+  <tr>
+    <td WIDTH="50%" VALIGN="TOP">*[@ID]</td>
+    <td WIDTH="50%" VALIGN="TOP">Matches any element with an ID attribute</td>
+  </tr>
+  <tr>
+    <td WIDTH="50%" VALIGN="TOP">XXX[1]</td>
+    <td WIDTH="50%" VALIGN="TOP">Matches any XXX element that is the first XXX child of
+    its parent element. (Note that this kind of pattern can be very inefficient: it is better to match all XXX
+    elements with a single template, and then use xsl:if to distinguish them)</td>
+  </tr>
+  <tr>
+    <td WIDTH="50%" VALIGN="TOP">SECTION[TITLE="Contents"]</td>
+    <td WIDTH="50%" VALIGN="TOP">Matches any SECTION element whose first TITLE child element
+    has the value "Contents"</td>
+  </tr>
+  <tr>
+    <td WIDTH="50%" VALIGN="TOP">A/TITLE | B/TITLE | C/TITLE</td>
+    <td WIDTH="50%" VALIGN="TOP">Matches any TITLE element whose parent is of type A or B or C</td>
+  </tr>
+  <tr>
+    <td WIDTH="50%" VALIGN="TOP">text()</td>
+    <td WIDTH="50%" VALIGN="TOP">Matches any character data node</td>
+  </tr>
+  <tr>
+    <td WIDTH="50%" VALIGN="TOP">@*</td>
+    <td WIDTH="50%" VALIGN="TOP">Matches any attribute</td>
+  </tr>
+  <tr>
+    <td WIDTH="50%" VALIGN="TOP">/</td>
+    <td WIDTH="50%" VALIGN="TOP">Matches the document node</td>
+  </tr>
+</table>
+
+
+<p>The <code>xsl:template</code> element has an optional <code>mode</code> attribute. If this is present, the template
+will only be matched when the same mode is used in the invoking <code>xsl:apply-templates</code> element.
+The value can be a list of mode names, indicating that the template matches more than one mode; this list
+can include the token <code>#default</code> to indicate that the template matches the default (unnamed)
+mode. Alternatively the <code>mode</code> attribute can be set to <code>#all</code>, to indicate that the
+template matches all modes. (This can be useful in conjunction with <code>xsl:next-match</code>: one
+can write a template rule that matches in all modes, and then call <code>xsl:next-match</code> to continue
+processing in the original mode.)</p>
+
+<p>There is also an optional <code>name</code> attribute. If this is present, the template may be invoked
+directly using <code>xsl:call-template</code>. The match attribute then becomes optional.</p>
+
+<p>If there are several <code>xsl:template</code> elements that all match the same
+node, the one that is chosen is determined by the optional <code>priority</code> attribute: the template
+with highest priority wins. The priority is written as a floating-point number; the default priority
+is 1. If two matching templates have the same priority, the one that appears last in the stylesheet
+is used.</p>
+
+<h4>Examples:</h4>
+
+<p>The following examples illustrate different kinds of template and match pattern.</p>
+
+<p><em>Example 1</em>: a simple XSLT template for a particular element. This example causes
+all &lt;ptitle&gt; elements in the source document to be output as HTML &lt;h2&gt;
+elements.</p>
+<div align="left">
+
+<table border="1" width="100%" class="code">
+  <tr>
+    <td width="100%" bgcolor="#00FFFF"><pre>
+&lt;xsl:template match=&quot;ptitle&quot;&gt;
+    &lt;h2&gt;
+        &lt;xsl:apply-templates/&gt;
+    &lt;/h2&gt;
+&lt;/xsl:template&gt;</pre>
+    </td>
+  </tr>
+</table>
+</div>
+
+
+<hr>
+
+
+<h3><a name="xsl:text">xsl:text</a></h3>
+
+
+<p>The <code class="bold">xsl:text</code> element causes its content to be output.</p>
+
+<p>The main reasons for enclosing text within an <code>xsl:text</code> element is
+to allow white space to be output.
+White space nodes in the stylesheet are ignored unless they appear immediately within
+an <code>xsl:text</code> element.</p>
+
+<p>The optional <code>disable-output-escaping</code> attribute may be set to "yes" or "no"; the default is
+"no". If set to "yes", special characters such as "&lt;" and "&amp;" will be output as themselves,
+not as entities. Be aware that in general this can produce non-well-formed XML or HTML. It is useful,
+however, when generating things such as ASP or JSP pages. Escaping may not be disabled when writing
+to a result tree fragment.</p>
+
+<p><i>Saxon 7.4 has reverted to the XSLT 1.0 specification of <code>xsl:text</code>: the instruction
+must contain only text, it cannot contain a child element.</i></p>
+
+<hr>
+
+
+
+
+
+
+<h3><a name="xsl:value-of">xsl:value-of</a></h3>
+
+
+<p>The <code class="bold">xsl:value-of</code> element evaluates an expression as a string,
+ and outputs its value to the current result tree.
+<p>The full syntax of expressions is given in <a href="expressions.html">XPath Expression Syntax</a>.
+</p>
+
+<p>The <code>select</code> attribute identifes the expression, and is mandatory.</p>
+
+<p>The optional <code>disable-output-escaping</code> attribute may be set to "yes" or "no"; the default is
+"no". If set to "yes", special characters such as "&lt;" and "&amp;" will be output as themselves,
+not as entities. Be aware that in general this can produce non-well-formed XML or HTML. It is useful,
+however, when generating things such as ASP or JSP pages. Escaping may not be disabled when writing
+to a result tree fragment.</p>
+
+<p>If the <code>select</code> expression evaluates to a sequence containing more than one item,
+the result depends on whether a <code>separator</code> attribute is present. If the
+<code>separator</code> is absent, then only the
+first item is considered. Otherwise, all the items in the sequence are output,
+separated by the value of the <code>separator</code> attribute (which may be specified
+as an <i>attribute value template</i>).</p>
+
+<p>Here are some examples of expressions that can be used in the select attribute:</p>
+
+
+
+<table BORDER="1" CELLSPACING="1" CELLPADDING="7" WIDTH="590">
+  <tr>
+    <td WIDTH="50%" VALIGN="TOP"><b>Expression</b></td>
+    <td WIDTH="50%" VALIGN="TOP"><b>value</b></td>
+  </tr>
+  <tr>
+    <td WIDTH="50%" VALIGN="TOP">TITLE</td>
+    <td WIDTH="50%" VALIGN="TOP">The character content of the first child TITLE element if there is one</td>
+  </tr>
+  <tr>
+    <td WIDTH="50%" VALIGN="TOP">@NAME</td>
+    <td WIDTH="50%" VALIGN="TOP">The value of the NAME attribute of the current element if there is one</td>
+  </tr>
+  <tr>
+    <td WIDTH="50%" VALIGN="TOP">.</td>
+    <td WIDTH="50%" VALIGN="TOP">The expanded character content of the current element</td>
+  </tr>
+  <tr>
+    <td WIDTH="50%" VALIGN="TOP">../TITLE</td>
+    <td WIDTH="50%" VALIGN="TOP">The expanded character content of the first TITLE child of the
+    parent element, if there is one</td>
+  </tr>
+  <tr>
+    <td WIDTH="50%" VALIGN="TOP">ancestor::SECTION/TITLE</i></td>
+    <td WIDTH="50%" VALIGN="TOP">The expanded character content of the first TITLE child of the
+    enclosing SECTION element, if there is one</td>
+  </tr>
+  <tr>
+    <td WIDTH="50%" VALIGN="TOP">ancestor::*/TITLE</i></td>
+    <td WIDTH="50%" VALIGN="TOP">The expanded character content of the first TITLE child of the
+    nearest enclosing element that has a child element named TITLE</td>
+  </tr>
+
+  <tr>
+    <td WIDTH="50%" VALIGN="TOP">PERSON[@ID]</td>
+    <td WIDTH="50%" VALIGN="TOP">The content of the first child PERSON element having an ID attribute,
+    if there is one</td>
+  </tr>
+  <tr>
+    <td WIDTH="50%" VALIGN="TOP">*[last()]/@ID</td>
+    <td WIDTH="50%" VALIGN="TOP">The value of the ID attribute of the last child element of any type,
+     if there are any </td>
+  </tr>
+  <tr>
+    <td WIDTH="50%" VALIGN="TOP">.//TITLE</td>
+    <td WIDTH="50%" VALIGN="TOP">The content of the first descendant TITLE element if there is one</td>
+  </tr>
+  <tr>
+    <td WIDTH="50%" VALIGN="TOP">sum(*/@SALES)</td>
+    <td WIDTH="50%" VALIGN="TOP">The numeric total of the values of the SALES attributes of all child
+    elements that have a SALES attribute</td>
+  </tr>
+
+
+</table>
+
+
+
+
+<hr>
+
+
+
+
+
+<h3><a name="xsl:variable">xsl:variable</a></h3>
+
+
+<p>The <code class="bold">xsl:variable</code> element is used to declare a variable and give it a value. If it appears at the
+top level (immediately within xsl:stylesheet) it declares a global variable, otherwise it declares a local variable
+that is visible only within the stylesheet element containing the xsl:variable declaration.</p>
+
+<p>The mandatory <code>name</code> attribute defines the name of the variable.</p> 
+
+<p>The value of the variable may be defined either by an expression within the optional <code>select</code> attribute, or
+by the contents of the xsl:variable element. In the latter case the result is a temporary tree. A
+temporary tree can be used like a source document, for example it can be accessed using path expressions
+and processed using template rules.</p>
+
+<p>There is an optional attribute, <code>as</code>, to define the type of the variable. The actual supplied
+value must be an instance of this type; it will not be converted. <i>This has changed in Saxon 7.4: previous
+releases did a conversion.</i></p>
+
+<p>The optional <code>type-information</code> attribute is relevant only if the value of the
+variable is a tree (that is, if the <code>xsl:variable</code> element is non-empty. It determines what
+happens to any type annotations on element or attribute nodes. The values currently supported are
+<code>none</code> and <code>preserve</code>. If the value is <code>none</code>, type annotations are
+discarded; if it is <code>preserve</code>, they are retained.</p>
+
+<p>In standard XSLT, variables once declared cannot be updated. Saxon however provides a <a href="extensions.html#saxon:assign">
+saxon:assign</a> extension element to circumvent this restriction.</p>
+
+<p>The value of a variable can be referenced within an expression using the syntax <code>$name</code>.</p>
+
+<p>Example:</p>
+<div align="left">
+
+<table border="1" width="100%" class="code">
+  <tr>
+    <td width="100%" bgcolor="#00FFFF">
+    <pre>
+&lt;xsl:variable name=&quot;title&quot;&gt;A really exciting document&quot;&lt;/xsl:variable&gt;
+&lt;xsl:variable name=&quot;backcolor&quot; expr=&quot;'#FFFFCC'&quot; /&gt;
+&lt;xsl:template match="/*"&gt;
+    &lt;HTML&gt;&lt;TITLE&lt;xsl:value-of select=&quot;$title&quot;/&gt;&lt;/TITLE&gt;
+    &lt;BODY BGCOLOR='{$backcolor}'&gt;
+    ...<br>
+    &lt;/BODY&gt;&lt;/HTML&gt;
+&lt;/xsl:template&gt;
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+
+
+
+
+<hr>
+
+
+
+<h3><a name="xsl:when">xsl:when</a></h3>
+
+
+<p>The <code class="bold">xsl:when</code> element is used within an <code>xsl:choose</code> element to indicate one
+of a number of choices. It takes a mandatory parameter, <code>test</code>, whose value is a match
+pattern. If this is the first xsl:when element within the enclosing xsl:choose whose test
+ condition matches the current element, the content of the xsl:when element is expanded, otherwise
+ it is ignored.</p>
+ 
+
+
+<hr>
+
+
+<h3><a name="xsl:with-param">xsl:with-param</a></h3>
+
+
+<p>The <code class="bold">xsl:with-param</code> element is used to define an actual parameter to a template. It may be used
+within an <code>xsl:call-template</code> or an <code>xsl:apply-templates</code> or an <code>xsl:apply-imports</code> element.
+For an example, see the <a href="#xsl:template">xsl:template</a> section.</p>
+
+<p>There is a mandatory attribute, <code>name</code>, to define the name
+of the parameter. The value of the parameter may be defined either by a select attribute, or by the
+contents of the <code>xsl:param</code> element, in the same way as for <code>xsl:variable</code>.</p>
+
+<p><i>The parameter has no effect unless the called template includes a matching
+<code>xsl:param</code> element. </i></p>
+
+
+<hr>
+
+
+
+
+
+<h2><a name="Literal result elements">Literal result elements</a></h2>
+
+
+<p>Any elements in the style sheet other than those listed above are
+assumed to be literal result elements, and are copied to the current output stream at the
+position in which they occur.</p>
+
+<p>Attribute values within literal result elements are treated as attribute value templates:
+they may contain string expressions enclosed between curly braces. For the syntax of 
+string expressions, see <strong><a href="#xsl:value-of">xsl:value-of</a></strong> above.</p>
+
+<p>Where the output is HTML, certain formatting elements are recognised as empty
+ elements: these are AREA, BASEFONT, BR, COL, FRAME, HR, IMG, INPUT, ISINDEX,
+ LINK, META, and SYSTEM (in either upper or lower case, and optionally with attributes, of course).
+ These should be written as empty
+XML elements in the stylesheet, and will be written to the HTML output stream without a
+closing tag.</p>
+
+<p>With HTML output, if the attribute name is the same as its value, the abbreviated form
+of output is used: for example if &lt;OPTION SELECTED="SELECTED"&gt; appears in the stylesheet,
+it will be output as &lt;OPTION SELECTED&gt.</p>
+
+<p>A simple stylesheet may be created by using a literal result element as the top-level
+element of the stylesheet. This implicitly defines a single template with a match pattern
+of "/". In fact, an XHTML document constitutes a valid stylesheet which will be output as a copy
+of itself, regardless of the contents of the source XML document.</p>
+
+<hr>
+<p align="center">Michael H. Kay<br>
+20 May 2003</p>
+</body>
+</html>

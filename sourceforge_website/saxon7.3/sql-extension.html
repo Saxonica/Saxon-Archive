@@ -1,0 +1,203 @@
+<html>
+
+<head>
+  <title>The Saxon SQL Extension</title>
+  <link rel="stylesheet" type="text/css" href="saxon-style.css">
+</head>
+
+<body>
+<div align=right><a href="index.html">Saxon home page</a></div>
+
+
+<h1>The Saxon SQL Extension</h1>
+
+<p>The Saxon distribution includes a set of extension elements providing access to
+SQL databases. These are not intended as being necessarily a production-quality piece
+of software (there are many limitations in the design), but more as an illustration of
+how extension elements can be used to enhance the capability of the processor.</p>
+
+<table width="100%">
+  <tr>
+    <td class="head"><font color="#FFFFFF"><big><b>Contents</b></big></font></td>
+  </tr>
+
+  <tr>
+    <td VALIGN="top" class="body">
+    <a href="#Specification">Specification</a><br>
+    <a href="#Example">Example</a><br>
+    </td>
+  </tr>
+</table>
+
+
+
+
+<p>To use the SQL extension elements in a stylesheet, you need to define a namespace prefix
+(for example "sql") in the extension-element-prefixes attribute of the xsl:stylesheet element,
+and to map this prefix to namespace URI that ends in "/net.sf.saxon.sql.SQLElementFactory".</p>
+
+<h2><a name="specification">Specification</a></h2>
+
+<p>This extension defines five new stylesheet elements: <code>sql:connect</code>, <code>sql:query</code>, 
+<code>sql:insert</code>, <code>sql:column</code>, and <code>sql:close</code>, described in the following sections.</p>
+
+<h3>sql:connect</h3>
+
+<p><code class="bold">sql:connect</code> creates a database connection. It has attributes <code>driver</code>,
+ <code>database</code>, <code>user</code>, and <code>password</code>,
+all of which are attribute value templates (so the values can be passed in as parameters).
+The <code>driver</code> attribute names the JDBC driver class to be used. The
+database name must be a name that JDBC can associate with an actual database.</p>
+
+<h3>sql:query</h3>
+
+<p><code class="bold">sql:query</code> performs a query, and writes the results of the query to
+the result tree, using elements to represent the rows and columns. If you want to process
+the results in the stylesheet, you can write the results to a temporary tree by using
+the <code>sql:query</code> instruction as a child of <code>xsl:variable</code>.
+The attributes are as follows:</p>
+
+<table>
+<tr><td valign="top">table</td>
+<td>The table to be queried (the contents of the FROM clause of the select statement).
+This is mandatory, the value is an attribute value template.</td></tr>
+<tr><td valign="top">column</td>
+<td>The columns to be retrieved (the contents of the SELECT clause of the select statement).
+May be "*" to retrieve all columns. This is mandatory, the value is an attribute value template.</td></tr>  
+<tr><td valign="top">where</td>
+<td>The conditions to be applied (the contents of the WHERE clause of the select statement).
+This is optional, if present the value is an attribute value template.</td></tr>
+<tr><td valign="top">row-tag</td>
+<td>The element name to be used to contain each row. Must be a simple name (no colon
+allowed). Default is "row".</td></tr>
+<tr><td valign="top">column-tag</td>
+<td>The element name to be used to contain each column. Must be a simple name (no colon
+allowed). Default is "col".</td></tr>
+<tr><td valign="top">disable-output-escaping</td>
+<td>Allowed values are "yes" or "no", default is "no". The value "yes" causes the content of all
+rows/columns to be output as is, without converting special characters such as "&lt;" to "&amp;lt;".
+This is useful where the database contains XML or HTML markup that you want to be copied into the
+result document. Use this option with care, however, since it applies to all the columns retrieved, not
+only to those that contain XML or HTML. An alternative is to use the <a href="extensions.html#parse">saxon:parse()</a>
+extension function to process the contents of an XML column.</td></tr>
+</table>
+
+<h3>sql:insert and sql:column</h3>
+
+<p><code class="bold">sql:insert</code> performs an SQL INSERT statement. This causes a row to be added to the table identified
+by the "table" attribute.</p>
+
+<p><code class="bold">sql:column</code> is used as a child element of <code>sql:insert</code>, and identifies the name and value of a column
+to be included in the INSERT statement. The name of the column is identified by the <code>name</code> attribute,
+the value may be indicated either by evaluating the expression contained in the <code>select</code> attribute, or
+as the expanded contents of the <code>sql:column</code> element. The value is always interpreted as a String.
+(Remember this is purely a demonstration of extensibility, in a real system there would be a need to
+cater for SQL columns of other data types).</p>
+
+<h3>sql:close</h3>
+
+<p><code class="bold">sql:close</code> closes the database connection.</p>
+
+<h2><a name="Example">Example</a></h2>
+
+<p>A specimen stylesheet that uses these XSL extension is <b>books-sql.xsl</b>. This loads the contents
+of the books.xml file into a database table, To use it, you need to create a database
+database containing a table "Book" with three character columns,
+"Title", "Author", and "Category"<p>
+
+<p>Here is the stylesheet:</p>
+
+<pre><code>
+&lt;xsl:stylesheet
+	xmlns:sql="java:/net.sf.saxon.sql.SQLElementFactory"
+ 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
+	xmlns:saxon="http://saxon.sf.net/"
+ 	extension-element-prefixes="saxon sql">
+
+&lt;!-- insert your database details here, or supply them in parameters -->
+&lt;xsl:param name="driver" select="'sun.jdbc.odbc.JdbcOdbcDriver'"/>
+&lt;xsl:param name="database" select="'jdbc:odbc:test'"/>  
+&lt;xsl:param name="user"/>
+&lt;xsl:param name="password"/>
+
+&lt;!-- This stylesheet writes the book list to a SQL database -->
+
+&lt;xsl:variable name="count" select="0" saxon:assignable="yes"/>
+
+&lt;xsl:output method="xml" indent="yes"/>
+
+&lt;xsl:template match="BOOKLIST">
+    &lt;xsl:if test="not(element-available('sql:connect'))">
+        &lt;xsl:message>sql:connect is not available&lt;/xsl:message>
+    &lt;/xsl:if>
+    
+    &lt;xsl:message>Connecting to &lt;xsl:value-of select="$database"/>...&lt;/xsl:message>
+    
+    &lt;sql:connect driver="{$driver}" database="{$database}" 
+                 user="{$user}" password="{$password}">
+        &lt;xsl:fallback>
+          &lt;xsl:message terminate="yes">SQL extensions are not installed</xsl:message>
+        &lt;/xsl:fallback>
+    &lt;/sql:connect>
+    
+    &lt;xsl:message>Connected...&lt;/xsl:message>
+    
+    &lt;xsl:apply-templates select="BOOKS"/>
+    
+    &lt;xsl:message>Inserted <xsl:value-of select="$count"/> records.&lt;/xsl:message>
+
+    &lt;xsl:variable name="book-table">
+    &lt;sql:query table="book" column="*" row-tag="book" column-tag="col"/> 
+    &lt;/xsl:variable>
+    
+    &lt;xsl:message>There are now &lt;xsl:value-of select="count($book-table//book)"/> books.&lt;/xsl:message>
+    &lt;new-book-table>
+        &lt;xsl:copy-of select="$book-table"/>
+    &lt;/new-book-table>
+    
+    &lt;sql:close/>
+    
+&lt;/xsl:template>
+
+&lt;xsl:template match="BOOKS">
+    &lt;xsl:for-each select="ITEM">
+    	&lt;sql:insert table="book">
+    	    &lt;sql:column name="title" select="TITLE"/>
+            &lt;sql:column name="author" select="AUTHOR"/>
+            &lt;sql:column name="category" select="@CAT"/>
+    	&lt;/sql:insert>
+    	&lt;saxon:assign name="count" select="$count+1"/>
+    &lt;/xsl:for-each>
+&lt;/xsl:template>
+
+&lt;/xsl:stylesheet>	
+
+
+</code></pre>
+
+<p>To run this stylesheet you will need to do the following:</p>
+
+<ul>
+<li>Create a database (e.g. Microsoft Access) containing a table "Book" with three character columns,
+"Title", "Author", and "Category".</li>
+<li>Register this database as a JDBC data source. (If you use Microsoft Access, register it as an
+ODBC data source called, say, Books, and then it will automatically be available under JDBC as
+"jdbc:odbc:Books".</li>
+<li>Modify the <code>&lt;sql:connect&gt;</code> element in the stylesheet to specify the correct JDBC connection
+name for the database, and if necessary to supply a username and password. Alternatively you can
+supply the driver class, database name, username, and password as parameters on the command line.</li>
+<li>Execute the stylesheet from the command line, as follows:
+</ul>
+
+<p class="highlight">
+java &nbsp; net.sf.saxon.Transform &nbsp; data\books.xml &nbsp; books-sql.xsl <br>
+</p>
+
+<p>The database will be populated with data from the <code>books.xml</code> document.</p>
+<hr>
+
+
+<p align="center"><a HREF="mailto:michael.h.kay@ntlworld.com">Michael H. Kay</a> <br>
+12 November 2002</p>
+</body>
+</html>

@@ -1,0 +1,515 @@
+<html>
+
+<head>
+  <meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+  <title>Extensibility</title>
+  <link rel="stylesheet" type="text/css" href="saxon-style.css">
+</head>
+
+<body>
+
+<div align=right><a href="index.html">Saxon home page</a></div>
+
+<h1>Extensibility</h1>
+
+<hr>
+
+<p>This page describes how to extend the capability of Saxon XSLT Stylesheets</p>
+
+<table width="100%">
+  <tr>
+    <td  width="100%" class="head"><b>Contents</b></td>
+  </tr>
+
+  <tr>
+    <td valign="top"  class="body">
+    <a href="#Writing-extension-functions">Writing extension functions</a><br>
+    <a href="#Writing-extension-instructions">Writing extension instructions</a><br>
+    <a href="#Writing-input-filters">Writing input filters</a><br>
+    <a href="#Writing-output-filters">Writing output filters</a><br>
+    <a href="#Implementing-a-collating-sequence">Implementing a collating sequence</a><br>
+    <a href="#Implementing-a-numbering-sequence">Implementing a numbering sequence</a><br>
+    <a href="#Adding-an-output-encoding">Adding an output encoding</a><br>
+    <a href="#Writing-a-uri-resolver">Writing a URI Resolver for input files</a><br> 
+    <a href="#Output-uri-resolver">Writing a URI Resolver for output files</a>        
+    </td>
+
+  </tr>
+</table>
+
+
+<a name="Writing-extension-functions"><h2>Writing extension functions</h2></a>
+
+<p>An extension function is invoked using a name such as <code>prefix:localname()</code>.
+The prefix must
+be the prefix associated with a namespace declaration that is in scope. </p>
+
+<p>Extension functions must be implemented in Java.</p>
+
+<p><b>The command line option -TJ is useful for debugging the loading of Java
+extensions. It gives detailed information about the methods that are examined for
+a possible match.</b></p>
+
+<p>Saxon supports the <code>&lt;saxon:script&gt;</code>
+ element, based on the
+<code>&lt;xsl:script&gt;</code> element defined in the (now withdrawn) XSLT 1.1 working draft.
+This element defines a mapping between a namespace URI used in calls
+of extension functions, and a Java class that contains implementations of these functions.
+See <a href="extensions.html#saxon:script">saxon:script</a> for details.</p>
+
+<p>You can also use a short-cut technique of binding external Java classes, by making the
+class name part of the namespace URI. In this case, you don't need a <code>&lt;saxon:script&gt;</code>
+element.</p>
+
+<p>With the short-cut technique, the URI for the
+namespace identifies the class where the external function will be found.
+The namespace URI must either be "java:" followed by the fully-qualified class name
+ (for example <code>xmlns:date="java:java.util.Date"</code>),
+or a string containing a "/", in which the fully-qualified class name appears after the final "/".
+(for example <code>xmlns:date="http://www.jclark.com/xt/java/java.util.Date"</code>). The part of
+ the URI before the final "/" is immaterial. The class must be on the classpath. For compatibility
+ with previous releases, the format <code>xmlns:date="java.util.Date"</code> is also supported.</p>
+
+<p>The Saxon namespace URI "http://saxon.sf.net/" is recognised as a special case, and causes the
+function to be loaded from the class <code>net.sf.saxon.functions.Extensions</code>. 
+This class name can be specified explicitly if you prefer.</p>
+
+<p>There are three cases to consider: static methods, constructors, and instance-level methods.</p>
+
+<p><b>Static methods</b> can be called directly.
+The localname of the function must match the name of a public static method in this class. The names
+ match if they contain the same characters, excluding hyphens and forcing any character that follows
+ a hyphen to upper-case. For example the XPath function call <code>to-string()</code> matches the Java method
+ <code>toString()</code>; but the function call can also be written as <code>toString()</code> if you prefer.</p>
+ 
+ <p>If there are several methods in the class that match the localname, and that have the correct number
+ of arguments, then the system attempts
+ to find the one that is the best fit to the types of the supplied arguments: for example if the 
+ call is <code>f(1,2)</code> then a method with two int arguments will be preferred to one with two String
+ arguments. The rules for deciding between methods are quite complex. Essentially, for each candidate method,
+ Saxon calculates the "distance" between the types of the supplied arguments and the Java class of the 
+ corresponding method in the method's
+ signature, using a set of tables given below. For example, the distance between the XPath data type "boolean"
+ and the Java class "boolean" is very small, while the distance between an XPath string and a Java boolean
+ is much larger. If there is one candidate method where the distances of all arguments are less-than-or-equal-to
+ the distances computed for other candidate methods, and the distance of at least one argument is smaller,
+ then that method is chosen. 
+ If there are several methods with the same name and the correct number of arguments, but none is
+ preferable to the others under these rules, an error is reported: the message indicates that there is
+ more than one method that matches the function call.</p>
+ 
+
+
+<p>For example:</p>
+
+<pre><code>
+&lt;xsl:value-of select="math:sqrt($arg)"
+   xmlns:math="java:java.lang.Math"/&gt;
+</code></pre>
+
+<p>This will invoke the static method java.lang.Math.sqrt(), applying it to the value of the variable
+$arg, and copying the value of the square root of $arg to the result tree.</p>
+
+<p><b>Java constructors</b> are called by using the function named <code>new()</code>. 
+If there are several constructors, then again
+the system tries to find the one that is the best fit, according to the types of the supplied arguments. The result
+ of calling <code>new()</code> is an XPath value of type Java Object; the only things that can be done with a Java Object
+ are to assign it to a variable, to pass it to an extension function, and to convert it to a string, number,
+ or boolean, using the rules given below.</p>
+
+<p><b>Instance-level methods</b> (that is, non-static methods)
+ are called by supplying an extra first argument of type Java Object which is the
+object on which the method is to be invoked. A Java Object is usually created by calling an extension
+ function (e.g. a constructor) that returns an object; it may also be passed to the style sheet as the
+ value of a global parameter. Matching of method names is done as for static methods.
+ If there are several methods in the class that match the localname, the system again tries to
+ find the one that is the best fit, according to the types of the supplied arguments.</p>
+
+ For example, the following stylesheet prints the date and time. This example is copied from the
+ documentation of the xt product, and it works unchanged with Saxon, because Saxon
+ does not care what the namespace URI for extension functions is, so long as it ends with
+  the class name. (Extension functions are likely to be compatible between Saxon and xt
+ provided they only use the data types string, number, and boolean).</p>
+
+<code><pre>
+
+&lt;xsl:stylesheet
+  version="1.0"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:date="http://www.jclark.com/xt/java/java.util.Date">
+
+&lt;xsl:template match="/">
+  &lt;html>
+    &lt;xsl:if test="function-available('date:to-string') and function-available('date:new')">
+      &lt;p>&lt;xsl:value-of select="date:to-string(date:new())"/>&lt;/p>
+    &lt;/xsl:if>
+  &lt;/html>
+&lt;/xsl:template>
+
+&lt;/xsl:stylesheet>
+
+</pre></code>
+
+
+
+
+
+<p>A Java method called as an extension function may have an extra first argument of
+ class <code>net.sf.saxon.expr.XPathContext</code>.
+This argument is not
+supplied by the calling XSLT code, but by Saxon itself. The XPathContext object provides methods to access many
+internal Saxon resources, the most useful being current() which returns the current Item. 
+The XPathContext object is not available with constructors.</p>
+
+<p>If any exceptions are thrown by the method, or if a matching method cannot be found,
+processing of the stylesheet will be abandoned. If the tracing option has been set (-T) on the
+command line, a full stack trace will be output. The exception will be wrapped in a
+TransformerException and passed to any user-specified ErrorListener object, so the ErrorListener
+can also produce extra diagnostics.</p>
+
+<h3><a name="function-arguments">Conversion of arguments to the function</a></h3>
+
+ <p>The following conversions are supported between the supplied value of the argument and the declared
+ Java class of the argument. The mappings are given in order of preference; a class that appears earlier
+ in the list has smaller "conversion distance" than one appearing later. These priorities are used to decide
+ which method to call when the class has several methods of the same name. Simple classes (such as boolean)
+ are acceptable wherever the corresponding wrapper class (Boolean) is allowed. Class names shown in
+ italics are Saxon-specific classes.</p>
+ 
+ <p>If the supplied value is a singleton (a sequence of one item) then the type of that item is decisive. If
+ it is a sequence of length zero or more than one, then the general rules for a sequence are applied, and the
+ types of the items within the sequence are irrelevant.</p>
+ 
+ <table>
+ <tr><td valign="top" width="30%"><b>Supplied value</b></td><td valign="top"><b>Required type</b></td></tr>
+ <tr><td valign="top">boolean</td><td><i>BooleanValue</i>, Boolean, (String, CharSequence), Byte, Character, Double, Float, Integer, Long, Short, Byte), Object</td></tr>
+ <tr><td valign="top">dateTime</td><td><i>DateTimeValue</i>, Date, String, Object</td></tr>   
+ <tr><td valign="top">date</td><td><i>DateValue</i>, Date, (String, CharSequence), Object</td></tr>
+ <tr><td valign="top">decimal</td><td><i>DecimalValue</i>, BigDecimal, Double, Float, Long, Integer, Short, Character, Byte, Boolean, (String, CharSequence), Object</td></tr>
+ <tr><td valign="top">double</td><td><i>DoubleValue</i>, Double, Float, Long, Integer, Short, Character, Byte, Boolean, (String, CharSequence), Object</td></tr>
+ <tr><td valign="top">duration</td><td><i>DurationValue</i>, (String, CharSequence), Object</td></tr>
+ <tr><td valign="top">float</td><td><i>FloatValue</i>, Float, Double, Long, Integer, Short, Character, Byte, Boolean, (String, CharSequence), Object</td></tr>
+ <tr><td valign="top">integer</td><td><i>IntegerValue</i>, Long, Double, Float, Integer, Short, Character, Byte, Boolean, (String, CharSequence), Object</td></tr>
+ <tr><td valign="top">string</td><td><i>StringValue</i>, (String, CharSequence), Character, Double, Float, Integer, Long, Short, Boolean, Byte, Object</td></tr>
+ <tr><td valign="top">node</td><td><i>SingletonNodeSet</i>, NodeList, (Element, Attr, Document, DocumentFragment, 
+ Comment, Text, ProcessingInstruction, CharacterData), Node, Boolean, 
+  Byte, Character, Double, Float, Integer, Long, Short, (String, CharSequence), Object</td></tr>
+ <tr><td valign="top">sequence</td><td><i>SequenceIterator</i>, <i>SequenceValue</i>, List, <i>NodeInfo</i>, Node, (String, CharSequence), Boolean, 
+  Byte, Character, Double, Float, Integer, Long, Short, Object</td></tr>
+ </table>
+ 
+<p>Saxon first tries to select the appropriate method based on the <i>static type</i> of the arguments
+to the function call. If there is insufficient information statically, it tries again at run-time, based
+on the <i>dynamic type</i> of the arguments once evaluated. This means that the same function call may
+invoke different methods on different occasions.</p>
+
+ <p>Note that the XPath value is considered to be one of the singleton classes if it is produced by an
+ expression that always produces a singleton. So the expression <code>1+2</code> will be an integer. An
+ expression that can potentially produce a sequence of any cardinality is represented in the table above
+  by the generic class "sequence". For example, <code>($a to $b)</code> is represented as a sequence, except
+  when it can be determined statically that <code>$a</code> and <code>$b</code> are equal, in which case it is represented as an
+  integer.</p>
+  
+  <p><i>These rules will probably be rationalized further in future releases.</i></p>
+ 
+<p>A wrapped Java object may be converted to another data type as follows.
+
+<ul>
+<li>It is converted to a string by using its toString() method; if the object is null, the result is
+the empty string "".</li>
+<li>It is converted to a number by converting it first to a string, and then applying the
+XPath number() conversion. If it is null, the result is NaN.</li>
+<li>It is converted to a boolean as follows: if it is null, the result is false, otherwise
+it is converted to a string and the result is true if and only if the string is non-empty.</li>
+</ul> 
+
+<h3><a name="function-result">Result of an extension function</a></h3>
+
+<p>The result type of the method is converted to an XPath value as follows.</p>
+
+<ul>
+<li>If the method returns void, the XPath value is an empty sequence.</li>
+<li>If the method returns null, the XPath value is a wrapped null Java Object.</li>
+<li>If the method is a constructor, the XPath value is of type "wrapped Java object". The only way of
+using this is by passing it to another external function, or by converting it to one of the standard
+XPath data types as described above.</li>
+<li>If the returned value is a Java boolean or Boolean, the XPath result is a boolean.</li>
+<li>If the returned value is a Java double or Double, the XPath result is a double.</li>
+<li>If the returned value is a Java float or Float, the XPath result is a float.</li>
+<li>If the returned value is a Java int, short, long, character, or byte, or one of their object wrapper
+equivalents, the XPath result is an integer.</li>
+<li>If the returned value is a Java String, the XPath result is a string.</li>
+
+<li>If the returned value is an instance of the Saxon class <code>net.sf.saxon.om.NodeInfo</code>
+ (a node in a Saxon tree), the XPath value will be a sequence containing a single node.</li>
+
+<li>If the returned value is an instance of <code>javax.xml.transform.Source</code> 
+(other than a <code>NodeInfo</code>), 
+a tree is built from the specified <code>Source</code> object, and the root node of this tree is returned as
+ the result of the function.</li>
+
+<li>If the returned value is an instance of the Saxon class <code>net.sf.saxon.value.Value</code>,
+the returned value is used unchanged.</li>
+
+
+
+<li>If the returned value is is an instance of the Saxon class <code>net.sf.saxon.om.SequenceIterator</code>
+(an iterator over a sequence), the XPath
+value will be the sequence represented by this iterator. It is essential that this iterator
+properly implements the method <code>getAnother()</code> which returns a new iterator over the
+same sequence of nodes or values, positioned at the start of the sequence.</li>
+
+<li>If the returned value is an instance of the Java class <code>java.util.List</code>, the XPath value will be the
+sequence represented by the contents of this <code>List</code>. The members of the list will each be converted
+to an XPath value, as if each member was supplied from a separate function call. An error is reported if
+the result contains a list nested within another list. The contents of the list are copied immediately on return from the
+function, so the <code>List</code> object itself may be safely re-used.</li>
+
+<li>If the returned value is a DOM <code>NodeList</code>, the list of nodes is returned as a Saxon node-set. However,
+all the nodes must be instances of class <code>net.sf.saxon.om.NodeInfo</code>, that is, they must use Saxon's tree
+implementation, not some third-party DOM. But any implementation of <code>NodeList</code> can be used. The nodes
+can come from the original source tree, or from a newly-constructed tree, so long as it is constructed
+using Saxon.</li>
+
+<li>If the returned value is a DOM Node that is not an instance of class <code>net.sf.saxon.om.NodeInfo</code>, it is
+rejected: the result must use Saxon's DOM implementation, not some third-party DOM.</li>
+
+<li>If the result is any other Java object (including null), it is returned as a "wrapped Java object".</li>
+</ul>
+
+<p>Note that Saxon's two principal tree structures both conform to the DOM Core Level 2 interface. However, they are read-only:
+any attempt to modify the tree causes an exception. Saxon's trees can only be built using the Saxon
+subclasses of the <code>net.sf.saxon.tree.Builder</code> class, and they cannot be modified <i>in situ</i>.
+(The simplest way for a Java application to build a Saxon tree is by 
+using the <code>net.sf.saxon.xpath.XPathEvaluator</code> class.)</p>
+
+<p>The system function <b>function-available(String name)</b> returns true if there appears
+to be a method available with the right name. It does not test whether this method has the appropriate
+number of arguments or whether the arguments are of appropriate types. If the function name is "new" it
+returns true so long as the class is not an abstract class or interface, and so long as it has at least
+one constructor.</p>
+
+<p>There are a number of extension functions supplied with the Saxon product: for details, see
+<a href="extensions.html">extensions.html</a>. The source code of these methods, which
+in most cases is extremely simple, can be used as an example for writing
+other user extension functions. It is found in class <code>net.sf.saxon.functions.Extensions</code>.</p>
+
+
+<a name="Writing-extension-instructions"><h2>Writing extension instructions</h2></a>
+
+<p>Saxon implements the element extensibility feature defined in the XSLT standard.
+ This feature allows you to define your own instruction types for use in the stylesheet. These
+ instructions can be used anywhere within a <i>content constructor</i>, for example as a child
+ of <code>xsl:template</code>, <code>xsl:if</code>, <code>xsl:variable</code>, or of a literal
+ result element.</p>
+
+<p>If a namespace prefix is to be used to denote extension elements, it must be declared in the
+<b>extension-element-prefixes</b> attribute on the <code>xsl:stylesheet</code> element, or the
+<b>xsl:extension-element-prefixes</b> attribute on any enclosing literal result element or
+extension element.
+
+<p>Note that Saxon itself provides a number of stylesheet elements beyond those defined in the
+XSLT specification, including <code>saxon:assign</code>, <code>saxon:entity-ref</code>, 
+and <code>saxon:while</code>. To enable these, use the standard XSLT extension mechanism: define
+<b>extension-element-prefixes="saxon"</b> on the xsl:stylesheet element, or 
+<b>xsl:extension-element-prefixes="saxon"</b> on any enclosing literal result element.</p>
+
+<p>To invoke a user-defined set of extension elements, include the prefix in this attribute as
+described, and associate it with a namespace URI that ends in "/" followed by the fully qualified
+class name of a Java class that implements the <b>net.sf.saxon.style.ExtensionElementFactory</b> interface.
+This interface defines a single method, <b>getExtensionClass()</b>, which takes the local name of the element
+(i.e., the name without its namespace prefix) as a parameter, and returns the Java class used to
+implement this extension element (for example, "return SQLConnect.class"). The class returned must
+be a subclass of net.sf.saxon.style.StyleElement.</p>
+
+<p>The best way to see how to implement an extension element is by looking at the example, for SQL
+ extension elements, provided in package <b>net.sf.saxon.sql</b>, and at the sample stylesheet <b>books-sql.xsl</b>
+ which uses these extension elements. The main methods a <code>StyleElement</code>
+ class must provide are:</p>
+
+ <table>
+ <tr><td valign=top width="30%">prepareAttributes()</td>
+    <td>This is called while the stylesheet tree is still being built, so it should not attempt
+    to navigate the tree. Its task is to validate the attributes of the stylesheet element and
+    perform any preprocessing necessary. For example, if the attribute is an attribute value template,
+    this includes creating an Expression that can subsequently be evaluated to get the AVT's
+    value.</td></tr>
+ <tr><td valign=top>validate()</td>
+    <td>This is called once the tree has been built, and its task is to check that the stylesheet
+    element appears in the right context within the tree, e.g. that it is within a template</td></tr>
+ <tr><td valign=top>process()</td>
+    <td>This is called to process a particular node in the source document, which can be accessed
+    by reference to the XSLTContext object supplied as a parameter.</td></tr>
+ <tr><td valign=top>isInstruction()</td>
+    <td>This should return true, to ensure that the element is allowed to appear
+    within a template body.</td></tr>
+<tr><td valign=top>mayContainTemplateBody()</td>
+    <td>This should return true, to ensure that the element can contain instructions.
+    Even if it can't contain anything else, extension elements should allow an xsl:fallback
+    instruction to provide portability between processors</td></tr>
+ </table>
+
+ <p>The <code>StyleElement</code> class has access to many services supplied either via its superclasses or via
+ the XSLTContext object. For details, see the API documentation of the individual classes.</p>
+
+ <p>Any element whose prefix matches a namespace listed in the extension-element-prefixes
+ attribute of an enclosing element is treated as an extension element. If no class can be
+ instantiated for the element (for example, because no ExtensionElementFactory can be loaded,
+ or because the ExtensionElementFactory doesn't recognise the local name), then fallback
+ action is taken as follows. If the element has one or more <code>xsl:fallback</code> children, they are
+ processed. Otherwise, an error is reported. When <code>xsl:fallback</code> is used in any other context, it
+ and its children are ignored.</p>
+
+ <p>It is also possible to test whether an extension element is implemented by using the system
+ function <code>element-available()</code>. This returns true if the namespace of the element identifies
+ it as an extension element (or indeed as a standard XSLT instruction) and if a class can be instantiated
+ to represent it. If the namespace is not that of an extension element, or if no class can be
+ instantiated, it returns false.</p>
+    
+
+<a name="Writing-input-filters"><h2>Writing input filters</h2></a>
+
+<p>Saxon takes its input from a SAX2 Parser reading from an InputSource. A very useful technique is to
+interpose a <i>filter</i> between the parser and Saxon. The filter will typically be an
+ instance of the SAX2 <b>XMLFilter</b> class.
+</p>
+
+<p>See the TrAX examples for hints on using a Saxon Transformer as part of a chain of
+SAX Filters.</p>
+
+
+<p>Note that Saxon relies on the application to supply a well-balanced sequence
+ of SAX events; it doesn't need to be well-formed (the root node can have any number
+ of element or text children), but if it isn't well-balanced,
+ the consequences are unpredictable.</p>
+ 
+<p>The <code>-x</code> option on the Saxon command line specifies the parser that Saxon will
+use to process the source files. This class must implement the SAX2 XMLReader interface, but it
+is not required to be a real XML parser; it can take the input from any kind of source file,
+so long as it presents it in the form of a stream of SAX events. When using the JAXP API, the
+equivalent to the <code>-x</code> option is to call <code>transformerFactory.setAttribute(
+net.sf.saxon.FeatureKeys.SOURCE_PARSER_CLASS, 'com.example.package.Parser')</code></p>
+
+<a name="Writing-output-filters"><h2>Writing output filters</h2></a>
+
+<p>The output of a Saxon stylesheet can be directed to a user-defined output filter. This filter can be
+defined either as a SAX2 <b>ContentHandler</b>, or
+ as a subclass of the Saxon class
+<b>net.sf.saxon.event.Emitter</b>. The advantage of using an Emitter is that more information is available
+from the stylesheet, for example the attributes of the <code>xsl:output</code> element.</p>
+
+<p>When a ContentHandler is used, Saxon will by default always supply a stream of events corresponding
+to a well-formed document. (The XSLT
+specification also allows the output to be an external general parsed entity,
+ also known as a "well-balanced document".) If the result tree is not
+ well-formed, Saxon will raise a dynamic error, unless the ContentHandler indicates that it is prepared
+ to accept such a result tree, which it can do by implementing the marker interface
+  <code>net.sf.saxon.event.BalancedContentHandler</code>. This interface has no methods.</p>
+ 
+ <p>As specified in the JAXP 1.1 interface, requests to disable or re-enable output escaping
+ are also notified to the content handler by means of special processing instructions. The
+ names of these processing instructions are defined by the constants PI_DISABLE_OUTPUT_ESCAPING
+ and PI_ENABLE_OUTPUT_ESCAPING defined in class <code>javax.xml.transform.Result</code>.</p>
+ 
+ <p>If an Emitter is used, however, it will be informed of all events.</p>
+
+<p>The Emitter or ContentHandler to be used is specified in the <b>method</b> attribute of the
+ xsl:output 
+element, as a fully-qualified class name; for example
+ <code>method="prefix:com.acme.xml.SaxonOutputFilter"</code>. The namespace prefix is ignored, but
+ must be present to meet XSLT conformance rules.
+
+<p>See the documentation of class <code>net.sf.saxon.output.Emitter</code> for details of the methods available, or
+implementations such as HTMLEmitter and XMLEmitter and TEXTEmitter for the standard output formats
+supported by Saxon.</p>
+
+<p>It can sometimes be useful to set up a chain of emitters working as a pipeline. To write a filter
+that participates in such a pipeline, the class <b>ProxyEmitter</b> is supplied. Use the class <code>XMLIndenter</code>,
+which handles XML indentation, as an example of how to write a ProxyEmitter.</p>
+
+<p>Rather than writing an output filter in Java, Saxon also allows you to process the output through
+another XSLT stylesheet. To do this, simply name the next stylesheet in the <code>saxon:next-in-chain</code> attribute
+of <code>xsl:output</code>. </p>
+
+<p>Any number of
+user-defined attributes may be defined on  <code>xsl:output</code>. These 
+attributes must have names in a non-null namespace, which must not be either the XSLT
+or the Saxon namespace. These attributes are interpreted as attribute value templates.
+The value of the attribute is inserted into the <code>Properties</code> object made available to 
+the <code>Emitter</code> handling the output; they will be ignored by the standard output methods,
+but can supply arbitrary information to a user-defined output method. The name of the
+property will be the expanded name of the attribute in JAXP format, for example
+<code>{http://my-namespace/uri}local-name</code>, and the value will be the value as given,
+after evaluation as an attribute value template.</p>
+
+
+<a name="Implementing-a-collating-sequence"><h2>Implementing a collating sequence</h2></a>
+
+<p>It is possible to define a collating sequence for use by xsl:sort. This is controlled through the
+<code>class</code> attributes of the <code>saxon:collation</code> element.
+See <a href="extensions.html#saxon:collation">saxon:collation</a> for details.</p>
+
+
+<a name="Implementing-a-numbering-sequence"><h2>Implementing a numbering sequence</h2></a>
+
+<p>It is possible to define a numbering sequence for use by <code>xsl:number</code>. 
+This is controlled through the lang
+attribute of the <code>xsl:number</code> element. The feature is primarily intended to provide language-dependent numbering,
+but in fact it can be used to provide arbitrary numbering sequences: for example if you want to number items
+as "*", "†", "‡", "§", "¶" etc, you could implement a numbering class to do this and invoke it say with
+lang="x-footnote".</p>
+
+<p>To implement a numberer for language X, you need to define a class <code>net.sf.saxon.number.Numberer_X</code>,
+for example <code>net.sf.saxon.sort.Numberer_xfootnote</code>. This must implement the interface <code>Numberer</code>. A (not very
+useful) <code>Numberer</code> is supplied for lang="de" as a specimen, and you can use this as a prototype to write your
+own. A numbering sequence is also supplied for lang="en", and this is used by default if no other can be loaded.</p>
+
+<p>Note that any hyphens in the language name are ignored in forming the class name, but case is significant.
+For example if you specify <code>lang="en-GB"</code>, the Numberer must be named <code>net.sf.saxon.number.Numberer_enGB</code>.</p>
+
+<a name="Adding-an-output-encoding"><h2>Adding an output encoding</h2></a>
+
+<p>If you want to use an output encoding that is not directly supported by Saxon
+(for a list of encodings that are supported, see <a href="conformance.html">conformance.html</a>)
+you can do this by writing a Java class that implements the interface 
+<b>net.sf.saxon.charcode.PluggableCharacterSet</b>.
+You need to supply two methods: <code>inCharSet()</code> which tests whether a particular Unicode character
+is present in the character set, and <code>getEncodingName()</code> which returns the name given to the
+encoding by your Java VM. The encoding must be supported by the Java VM. To use this encoding,
+specify the fully-qualified class name as the value of the encoding attribute in xsl:output.</p>
+
+<p>Alternatively, it is possible to specify the CharacterSet class to be used for a named output
+encoding by setting the system property, e.g. <code>-D"encoding.EUC-JP"="EUC_JP"</code>; the value
+of the property should be the name of a class that implements the
+PluggableCharacterSet interface. This indicates the class to be used when the <code>xsl:output</code>
+element specifies encoding="EUC-JP".</p>
+
+<a name="Writing-a-uri-resolver"><h2>Writing a URI Resolver for Input Files</h2></a>
+
+<p>Saxon allows you to write your own URIResolver to handle the URIs of input documents, as
+defined in the JAXP 1.1 specification. Such a URIResolver is used to process the URIs used
+in the <code>xsl:include</code> and <code>xsl:import</code> declarations as well as the
+<code>document()</code> function. It is also used to process the URIs supplied for the
+source document and the stylesheet on the command line. The URIResolver is called to process
+the supplied URI, and it returns a JAXP <code>Source</code> object, which Saxon uses as the source of
+the input. Note that the Source must be one of the implementations of Source that Saxon
+recognizes, you cannot write your own implementations of the JAXP 1.1 Source class.</p>
+
+<a name="Output-uri-resolver"><h2>Writing a URI Resolver for Output Files</h2></a>
+
+<p>Saxon also allows you to write an OutputURIResolver, which performs an
+analogous role for URIs specified in the <code>href</code> attribute of <code>xsl:result-document</code>.
+The OutputURIResolver is called when writing of the output document starts, at which point it must
+return a JAXP <code>Result</code> object to act as the output destination. It is called again when writing of an output document
+is complete.</p> 
+
+<p>You can nominate an OutputURIResolver by calling 
+<code>((Controller)transformer).setOutputURIResolver(new UserOutputResolver())</code>,
+or by calling <code>factory.setAttribute("http://saxon.sf.net/feature/outputURIResolver", 
+new UserOutputResolver())</code>.</p>
+
+<hr>
+<p align="center">Michael H. Kay<br>
+2 May 2003</p>
+</body>
+</html>

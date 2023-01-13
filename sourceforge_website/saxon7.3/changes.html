@@ -1,0 +1,1312 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<HTML>
+<head>
+  <title label="&nbsp;Changes&nbsp;">SAXON: Changes in this Release</title>
+  <link rel="stylesheet" type="text/css" href="saxon-style.css">
+  <meta content="text/html; charset=iso-8859-1" http-equiv=Content-Type>
+</head>
+<BODY>
+<div align=right><a href="index.html">SAXON home page</a></div>
+<H1>Changes in this Release</H1>
+
+<p>This file describes changes for versions 7.0 and later.
+For changes prior to version 7.0,
+see <a href="http://saxon.sf.net/saxon6.5.2/changes.html"/>http://saxon.sf.net/saxon6.5.2/changes.html</a>.</p>
+
+<!-- carried over for 7.4:
+<p>To be done:
+
+** saxon:evaluate()
+** assess performance impact of compilation
+** add tracing of variable declarations
+** add tracing of output events
+** positional ParameterSet for namedTemplates and function calls
+** Controller to act as an XPathContext
+** combine evaluate() and iterate() (make SequenceIterator a Value, get rid of SequenceIntent)
+** collations lock stylesheet tree into memory
+
+</p>-->
+
+<hr/>
+
+<H2>Changes in version 7.3 (2002-11-18) </H2>
+
+<p><i>References in curly braces identify the test cases used to test each new feature.</i></p>
+
+<h3>Defects cleared</h3>
+
+<p><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=603928&group_id=29872&atid=397617">603928</a> - 
+[position()!=last()] in a pattern fails.</p>
+
+<p><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=607442&group_id=29872&atid=397617">607442</a> - 
+unparsed-text() function fails.</p>
+
+<p><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=608416&group_id=29872&atid=397617">608416</a> - 
+command line processor calls System.exit().</p>
+
+<p><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=616543&group_id=29872&atid=397617">616543</a> - 
+xsl:param needn't come first in a template.</p>
+
+<p><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=616548&group_id=29872&atid=397617">616548</a> - 
+multithreading bug when using saxon:preview declaration.</p>
+
+<p><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=617103&group_id=29872&atid=397617">617103</a> - 
+./EXPR doesn't sort results into document order.</p>
+
+<p><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=620851&group_id=29872&atid=397617">620851</a> - 
+precedence of conflicting xsl:namespace-alias declarations.</p>
+
+<p><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=626277&group_id=29872&atid=397617">626277</a> - 
+exlst:leading() and exslt:trailing with empty node-set arguments.</p>
+
+<p><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=635433&group_id=29872&atid=397617">635433</a> - 
+SQLInsert attempts commit() even when autocommit is set.</p>
+
+<p><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=636661&group_id=29872&atid=397617">636661</a> - 
+interaction of cdata-section-elements with disable-output-escaping.</p>
+
+<p><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=637117&group_id=29872&atid=397617">637117</a> - 
+creating two namespaces with same prefix and different URI.</p>
+
+<p><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=637292&group_id=29872&atid=397617">637292</a> - 
+xsl:for-each and xsl:for-each-group don't nullify the current template rule.</p>
+
+
+<h3>XSLT changes</h3>
+
+<p>The <code>xsl:principal-result-document</code> element is withdrawn.
+Note, however, that the ability to NOT have a principal result tree is not yet available.
+A principal output file will be created even if it is empty.</p>
+
+<p>Attributes of <code>xsl:output</code> can no longer be attribute value templates.</p>
+
+<p>A new attribute has been added to <code>xsl:output</code>: <code>saxon:byte-order-mark="yes"</code>
+causes a byte order mark (hex FEFF) to be inserted at the start of the output file. This is most
+useful with UTF-8 and UTF-16 encoding, as some text editors recognize it, but it is available for
+use with any output method and any encoding. {outp70}</p>
+
+<p>The <code>saxon:omit-meta-tag</code> attribute in <code>xsl:output</code> has been replaced with the
+new (standard) <code>include-content-type</code> attribute. Note that this works the other way around:
+replace <code>saxon:omit-meta-tag="yes"</code> by <code>include-content-type="no"</code>.
+{saxon47, outp71}</p>
+
+<p>The new (standard) <code>escape-uri-attributes</code> attribute in <code>xsl:output</code> has
+been implemented for the HTML output method. (URI escaping is not yet implemented for method="xhtml").
+{outp71}</p>
+
+<p>The built-in template rules now pass parameters through unchanged to the templates for their child
+elements. This applies whether the rule is called because of <code>xsl:apply-templates</code> 
+or <code>xsl:apply-imports</code> {cnfr21, cnfr22}.</p>
+
+<p>The base URI of the root of a temporary tree is now taken from the base URI of the <code>xsl:variable</code>
+element in the stylesheet. Previously it was taken from the system ID. There is a difference in the case
+where xml:base is used. {not tested}</p>
+
+<p>A variable that is never referenced will no longer be evaluated. This can cause problems if evaluation
+of the variable has side-effects (e.g. by calling an extension function, or <code>saxon:assign</code>). You
+can force evaluation of the variable by setting <code>saxon:assignable="yes"</code>.</p>
+
+<p>The <code>terminate</code> attribute of <code>xsl:message</code> may now be an attribute value
+template. {ver14}</p>
+
+<p>The <code>copy-namespaces</code> attribute of <code>xsl:copy</code> and <code>xsl:copy-of</code> is
+now supported. {copy12-13}</p>
+
+<p>The <code>type</code> attribute of <code>xsl:variable</code>, <code>xsl:param</code>,
+and <code>xsl:result</code> is renamed <code>as</code>.</p>
+
+<p>The <code>as</code> and <code>collation</code> attributes of <code>xsl:key</code> are now supported.
+This allows indexing of nodes by numeric or date values, and matching using case-blind or accent-blind comparisons.
+{idky25-29}.</p>
+
+<p>The <code>type-annotation</code> attribute of <code>xsl:attribute</code> and <code>xsl:element</code>
+and the <code>xsl:type-annotation</code> of literal result elements are supported. For example, you
+can now annotate attributes of elements on a temporary tree as <code>type-annotation="xs:ID"</code>, and 
+then use the <code>id()</code> function to find them, using an expression such as <code>$tree/id('A001')</code>.
+The actual value of the element or attribute must be valid according the the type given in the type annotation. Only built-in
+schema-defined types are currently supported. Attribute types derived from a DTD will be recorded if they
+are reported by the parser (but CDATA is treated as untyped, and the list types IDREFS, ENTITIES, and NMTOKENS
+are not yet supported). Although the values must be valid according to their type, there are no checks on 
+uniqueness constraints (ID) or referential integrity constraints (IDREF). {schema001-4}</p>
+
+<p>The type annotations are retained on the tree only if the attribute <code>type-information="preserve"</code>
+is present. If the attribute is absent, or is set to <code>none</code>, the type-annotation on any
+elements or attributes in the tree will still be used to validate the content, but will not result
+in any annotation of the nodes on the tree. The values <code>strict</code> and <code>lax</code>
+for this attribute are not yet implemented. {schema005-6}</p>
+
+<p>The <code>type-information</code> attribute is also available on <code>xsl:result-document</code>.
+It only affects the outcome if the result tree is captured using a user-written <code>Receiver</code> in which
+the annotations will be available. At present the type annotations are NOT retained if
+the result is fed into another stylesheet using
+<code>saxon:next-in-chain</code>: this is because the chaining goes via a SAX2 ContentHandler
+which cannot pass the type information through. {schema007, schema013}</p>
+
+<p>The attribute <code>copy-type-annotations</code> is available on <code>xsl:copy-of</code>. The default
+is "no", which means that type annotations are NOT copied from the source tree to the result tree.
+{schema011-012}</p> 
+
+<p>The effect of <code>xsl:namespace-alias</code> has been changed. Elements and attributes whose namespace
+is changed by an <code>xsl:namespace-alias</code> declaration will now take the prefix given in
+the <code>result-prefix</code> attribute, where possible. Previously they took the new namespace URI
+but retained their original prefix. This was technically conformant with the specification, but untidy,
+and it often led to the result document containing multiple declarations
+of the same namespace URI. {nspc36-38}</p>
+
+<p>Conflicting <code>xsl:namespace-alias</code> declarations are now reported as a static error.
+{error007}</p>
+
+<h3>XPath changes</h3>
+
+<p>The precedence of different expressions in the XPath grammar has been aligned with the August 2002
+working draft. This meant making a few changes: range expressions (such as <code>1 to 10</code>) now bind more
+tightly than conditional expressions; all comparison operators now have the same precedence, and consecutive
+operators (as in <code>a = b = c</code>) are not allowed; unary minus binds more tightly than union; 
+cast and treat expressions are no longer allowed as steps in a path expression. Saxon implements
+the full XPath 2.0 grammar with the exceptions of the <code>validate</code> expression and schema-related
+aspects of the <code>SequenceType</code> production.</p>
+
+<p>Removed the ability to do a "mapping cast", that is, to cast a sequence as a sequence. This functionality
+went beyond the semantics of cast as defined in the XPath 2.0 specification. The argument and
+result of a cast must now be a singleton, and if the input is an empty sequence, the output is an empty
+sequence. The actual conversion rules still need some work to align them fully with the evolving XPath
+specification.</p>
+
+<p>Implemented the <code>escape-uri()</code> function. The '#' character is treated as a reserved character, in addition
+to those listed in the specification. {expr85}</p>
+
+<p>Implemented the <code>item-at()</code> function, but with restrictions: if the subscript is out of range, it should
+raise an error, but it currently returns the empty sequence. {pos65}</p>
+
+<p>Implemented the <code>data()</code> function. {schema008, 009, 010, 012}</p>
+
+<p>The concept of "effective boolean value" has been implemented. This algorithm 
+ is now used when converting any value to a boolean
+in contexts such as conditional expressions, filter predicates, and the <code>boolean()</code> function. It is
+fully backwards compatible with XPath 1.0.</p>
+
+<p>A different,
+more restricted algorithm is used when casting values to booleans using a cast expression or the <code>xs:boolean()</code>
+constructor: for strings in particular, the effective boolean value gives false for a zero-length string
+and true for any other string, while <code>xs:boolean()</code> (in line with W3C Schema) gives true for "1" or "true",
+false for "0" or "false", and an error for any other string. {type034}
+<i><code>xs:boolean()</code> changes are not yet complete for supplied values other than string.</i></p>
+
+<p>The algorithm for "atomize" is also available for all expressions, though at present it is used only
+for the argument of a cast. It is also simpler than the algorithm described in the specification because
+at present the typed value of a node is always the same as the string value.</p>
+
+<p>Changed the EXSLT <code>set:leading()</code> and <code>set:trailing()</code> functions (as required by the spec) so that if the second
+argument is empty, the first argument is returned. Changed <code>saxon:before()</code> and <code>saxon:after()</code> so they work the 
+same way. Previously, the empty node-set was returned. This change will be retrofitted to 6.5.x. There is a further
+deviation from the spec: If no node in the second node-set is present in the first node-set, Saxon 
+returns all nodes before/after the first/last in the second node-set, whereas the spec requires it to return
+an empty sequence. This would require a redesign, and it prevents a pipelined implementation, so I don't intend
+to implement this change.</p>
+
+<p>Implemented the <code>string-to-codepoints()</code> and <code>codepoints-to-string()</code> functions,
+ replacing <code>saxon:string-to-unicode()</code>
+and <code>saxon:unicode-to-string()</code>. {saxon68-69}</p>
+
+<p>Implemented the <code>string-join()</code> function. {str125}</p>
+
+<p>Implemented the <code>castable as</code> operator. {type030}</p>
+
+<p>Implemented the types <code>xs:anyURI</code> and <code>xs:QName</code>, and the functions <code>expanded-QName()</code>, 
+<code>get-local-name-from-QName()</code>, <code>get-namespace-from-QName()</code> {type031-33}</p>
+
+<p>Implemented the SequenceType grammar for "attribute of type T" and "element of type T". T must be
+a built-in simple type. {schema002-004, 014; error009, 012}.</p>
+
+<p>The second argument of <code>saxon:serialize()</code> must now be known at compile-time. This is because details
+of xsl:output declarations are not available at run-time unless they are actually referenced.</p>
+
+<p>The results of the <code>function-available()</code> and <code>element-available()</code> functions may be inaccurate
+if the argument is not known at compile-time. Specifically, only system-defined functions and
+instructions are known at run-time. In practice, these functions are designed to perform compile-time
+tests so this is very unlikely to be a problem. There is also some justification in that the only
+functions that can be called dynamically (using <code>saxon:evaluate()</code>) are system-defined functions.</p>
+
+<p>As a result of the changes affecting stylesheet compilation, there are some new restrictions on
+the extension function <code>saxon:evaluate()</code> (and also <code>saxon:expression()</code>). In particular, the dynamically
+constructed expression can no longer reference any XSLT variables, and it cannot access any stylesheet
+functions, Saxon extension functions, or XSLT-specific functions such as <code>key()</code> and <code>generate-id()</code>.</p>
+
+<h3>Stylesheet Compilation</h3>
+
+<p>There has been a substantial change to the way stylesheets are "compiled". In previous releases, the
+compiled stylesheet was actually a standard tree representation of the source XML stylesheet, with annotations
+on the nodes to assist efficient execution. In this release, the tree representation of the stylesheet is
+discarded once compilation is complete, and a custom data structure is used to represent the executable
+stylesheet.</p>
+
+<p>The compiled stylesheet may now be serialized (using Java serialization), enabling it to be saved on
+disk, or transferred between machines - this is especially useful in an Enterprise Java Beans environment.
+A new command <code>java net.sf.saxon.Compile <i>stylesheet</i> <i>output</i></code> is available to
+compile a stylesheet, and the <code>java net.sf.saxon.Transform</code> command has a new option <code>-c</code>
+which causes the stylesheet parameter to be taken as a compiled stylesheet rather than a source
+stylesheet. In fact, using compiled stylesheets from the command line does not give a great performance
+advantage over recompiling them each time they are used, because the compilation time is dominated by 
+Java initialization; the benefits are more likely to be realized in
+a high-throughput server-based environment, where it is now possible to use disk caching of stylesheets as
+an alternative to in-memory caching.</p>
+
+<p>These changes bring (or promise) a number of benefits:</p>
+
+<ul>
+<li>The compiled stylesheet is significantly smaller, important when a number of compiled stylesheets are
+cached in a web server.</li>
+<li>It is possible to distribute a stylesheet in scrambled form, so that users cannot easily make changes.</li>
+<li>Unused parts of the stylesheet, for example template rules in imported modules, are discarded.</li>
+<li>The compiled stylesheet is relocatable between servers (e.g. under EJB).</li>
+<li>Stylesheet optimizations, by rewriting the tree, become feasible. Until now the Saxon optimizer has
+only operated at the level of individual XPath expressions. A few simple optimizations have been implemented
+in this release, e.g. the decision whether to execute <code>xsl:fallback</code> is made entirely
+at compile-time.</li>
+</ul>
+
+<p>The main drawback is that less of the static context is available during execution. This makes a number of
+things more difficult, or in some cases impossible:</p>
+
+<ul>
+<li>Diagnostics, such as tracing and debugging, have less information available. For example, variable names
+are currently not retained in the executable.</li>
+<li>Reflexive capabilities become more difficult. The obvious examples are <code>saxon:evaluate</code> and
+the <code>saxon:allow-avt</code> attribute which allows dyanamic selection of a template in <code>xsl:call-template</code></li>
+</ul>
+
+<p>In general I expect that stylesheets will need to be recompiled whenever a new Saxon version is issued,
+though this may be avoidable the case of a bug-clearance release.</p>
+
+<p><i>Stylesheet compilation is a little fragile at this release. It has proved difficult to test it
+comprehensively. One known restriction is that stylesheets containing <code>saxon:collation</code> declarations
+cannot be compiled (because it uses Java classes that are not serializable). There may be other restrictions:
+please let me know if you find any.</i></p>
+
+<p>As part of this change, the stylesheet tree now uses a different NamePool from the source tree. This
+NamePool is discarded as soon as compilation is complete. Names
+used in XPath expressions, names of literal result elements and attributes, and names of keys, variables,
+templates, and functions, are still registered in the NamePool for the source document, but the names
+of XSLT elements and attributes (e.g. <code>xsl:template</code>, <code>select</code>) no longer appear.
+This significantly reduces the size of the compiled version of a small stylesheet, and makes loading
+of the compiled stylesheet correspondingly faster. It also means that names used in the source document
+are less likely to encounter hashing conflicts in the NamePool, giving a small run-time speed-up.</p>
+
+<p>There have been a number of changes to APIs that may affect users.</p>
+
+<ul>
+
+<li>The <code>XSLTContext</code> object has been merged into <code>net.sf.saxon.Controller</code>. This
+class was exposed in the traditional Saxon Java event-handling API, and was also available for use
+by extension functions, extension elements, and trace listeners. Extension functions that require
+context information must now declare a first argument of class <code>XPathContext</code>.</li>
+
+<li>The tracing API has changed, as the execution flow
+can no longer be described in terms of nodes in the stylesheet tree. Since it had to change anyway, I have
+taken the opportunity to redesign it in terms of interfaces that hopefully will stand the test of time.</li>
+
+<li>The element extensibility API is changed
+because extension elements, like other nodes in the stylesheet, must be compiled into separate data structure
+for execution. The ExtensionElementFactory interface is unaffected, but the classes implementing individual
+instructions must be split in two: a subclass of StyleElement representing the node on the stylesheet
+tree, which contains a compile() method, which in turn generates a corresponding instance of a subtype
+of the class <code>net.sf.saxon.instruct.Instruction</code>. The SQL extension library has been
+updated to show how the new scheme works.</li>
+
+<li>The NodeHandler interface (used by the old "non-XSLT" Java interface to Saxon) has changed again.
+Its start() method is replaced by a process() method that takes a single argument, the Controller object.</li>
+
+</ul>
+
+<h3>Internal Changes</h3>
+
+<h4>Emitter and Receiver classes</h4>
+
+<p>I have introduced a new interface, <code>net.sf.saxon.event.Receiver</code>, which is intended to
+replace the old <code>Emitter</code> interface. This supports setting type
+annotations on element and attribute nodes: it allows the type information to be carried with the
+element and attribute events, and also allows various properties to be associated with each event, used
+for disable-output-escaping and to indicate when validation has already been done so it does not get
+done twice.</p>
+
+<p>The classes that implement this interface are largely in package <code>net.sf.saxon.event</code>, which
+replaces the old <code>net.sf.saxon.output</code> package.</p> 
+
+<p>The new interface largely replaces the Outputter interface, ending the artificial
+distinction between the Outputter and the Emitter, which was there historically because events were
+handled in a different order at the two interfaces.</p>
+
+<p>The "sticky d-o-e" facility is not working in this release: that is, an error is reported
+when output is written to a temporary tree with disable-output-escaping="yes". The same happens
+if the final output of the stylesheet is written to a Saxon tree, for example when using a Saxon-created
+DOMResult, or when using stylesheet chaining. It is possible that "sticky d-o-e" will not be
+allowed in the final XSLT 2.0 specification, though at present there are open issues concerning this.
+{outp09, bug17}</p>
+
+<h4>Internal XPath Changes</h4>
+
+<p>The class hierarchy for XPath expressions (net.sf.saxon.expr.Expression) has been simplified. The two
+abstract classes SingleValueExpression and SequenceExpression have disappeared; their functionality has
+moved into the parent class, Expression, driven by the static cardinality of the expression as determined
+by the getCardinality() method. This allows greater re-use of classes such as BinaryExpression. There is
+potential for many expressions to be implemented as functions, allowing more use of generic code and
+table-driven static analysis.</p>
+
+<p>The implementation of SequenceExpressions of the form <code>(1,2,3)</code> has changed completely,
+and is much simpler.
+They are now handled by breaking them up into a tree of binary expressions, treating "," as a list
+concatenation operator. {expr53, 54, 55, 86}</p>
+
+<p>The implementation of FilterExpressions has been rewritten and simplified. Two different iterators
+are now used, a FilterIterator where every value needs to be tested, and a PositionIterator where
+the value is known statically to be numeric. This greatly simplifies the code. The way in which reverse
+axes are handled has also been simplified.</p>
+
+<p><i>I want to move away from run-time expression reduction on filters to doing a static
+rewrite that pulls non-dependent subexpressions out of the predicate, but this has not yet been done.</i></p>
+
+<p>The class <code>XPathException</code> is now abstract. There are two concrete subclasses, 
+<code>XPathException.Static</code> and <code>XPathException.Dynamic</code>, used to distinguish static
+from dynamic errors. (Other subtypes, for example <code>XPathException.TypeError</code> may be
+introduced in future. A dynamic error that occurs when an XPath expression is evaluated early (at
+compile time) is now not reported until run-time, and is only reported if the expression is actually
+evaluated.</p>
+
+
+<h3>Other changes</h3>
+
+<p>I have decided to drop the integration with Apache's FOP processor. The API has changed yet
+again between FOP 0.20.3 and FOP 0.20.4. It is simply too much hassle to keep chasing a moving
+target, especially as the changes are not well documented and impossible to make without studying
+the FOP source code.</p>
+
+<p>It is now possible to control the use of NamePools via the TransformerFactory. The call
+<code>factory.setAttribute(FeatureKeys.NAME_POOL, pool)</code> causes the specified namepool
+to be used by all stylesheets that are compiled (using <code>newTemplates()</code>) following 
+this call. Note: unless you really know what you are doing, it is safest to let Saxon manage
+the namePools automatically.</p>
+
+<p>The HTML output method now uses its own internal method for URI escaping, rather than relying on the
+utf8 encoding available in the Java IO library. {outp52, 57}</p>
+
+<p>Support for SAX1 XML parsers is withdrawn. All mainstream parsers support SAX2, with the possible
+exception of James Clark's xp. Similarly, output will no longer be directed to a SAX1 DocumentHandler:
+you must supply a SAX2 ContentHandler instead. Saxon now compiles without any deprecation warnings.</p>
+
+<hr/>
+
+<H2>Changes in version 7.2 (2002-08-28) </H2>
+
+<h3>Installation</h3>
+
+<div style="border: solid thin; background-color: lime; padding: 1em">
+<p>Saxon 7.2 requires Java JDK 1.4</p>
+</div>
+
+<p>Saxon 7.2 requires JDK 1.4. This is primarily to support the use of regular expressions: Saxon now uses
+the JDK 1.4 regular expression library to support <code>xsl:analyze-string</code> and the functions
+<code>matches()</code>, <code>replace()</code>, and <code>tokenize()</code>.</p>
+
+<p>Since JDK 1.4 includes an XML parser, there is no longer any good reason for Saxon to supply its own
+XML parser. Therefore AElfred is no longer included in the Saxon package, and the default will be to use
+the Crimson parser (or whatever is included in the JDK 1.4 distribution).</p>
+
+<p><i>Note: JDK 1.4 appears to require more [or allocate less] stack space than JDK 1.3, some 
+transformations that ran successfully in JDK 1.3 run out of stack space with JDK 1.4. This equally
+affects earlier Saxon releases when running with JDK 1.4</i></p>
+
+<h3>Defects Cleared</h3>
+
+
+<p><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=542981&group_id=29872&atid=397617">542981</a>: Saxon fails with
+JDOM beta 0.8.</p>
+
+<p><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=553347&group_id=29872&atid=397617">553347</a>: The context
+node is not reset correctly after a stylesheet function is called from within an XPath predicate.</p>
+
+<p><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=558696&group_id=29872&atid=397617">558696</a>: Cannot 
+include a simplified stylesheet.</p>
+
+<p><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=561695&group_id=29872&atid=397617">561695</a>: Error
+message "more than one method matches" when calling a Java method that accepts argument of class Object.</p>
+
+<p><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=573314&group_id=29872&atid=397617">573314</a>: The expression
+<code>string-length($x)=0</code> gives wrong result for "0" and "false".</p>
+
+<p><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=576632&group_id=29872&atid=397617">576632</a>: Match 
+on parent node in a pattern fails.</p>
+
+<p><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=580989&group_id=29872&atid=397617">580989</a>: NullPointerException
+when tracing using -T option.</p>
+
+<p><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=581515&group_id=29872&atid=397617">581515</a>: Duplicate
+DOCTYPE declaration when using an identity transformer and HTML serialization.</p>
+
+<p><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=583939&group_id=29872&atid=397617">583939</a>: Memory leak
+when using keys.</p>
+
+<p><a href="http://sourceforge.net/tracker/index.php?func=detail&aid=584944&group_id=29872&atid=397617">584944</a>: Attribute
+value templates on &lt;xsl:sort&gt; cannot depend on the context node.</p>
+
+<h3>XSLT changes</h3>
+
+<p>Implemented the <code>xsl:analyze-string</code> instruction, which supports regular expression
+matching.</p>
+
+<p>Where an embedded expression within an attribute value template yields a sequence of more than one
+item, the string values of all the items are now output, separated by spaces. <b>This is incompatible
+with XSLT 1.0, which ignored all but the first node in a node-set.</b> If this causes compatibility
+problems (a) you can fix it by using the filter <code>[1]</code> after the expression, (b) please
+let me know: the XSL WG wants to know whether this incompatible change is likely to cause problems
+in practice.</p>
+
+<p>The elements <code>xsl:variable</code>, <code>xsl:param</code>, and <code>xsl:result</code> may
+now take a <code>type</code> attribute indicating the required type of the value. The supplied value
+will be converted to this type if necessary. The value of the attribute is the same subset of the
+XPath SequenceType production as is implemented for "cast as" and "instance of" expressions: basically,
+the fixed types such as "item" and "element" and the built-in types such as xs:string and xs:date, followed
+by an optional occurrence indicator.
+
+<p>Parameters to <code>xsl:function</code> may no longer specify a default value: all arguments
+must be supplied in the function call.</p>
+<p>An <code>xsl:message</code> instruction may now appear inside an <code>xsl:function</code>.</p>
+
+<p>The <code>xsl:text</code> instruction may now contain other instructions, such as <code>xsl:value-of</code>.
+<i>Pending resolution of issue 132 in the spec, avoid using disable-output-escaping with nested xsl:text
+elements. The effect is unlikely to be what you expected.</i>.</p>
+
+<p>It is now an error to specify the <code>mode</code> or <code>priority</code> attributes on an
+<code>xsl:template</code> element with no <code>match</code> attribute.</p>
+
+<p>Match patterns using the <code>id()</code> and <code>key()</code> functions can now reference global
+variables or parameters for the value of the id or key.</p>
+
+<p>The attributes <code>version</code>, <code>exclude-result-prefixes</code>, and <code>extension-element-prefixes</code>
+may now appear on any element in the XSLT namespace. Note that these attributes are prefixed <code>xsl:</code>
+when used on a literal result element, but have no prefix when used on an XSLT element.</p>
+
+<p>The attribute <code>[xsl:]default-xpath-namespace</code> is now available on all elements. It defines the defualt
+namespace to be used for unprefixed element names in path expressions and patterns.</p>
+
+<p>The <code>xsl:apply-templates</code> element now allows <code>mode="#current"</code> and
+<code>mode="#default"</code>. The <code>xsl:template</code> allows the <code>mode</code> attribute
+to be a list of mode names, optionally including <code>#default</code> to match the default mode.</p>
+
+<p>The <code>disable-output-escaping</code> attribute of <code>xsl:attribute</code> is implemented, replacing
+the <code>saxon:disable-output-escaping</code> extension, which is no longer available.</p>
+
+<p>The <code>xsl:destination</code> element is renamed <code>xsl:principal-result-document</code>. (This was
+misdocumented in version 7.1).</p>
+
+<p>Implemented the <code>unparsed-text()</code> function (with the second argument being mandatory).</p>
+
+<h3>General</h3>
+
+<p>Added a -v option to the command line to request XML validation. This applies to the principal source
+document and other files read using the document() function. It requires an XML parser 
+that supports validation.</p>
+
+<p>The same feature is available in the API using <code>setFeature(FeatureKeys.VALIDATION, Boolean.TRUE)</code>
+on the <code>TransformerFactory</code>.</p>
+
+<p>Added a <code>getTransformer()</code> method to the <code>net.sf.saxon.Filter</code> class that is
+created in response to <code>SAXTransformerFactory#newXMLFilter()</code>. This allows setting of stylesheet
+parameters, a URIResolver, etc, when using this interface. Not tested.</p>
+
+<p>The standard TraceListener now outputs an abbreviated version of the file name of the stylesheet module
+containing an instruction, as well as the line number.</p>
+
+<p>The indentation algorithm for method="xml" has been changed so no extra whitespace is output if there
+is already enough whitespace in the result tree: specifically, if a start tag is preceded by a newline and
+as many spaces as the indentation would output, then no extra indentation takes place. The effect is to avoid
+adding blank lines when copying XML that is already indented. This change does not affect method="html",
+because the HTML indentation rules are more complex and can easily affect the appearance of text in the
+browser if applied wrongly.</p>
+
+
+<h3>XPath changes</h3>
+
+<p>Implemented the regular expression functions matches(), replace() and tokenize() as defined
+in the <i>Functions and Operators</i> specification;
+also the regex-group() function defined in the XSLT 2.0 WD.
+</p>
+
+<p>The <code>only</code> option in the construct <code>A instance of [only] B</code> has been
+removed, as it is no longer defined in the XPath WD.</p>
+
+<p>Changed the rules for the context document: this is now always the document containing
+the context node. If the context item is not a node, there is no context document, and any
+absolute path expression (or calls on id(), key(), or unparsed-entity-uri()) will cause a
+dynamic error.</p>
+
+<p>Implemented the <code>time</code> data type, the constructor xs:time(),
+ and the functions current-date() and current-time(). Time values can be compared for equality or
+ ordering, and can be sorted.</p>
+ 
+<p>Implemented the component extraction functions, get-x-from-y, for date, dateTime, and time.</p>
+
+<p>Changed DateTime and time classes so that the timezone is retained as part of the value. Equality
+and ordering is done by normalizing the time to UTC, but conversion to a string, and extraction of
+components, reflects the timezone as originally specified.<p>
+
+<p>Constructor functions such as dateTime() have been moved to the schema namespace (you can use either
+"http://www.w3.org/2001/XMLSchema" (conventional prefix xs) or "http://www.w3.org/2001/XMLSchema-datatypes"
+(conventional prefix xsd). Stylesheets that use these constructor functions must be changed. The 
+semantics of these constructor are identical to the cast expression.</p> 
+
+<p>Added the duration data-type, including conversion to and from strings, comparison for equality and
+ordering, sorting, and component extraction. (This goes beyond the XPath 2.0 drafts, which do not allow
+ordering on durations.) Ordering is based on the average length of a month (one
+year = 365.25... days): so <code>P365D &lt; P1Y</code> and <code>P366D &gt; P1Y</code>.
+ Component extraction works on any kind of duration, and the functions are currently
+named get-X-from-duration(), not get-X-from-yearMonthDuration() or get-X-from-dayTimeDuration().
+Arithmetic involving durations or dates is not yet implemented.</p>
+
+<p>Added the two XPath-defined subtypes of duration: xs:dayTimeDuration and xs:yearMonthDuration. 
+Implemented the functions to construct these from a number of months or seconds. The "+" and "-" 
+operators can be used to add two durations of the same type, and the "*" and "div" operators to
+multiply or divide a duration by a number.</p>
+
+<p>Added the subtypes of xs:integer (xs:long, xs:int, xs:short and the rest). The type promotion
+rules for comparison and arithmetic on numeric types have been brought into line with the specification,
+though there are probably still a few minor discrepancies (especially where fallback conversions
+from strings are involved).</p>
+
+<p>Added the <code>idiv</code> operator for integer division. For example, <code>10 idiv 3</code> is 3.
+The <code>div</code> operator always returns a double result.</p>
+
+<p>Added the subtypes of xs:string (token, language, Name, NCName, ID, IDREF, ENTITY, NMTOKEN); but not
+the list types IDREF, ENTITIES, NMTOKENS. These have no useful functionality beyond the ability to validate
+the lexical rules for each type.</p>
+
+<p>Implemented the distinct-nodes() function (at the same time fixing a bug in union, intersect and
+except when supplied with arguments that are not in document order).</p>
+
+<p>Implemented the deep-equal() function. 
+Because nodes are still untyped, it compares string values of text nodes rather
+than typed values. <i>Not yet tested with an explicit collation.</i> </p>
+
+<p>Renamed the sublist() function as subsequence().</p>
+
+<p>Implemented the sequence-node-equal() and sequence-deep-equal() functions. 
+<i>Not yet tested with an explicit collation.</i></p>
+
+<p>Implemented the functions node-kind(), root(), context-item().</p>
+
+<p>Added the EXSLT functions in package math: abs, acos, asin, atan, atan2,
+constant, cos, exp, log, power, random, sin, sqrt, tan. Thanks to Simon St. Laurent
+for these. Only partially tested.</p>
+
+<p>The saxon:intersection and saxon:difference extension functions have been dropped;
+instead use either the XPath 2.0 operators (intersect, except) or the EXSLT functions.</p>
+
+<h3>Performance</h3>
+
+<p>Many internal iterators work with a one-item lookahead. This is wasteful if the iteration is not
+continued to completion, which happens for example with a numeric predicate such as expr[1], or
+with an existential comparison such as <code>sequenceA = sequenceB</code>, or when converting a
+sequence to a string or a boolean. This lookahead has been removed for some commonly used iterations,
+notably the FilterIterator, the MappingIterator, and the TinyTree SiblingIterator. 
+A consequence is that the hasNext() method of SequenceIterator can now throw an XPathException.</p>
+
+<p>Deferred evaluation of variables happened in the past when the expression was a SequenceExpression.
+It now happens only if the compile-time cardinality of the expression allows more than one item. This
+means that deferred evaluation will not be used for an expression of the form expr[1]. And when
+deferred evaluation is used, the iterator is not primed by calling hasNext(): this means that (for an
+iterator that doesn't do lookahead), the search for the first item is now deferred until the variable
+is first used, and doesn't have to be repeated unnecessarily. In addition, if the variable is referenced
+in a context where only the first item in the sequence is required (e.g. to get the value as a boolean
+or as a string), the value is now saved without evaluating the full sequence.</p>
+
+<p>I have added an optimization for constructs of the form <code>&lt;xsl:if test="a | b"&gt;</code>.
+Where a union expression is evaluated in a boolean context it is now treated as if the operator were "or".
+This potentially avoids the need to sort the two node-sets into document order.</p>
+
+<p>There are some changes in the way global variables are handled. At compile time, a hash table is used
+in place of linear searching to search for duplicates: this should improve compilation performance for
+stylesheets with many global variables, especially when many of the variables are overridden by an
+importing stylesheet. At run-time, evaluation of global variables is now deferred until the first reference
+to the variable, which will improve execution performance when there are global variables that are never
+referenced. Note that this change will be visible if &lt;xsl:message&gt; is used to trace execution.</p>
+
+<p>A filter expression of the form <code>f[a and b]</code> is now rewritten as <code>f[a][b]</code> when
+appropriate, to enable an early exit in the case where <code>a</code> is positional: for example
+<code>item[position() = 1 and child::desc]</code>. This is only done if <code>a</code> is positional and
+<code>b</code> is not.</p>
+
+<p>A union (or intersection or difference) of two path expressions is now rewritten to do the combination
+as late as possible: for example <code> ( /a/b/c | /a/b/d )</code> is rewritten as <code>( /a/b/(c|d) )</code>.
+<i>Note, this is a first small step in the identification of common subexpressions. The cases where two
+subexpressions are detected as being identical are fairly limited, for example there is no knowledge
+of which operators are commutative or associative.</i></p>
+
+<h3>Internal Changes</h3>
+
+<p>The organization of the net.sf.saxon.functions package has changed. Much of the fixed information
+associated with individual functions is now contained in a static table in the StandardFunction.java module, rather
+than being returned by methods associated with each function. Most of the optimization methods (simplify,
+getDependencies, and reduce) now have a generic default implementation in the Function.java class, 
+which most of the individual functions now use. This has reduced the overhead associated with implementing
+each function, which is important as the number of functions in XPath 2.0 has grown so much. It also creates
+further opportunities for combining the implementation of several related functions in one module, with
+better ability to share common code.</p>
+
+<p>Unique document numbers are now allocated in the NamePool rather than the DocumentPool. This is
+visible in the results of generate-id(), because it means document numbers are not reset at the
+beginning of each transformation. This change has been made so that functions that rely on unique
+document numbers (for example, comparison of nodes into document order, or the union operation) 
+can be done safely in a free-standing XPath environment. Eventually this will also allow
+document() to be executed outside an XSLT context - but not yet.</p>
+
+<h3>Integration and Extensions</h3>
+
+<p>I have tested Saxon with the Resin XML parser, but found it very buggy (version 2.1.1)</p>
+
+<p>I have tested Saxon with the Piccolo XML parser (version 1.03), and found it worked very well 
+except for a few stress tests, particularly in the area of namespace handling. I have reported four
+bugs.</p>
+
+<p>The tables for converting XPath data types to Java types (when calling extension functions) have
+been revamped. The design has changed so that where there are two methods that appear to match the
+function call, one of them will generally be chosen even if the choice is arbitrary: this is because
+in many cases where Java classes define polymorphic methods, the results will be the same whichever
+method is chosen.</p>
+
+<hr />
+
+<H2>Changes in version 7.1 (2002-04-30) </H2>
+
+<h3>Integration</h3>
+
+<p>This version of Saxon has been modified and tested to work with JDOM beta 0.8 and with FOP 0.20.3. 
+In both cases, code changes were needed to work with these versions, and I have not tested whether the code
+still works with earlier versions; the chances are that it doesn't.</p>
+
+<h3>Error clearance</h3>
+
+<p>In general, bugs that have been cleared in Saxon 6.5.1 or Saxon 6.5.2 have also been cleared in this
+release. For details of the clearance of specific bugs, see the bug tracker at <a href="http://sourceforge.net/tracker/?group_id=29872&atid=397617">Sourceforge</a>.
+Remember that closed bugs are not listed unless you ask for them.</p>
+
+<h3>Multiple output documents</h3>
+
+<p>The <code>href</code> attribute of <code>xsl:result-document</code> is now interpreted as a relative
+URI, relative to the system ID of the principal result document. This works only where the system ID of the
+principal output is known, and uses the "file://" protocol. The result document is no longer created
+ relative to the current working directory, for security reasons (it causes problems when executing
+ an untrusted stylesheet in a servlet environment).</p>
+ 
+<p>Note that when Saxon is invoked from the command line, the -o option should be used to specify the 
+principal output destination. This will ensure that a suitable system ID is available. If the result document
+is sent to the standard output stream (even if this is redirected to a file), Saxon will not know the
+system identifier and will therefore be unable to create a secondary output destination using a relative
+URI. It is still possible, of course, to specify an absolute URI as the value of the <code>href</code>
+attribute - note that this must be a URL, not a filename, so it will typically start with <code>file://</code>.</p>
+
+<p>It is now possible to specify an OutputURIResolver to be used to resolve the URI specified in the <code>href</code>
+attribute of the <code>xsl:result-document</code> element. This will be used in place of the standard output URI
+resolver. The OutputURIResolver is called when writing of the output document starts, at which point it must
+return a JAXP Result object to act as the output destination. It is called again when writing of an output document
+is complete. You can nominate an OutputURIResolver by calling 
+<code>((Controller)transformer).setOutputURIResolver(new UserOutputResolver())</code>,
+or by calling <code>factory.setAttribute("http://saxon.sf.net/feature/outputURIResolver", 
+new UserOutputResolver())</code>.</p>
+
+<p>If the -t option is used, a message is written to the standard error output identifying the 
+files written using using <code>xsl:result-document</code>.</p> 
+
+<p>It is now an error to use <code>xsl:result-document</code> when the current output destination
+is a temporary tree.</p>
+
+
+
+<h3>XSLT changes</h3>
+
+<p>The meaning of the ALLOW_EXTENSION_FUNCTIONS attribute in the TransformerFactory has been
+extended so that setting the value to <code>false</code> also disables extension elements and
+the creation of multiple output files. This is because all these operations carry similar risks
+when a servlet is allowed to execute untrusted stylesheets.</p>
+
+<p>Added support for the <code>separator</code> attribute of <code>&lt;xsl:copy-of&gt;</code>.</p>
+
+<p>The <code>current()</code> function may now be used in a pattern (specifically, within a predicate).
+ Its value is the node being tested against the pattern. For example, <code>match="*[*[name()=name(current())]"</code> 
+ matches any element that contains another element with the same name.</p>
+ 
+<p>A global variable or parameter may now be used in the match pattern of <code>xsl:template</code>, provided that it does
+not cause a circularity (that is, it must be possible to evaluate the variable without calling
+<code>xsl:apply-templates</code>)</p>
+
+<p>A global variable or parameter may now be used in the match pattern or the use expression 
+of <code>xsl:key</code>, provided that it does
+not cause a circularity (that is, it must be possible to evaluate the variable without using the <code>key()</code>
+function against the key being defined)</p>
+
+<p>The <code>key()</code> function may now be used in the <code>use</code> or <code>match</code> attributes of
+<code>xsl:key</code>, provided the key definitions are not circular. (For example, key k1 can be defined
+in terms of key k2, provided that k2 is not defined in terms of k1.)</p>
+
+<p>The <code>group-ending-with</code> attribute of <code>xsl:for-each-group</code> is implemented. It is especially
+useful where the last node in each group carries some kind of marker, for example <code>continued="no"</code>.</p>
+
+<p>Added attribute <code>default="yes"|"no"</code> to <code>saxon:collation</code>, to specify whether this collation
+should be used as the default collation. If more than one collation is specified as the default, the last one wins.
+If no default collation is specified, Unicode codepoint collation is used. The default collation is used by
+the compare() function if no third argument is supplied, by xsl:sort if no collation is specified (for data type text
+or string), and also by the comparison operators =, !=, &lt;, &gt;, etc.</p>
+
+<p>The collation name is now a URI, not a QName.</p>
+
+<p>Sorting and comparison according to Unicode codepoints can be achieved by setting up a collator as 
+<code>&lt;saxon:collation name="unicode" class="net.sf.saxon.sort.CodepointCollator"/&gt;</code></p>
+
+
+
+<h3>XPath changes</h3>
+
+<p>The implementation of the "and" and "or" operators has reverted to two-valued logic, since
+three-valued logic didn't make it into the published XPath 2.0 working draft. (Actually, it
+seems 3-valued logic wasn't working in Saxon 7.0 anyway).</p>
+
+<p>Changed the "==" and "!==" operators to "is" and "isnot".</p>
+
+<p>Changed string literals to allow the delimiting quote marks to be doubled. For example,
+<code>&lt;xsl:value-of select="'[He isn''t]'"/&gt;</code> displays the string <code>[He isn't]</code></p>
+
+<p>Changed the <code>some</code> and <code>every</code> expressions to allow multiple range variables, 
+for example <code>some $i in //I, $j in //J satisfies $i = $j</code></p>
+
+<p>Implemented the singleton value-comparison operators (eq, ne, gt, lt, ge, le). These return an error
+if applied to a sequence containing more than one item, and return the empty sequence if either operand
+is an empty sequence; when applied to singletons, they return the same result as the XPath 1.0 operators
+(=, !=, etc).</p>
+
+<p>Less-than and greater-than comparisons between nodes and/or strings now do a lexicographic comparison
+using the default collating sequence; at XPath 1.0 they did a numeric comparison. A warning is output in
+this situation (and one or two other situations, but not all) to advise of the backwards incompatibility.</p>
+
+
+<p>The rules for deciding when path expressions need to be sorted have been revised. As a result
+many cases now require no sort where previously a sort was done. Examples of such expressions
+include a/b/c, .//a, $x[1]/a, //@a. In addition, most path expressions that return results in
+reverse document order are now sorted by a simple reversal, which is much faster than a full sort.</p>
+
+<p><b>There's a temporary bug in that path expressions returning namespace nodes don't always return
+them in document order. I'm awaiting resolution of the XPath 2.0 data model rules before fixing this.</b></p>
+
+
+
+<p>Suppress lazy evaluation of assignable variables. (This was designed to prevent
+a stack overflow, it didn't succeed, but it seems a good idea anyway).</p>
+
+<p>Added the ability for a Source object to be supplied as the value of a stylesheet
+parameter or as the value returned by an extension function.</p>
+
+<p>Added dateTime and date data types. Initially the only operations supported are the
+currentDateTime function, the dateTime and date constructors, and conversion between
+strings, dates, and dateTimes in both directions. Conversion to string uses the timezone
+of the current locale.</p>
+
+<p>Implemented comparisons (equals, less-than, etc) between dates and dateTimes.
+Also implemented sorting. The data-type of xsl:sort may take the two values "text" or "number" 
+(which are treated as synonyms of xs:string and xs:double) or any XML Schema built-in data type
+for which sorting is supported. The values in the sequence to be sorted are converted to this
+data type (using the same rules as for <code>cast as</code>) and the rules for this data type
+determine the sort order.</p>
+
+<p>Note that (as required by the XML Schema specification) dateTime values are normalized to UTC.
+The original timezone specified when the dateTime was constructed is not retained. If no timezone
+is present, this fact <i>is</i> remembered. Such a dateTime is compared with other dateTimes as if
+it were a UTC dateTime.</p>
+
+
+<p>Implemented the <b>instance of</b> operator (including the <b>instance of only</b> variant):
+for example <code>if ($x instance of xs:integer *) then x else y</code>. The types that are currently
+supported are the 19 primitive schema types (the namespace may be either of the two namespaces
+permitted in XML Schema Part 2), the derived type xs:integer, the node types document, element,
+attribute, text, comment, processing-instruction, or namespace, and the abstract types node, and item.
+(There is no syntax currently for the general numeric type or for the general atomic type). The
+type name may be followed by one of the qualifiers "*", "+", or "?" to indicate the number of 
+occurrences; if there is no qualifier, there must be exactly one occurrence. The more sophisticated
+forms of type-checking, using schema-defined complex types, are not yet supported.</p>
+
+<p>Implemented the <b>cast as data-type</b> expression, for example <code>cast as xs:boolean($x)</code>.
+The conversion rules are the same as those which apply implicitly when a value is supplied
+in a context where a different type is expected.</p>
+
+<p>Implemented the <b>treat as data-type</b> expression. This doesn't actually have much use in an
+XSLT context, where type conversion is performed implicitly when required, and the semantics of the
+expression are probably not correctly implemented at this stage: the specification is still evolving.</p> 
+
+
+
+<h3>New XPath API</h3>
+
+<p>A new API has been introduced for executing XPath expressions. This is simpler and safer than the
+API provided in previous releases, which was essentially improvised from implementation classes rather
+than being designed top-down as an interface suitable for application use. The API is loosely modelled
+on the proposed DOM Level 3 API for XPath.</p>
+
+<p>The new API uses the class <code>net.sf.saxon.xpath.XPathEvaluator</code>. This class provides a few
+simple configuration interfaces to set the source document, the static context, and the context node,
+plus a number of methods for evaluating XPath expressions. The static context can be omitted if the
+expression does not use namespaces, external variables, or extension functions. If the expression uses
+namespaces, an instance of StandaloneContext can be supplied, allowing the required namespaces to be 
+declared either explicitly, or by reference to the in-scope namespaces of some Node.</p>
+
+<p>There are two methods for direct evaluation,
+evaluate() which returns a List containing the result of the expression (which in general is a sequence),
+and evaluateSingle() which returns the first item in the result (this is appropriate where it is known
+that the result will be single-valued). The results are returned as NodeInfo objects in the case of nodes,
+or as objects of the most appropriate Java class in the case of atomic values: for example, Boolean, Double,
+or String in the case of the traditional XPath 1.0 data types.</p>
+
+<p>It is also possible to prepare an XPath expression for subsequent execution, using the createExpression() method
+on the XPathEvaluator class. This is worthwhile where the same expression is to be executed repeatedly.
+The compiled expression is represented by an instance of the class net.sf.saxon.xpath.XPathExpression,
+and it can be executed repeatedly, with different context nodes. However, the compiled expression is bound
+to one particular source document (this is to ensure that the same NamePool is used).</p>
+
+<p>The design principle of this API is to minimize the number of Saxon classes that need to be used.
+Apart from the NodeInfo interface, which is needed when manipulating Saxon trees, only the four classes
+XPathProcessor, XPathExpression, StandaloneContext, and XPathException are needed. 
+For convenience, XPathException and StandaloneContext have been moved to the net.sf.saxon.xpath package.</p>
+
+<p>If you want to use extension functions or variables you will need to create your own implementation
+of StaticContext. Although this interface has been greatly simplified, this is still not to be attempted lightly.</p>
+
+<p>The old APIs for executing expressions still exist for the time being, but they are likely to
+ be less stable.</p>
+
+<h3>Internal changes</h3>
+
+<p>Changed ContentEmitter to check in startElement() that qname and local-name are both supplied;
+this checks against parser configuration errors. This change could (should?) be retrofitted to the 6.5 branch.
+The change also uses a stack of namecodes so that endElement() doesn't need to look up the names in 
+the name pool. In implementing this change, I discovered that Saxon depends on the XML parser passing
+the QName argument to the startElement() call, something which according to the SAX2 specification is
+optional. However, all known parsers supply this argument, and the code changes to cope with its absence
+would damage performance, so I have simply documented this as a dependency on the parser.</p>
+
+<p>Implemented infrastructure for data type support:</p>
+
+<ul>
+<li>A new class net.sf.saxon.value.Type centralizes the definition of node types and atomic types</li>
+<li>The tokenizer now does single-token lookahead, needed to support double-keywords such as "cast as"</li>
+<li>Added parsing support for "EXPR instance of [only] DATATYPE" and "cast as DATATYPE ( EXPR )"</li>
+<li>Added isA method to SimpleValue so each value knows what types (primitive or derived) it belongs to</li>
+</ul>
+
+<p>I have changed the implementation of temporary trees (result tree fragments). The FragmentValue class
+has disapeared. This delayed the construction of an actual tree until it the tree was actually used as
+a node-set: the effect was to optimize simple uses of temporary trees but at considerable cost to the more
+general usage which is now permitted in XSLT 2.0. Also, the introduction of tinytrees has reduced the
+value of this optimization. Therefore, a temporary tree is now constructed immediately as a real tree.</p>
+
+<p>A side-effect of this change is that when disable-output-escaping is used while writing nodes to a
+tree, the instructions to switch escaping on and off are recorded in the tree in the form of the
+processing instructions defined by JAXP 1.1. Previously, these instructions were recorded in a form that
+kept the information through an xsl:copy-of instruction, but lost the information if the tree was processed
+in any other way. Note that the behavior of "sticky d-o-e" (that is, the effect of disabling output
+escaping when writing to a temporary tree) is currently an open issue in XSLT 2.0.</p>
+
+<p>The indexes associated with keys are no longer referenced from each document instance, they are
+handled externally. This makes it easier to share the same index implementation across all the different
+document implementations. The indexes are now held by the KeyManager. It uses a WeakHashMap to ensure
+that when a document is removed from memory by the garbage collector, its indexes are removed too.</p>
+
+<p>The mechanism for keeping stylesheet signatures in the namepool has been removed. It caused
+a creeping "memory leak" in continuously running services, and is not really needed. It was invented
+to allow namepools to be copied, but this facility has never been properly documented or tested.
+Instead, there is now a simple check that the source document and stylesheet are using the same
+namepool. (This change, or a simplified version of it, has also been made to 6.5.2).</p>
+
+<p>The StaticContext interface has been greatly simplified, reducing duplication and making it easier to
+create a new implementation of this interface. This has been achieved partly by doing some work in the 
+XPath ExpressionParser that was previously done in the StaticContext, and partly by changing those functions
+such as format-number() and sort() that only work in an XSLT context to check that the context is indeed
+XSLT before accessing the context information.</p> 
+
+<h3>SQL extension</h3>
+
+<p>At the suggestion of Claudio Thomas [claudio.thomas@web.de], I have extended the <b>sql:query</b> instruction
+to allow the attribute <code>disable-output-escaping="yes|no"</code>. This is useful where the database
+content being retrieved contains XML or HTML markup that is to be preserved in the output. Use this
+with care; it disables escaping for all the rows and columns retrieved, some of which may contain
+special characters such as "&lt;" and "&amp;" that do need to be escaped.</p>
+
+<p><i>This change has not been tested.</i></p> 
+
+<h3>Extension functions</h3>
+
+<p>Added extension functions: <a href="extensions.html#parse">saxon:parse()</a> and
+<a href="extensions.html#serialize">saxon:serialize()</a>. These allow conversion of a string containing
+well-formed XML to a tree structure, and vice-versa.</p>
+
+<p>Added extension functions: <a href="extensions.html#string-to-unicode">saxon:string-to-unicode()</a> and
+<a href="extensions.html#unicode-to-string">saxon:unicode-to-string()</a>. These allow conversion between a string and
+a sequence of integers representing the Unicode values of the characters in the string.</p>
+
+<p>Added extension functions <a href="extensions.html#pause-tracing">saxon:pause-tracing()</a>
+ and <a href="extensions.html#resume-tracing">saxon:resume-tracing()</a>.</p>
+
+<p>The return value from an extension function may now be an implementation of <code>java.util.List</code>,
+representing a sequence. The members of the <code>List</code> must all implement <code>net.sf.saxon.om.Item</code></li>
+
+<p>An argument to an extension function may now be the class <code>net.sf.saxon.om.NodeInfo</code>, or
+a subclass. If the supplied value is a sequence, the first node in the sequence is passed to the function;
+it is an error if there is no node in the supplied sequence, or if the node is of the wrong type.</p>
+
+<p>The rules for calling extension functions with a sequence-valued argument have been clarified, and
+some new options are permitted, e.g. declaring the argument as <code>java.util.List</code>. The possibilities
+have not been extensively tested.</p>
+
+<p>Implemented memo functions (thanks to Robert Brotherus for the suggestion).
+If you specify the attribute <code>saxon:memo-function="yes"</code> on <code>xsl:function</code>,
+Saxon will keep a cache that maps the supplied argument values to the result of the
+function, and if the function is called twice with the same arguments, the original
+result will be returned without re-evaluating the function. Don't use this option on a function
+that depends on the context, or on a function that creates a new temporary tree and
+is required to create a new instance each time. Also note that there are cases where it
+may be faster to re-evaluate the function than to do the lookup; this is especially true
+if the argument is a large node-set.</p>
+
+<hr/>
+
+<H2>Changes in version 7.0 (2001-12-20) </H2>
+
+<p>This version introduces initial support of features defined
+ in working drafts of XSLT 2.0 and XPath 2.0.<p>
+ 
+<p><b>Version 7.0 should be regarded as an experimental alpha release. For production
+use, please continue to use <a href="http://saxon.sf.net/saxon6.5/">Saxon 6.5</a></b></p>
+ 
+<p>The Saxon package name has changed from <b>com.icl.saxon</b> to <b>net.sf.saxon</b>.
+Any applications that use Saxon java classes directly (rather than relying on the JAXP
+interface) will need to be modified. Note that this also affects the settings of the system
+properties <code>javax.xml.parsers.SAXParserFactory</code> and
+ <code>javax.xml.transform.TransformerFactory</code>.</p>
+
+<p>The entry point from the command line has changed from <b>com.icl.saxon.StyleSheet</b>
+to <b>net.sf.saxon.Transform</b>.
+
+<p>The namespace URI for saxon extensions has changed from <b>http://icl.com/saxon</b>
+to <b>http://saxon.sf.net/</b>. Note that many extensions have been withdrawn, as they
+are superseded by facilities in XPath 2.0 and/or XSLT 2.0.</p>
+
+<p>To allow coexistence, the name of the JAR file for this release has changed to
+<code>saxon7.jar</code>. The SQL extensions are now in a separate JAR file, <code>saxon7-sql.jar</code>.
+A transformation can now be executed directly from the JAR file using the command
+<code>java -jar saxon7.jar</code> in place of <code>java net.sf.saxon.Transform</code>.</p> 
+
+<p>Saxon now requires JDK 1.2 or later to run. In consequence, Saxon will no longer work
+with the Microsoft Java VM, and the Instant Saxon version of the product is therefore
+no longer available.</p>
+
+<p>Because Saxon no longer runs with the Java VM, it can now be run as an applet within
+Internet Explorer only if the Sun Java plug-in is installed. You can get this from
+ <a href="http://java.sun.com/getjava">http://java.sun.com/getjava</a>. This may require
+ some configuration changes because of the differences in security policy.</p>
+ 
+<p>The following sections summarize the main new features. These assume familiarity with
+the XPath 2.0 and XSLT 2.0 specifications; however, summaries of the new syntax for
+ <a href="expressions.html">expressions</a> and <a href="xsl-elements.html">XSLT elements</a>
+ are included in this package.</p>
+
+<h3>XPath 2.0 Data Model and Language</h3>
+<ul>
+<li>Sequences of nodes or simple values are supported, 
+including the sequence constructor expression <code>($a, $b, $c)</code>.
+Path expressions now return a sequence of nodes containing no duplicates, in document
+order.</li>
+<li>The new <b>if</b> expressions, <b>for</b> expressions, <b>some</b> and <b>every</b>
+expressions are supported.</li>
+<li>New operators are implemented: <b>except</b>, <b>intersect</b> and </b>union</b> for
+combining sequences (implemented only for sequences of nodes at this release); 
+also <b>==</b>, <b>!==</b> for comparing node identity, and <b>&lt;&lt;</b> and <b>&gt;&gt;</b>
+for comparing relative position of nodes in document order. These
+return () when an operand is (), and fail when an operand contains more than
+one node.</li>
+
+<li>Any expression may now appear on the right-hand side of the "/" operator (a run-time error
+is reported if it doesn't evaluate to a sequence of nodes). Examples: <code>a/(b|c)/d</code>, 
+or <code>document('x')/key('a','b')</code></li>
+
+<li>Added range expressions. For example <code>1 to 10</code> evaluates to the
+sequence <code>( 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 )</code></li>
+
+<li>The new numeric data types integer, decimal, and float are implemented.
+XPath literals, and string-to-number conversion, now allow "e" in a numeric literal. 
+A literal containing an "e" is
+interpreted as a double, any other literal containing a "." is interpreted as a
+decimal, and any other numeric literal as an integer. Integers are limited
+to 64-bit quantities, but decimals are of unlimited size. Arithmetic is now done 
+using the XPath 2.0 type promotion rules,
+except that "div" and "mod" always convert both arguments to double. For the
+time being, I have retained the XPath 1.0 rule that the string representation
+of a number never ends in ".0"; I found that changing it to use the canonical
+representation defined in XML Schema (as required by XPath 2.0) meant rewriting too many
+of my tests. However, negative zero now converts to the string "-0" (it was "0" 
+at XPath 1.0).</li>
+
+
+<li>The code for equals, not-equals, etc, has been generalized to work on any sequence
+ in the same
+way as for a node-set. This retains the "existential" semantics of XPath 1.0. It
+still does a comparison of the string-value of each item, not the typed value.</li>
+
+<li>Filter expressions now work on any sequence (including a singleton sequence, so 2[1] is
+allowed)</li>
+
+<li>3-valued logic has been implemented for AND and OR. 
+(This doesn't reflect the XPath 2.0 working draft as published: a late change was made).</li>
+
+<li>The syntax <code>*:localname</code> (like prefix:*) is allowed in path expressions, and also
+in patterns and in <code>xsl:strip-space</code> and </code>xsl:preserve-space</code>. It matches
+any node with the given local name, regardless of namespace.</li>
+
+<li>The Context object has been changed so that there is
+a context item rather than a context node. The context item is either a simple value or
+a node. The expression "." returns the value of the context item. If the context item
+is not a node, then relative path expression (including self::node()) return an empty
+node-set. Absolute path expressions (starting with "/"), and key() and id(), now apply
+to the document containing the <b>current</b> node, as distinct from the context node.
+<i>Note: the implementation of context document doesn't accurately reflect the concept
+ of the context document in the XPath 2.0 working draft as published.
+</i></li>
+
+<li>The rules for string-to-boolean conversion have changed so that "", "0" and "false" 
+now return false, all other strings return true.</li>
+
+
+
+</ul>
+
+<h3>XSLT 2.0 features</h3>
+
+<ul>
+<li>The <code>xsl:value-of</code> element has a new <code>separator</code> attribute, so it can
+be used to output a sequence.</li>
+<li>The <code>xsl:for-each</code> element supports arbitrary sequences.</li>
+<li>The extension elements <code>saxon:group</code> and <code>saxon:item</code> are
+withdrawn.</li>
+<li>The new <code>xsl:for-each-group</code> instruction, and the associated <code>current-group()</code>
+function, are implemented.</li>
+<li>The <code>xsl:function</code> and <code>xsl:result</code> elements are implemented;
+these replace <code>saxon:function</code> and <code>exslt:function</code>.
+Note that the XSLT 2.0 specification is more restrictive as to what can appear in a function
+body: it has to be zero or more <code>xsl:param</code> elements, followed by zero or more
+<code>xsl:variable</code> elements, followed by an <code>xsl:result</code> element.
+However, this is not a serious restriction in practice, because most computations can now
+be carried out within a single XPath expression.</li>
+<li>The new <code>xsl:namespace</code> instruction is implemented (it writes a 
+namespace node to the result tree)</li
+<li>The <code>xsl:copy-of</code> can now handle sequences containing simple-values
+(the simple value is converted to a string and written to the result tree).
+However, the <code>separator</code> attribute is not yet implemented.</li>
+<li>The <code>xsl:document</code> element (and its synonym <code>saxon:output</code>)
+are replaced by <code>xsl:result-document</code>. This no longer includes the serialization
+attributes directly, instead it refers by name to an <code>xsl:output</code> declaration,
+or can use the unnamed <code>xsl:output</code> declaration by default.</li>
+<li>The <code>xsl:output</code> element now supports <code>method="xhtml"</code>,
+replacing <code>method="saxon:xhtml"</code>. The precise details of the output may not be fully
+conformant with the specification.</li>
+<li>The <code>xsl:destination</code> element is provided, however, since the <code>href</code>
+attribute is currently ignored, it is not very useful at this stage.</li>
+<li>The <code>saxon:handler</code> element is no longer supported.</li>
+<li>The <code>xsl:script</code> element is no longer supported - however,
+the synonym <code>saxon:script</code> remains available</li>
+<li>A <code>collation</code> attribute has been added to <code>xsl:sort</code>, 
+and the implementation of sorting now uses JDK 1.2 collators. The <code>collation</code> 
+attribute must match the name attribute of a <code>saxon:collation</code> element.
+If none is specified, the <code>lang</code> attribute is now used to select a collator, or if the
+<code>lang</code> attribute is omitted, a collator is obtained for the default locale. </li>
+<li>Named sort keys are available, via the <code>xsl:sort-key</code> element. A named
+sort key may be used to perform a sort from within an XPath expression, using the new
+XSLT-defined <code>sort()</code> function.</li>
+</ul>
+
+
+<h3>Function Library</h3>
+
+<p>I have made the following changes to the function library:</p>
+<ul>
+<li>The <code>saxon:distinct()</code> extension function now works on any sequence.</li>
+<li>The <code>count()</code> and <code>sum()</code> functions now ork on any sequence, 
+and new functions <code>avg()</code>, <code>min()</code>, and <code>max()</code> are provided.</li>
+<li>Added <code>ends-with()</code></li>
+<li>Added <code>upper-case()</code> and <code>lower-case()</code>. 
+These use the rules defined by the Java default locale</li>
+<li>Added properties "product-name" and "product-version" to <code>system-property()</code></li>
+<li>Removed the <code>saxon:range()</code> extension function 
+(it can now be done using the syntax "a to b")</li>
+<li>Changed <code>saxon:tokenize()</code> to return a sequence of strings instead of a node-set</li>
+<li>Changed <code>key()</code> so that the second argument can be any sequence; 
+each member of the
+sequence is converted to a string and treated as a potential key value</li>
+<li>Changed <code>document()</code> so that the first argument can be any sequence; each member of
+the sequence can be a URI of a document to be loaded.</li>
+<li>Removed the <code>saxon:node-set()</code> extension function, which is now obsolete.</li>
+<li>Removed the <code>saxon:if()</code> extension function, which is superseded by XPath 2.0 
+conditional expressions.</li>
+<li>The <code>saxon:closure()</code> function is temporarily withdrawn, because it relies on non-standard
+use of the <code>current()</code> function.</li>
+<li>The <code>node-set()</code> function in the EXSLT common module is now a no-op; the object-type()
+function returns one of "sequence", "boolean", "number", "string", or "external".</li>
+<li>Changed <code>highest()</code> and <code>lowest()</code> in the EXSLT <code>math</code> 
+module to work on arbitrary sequences.</li>
+<li>Added <code>exists()</code> and <code>empty()</code>, 
+<code>insert()</code> and <code>remove()</code>, 
+<code>index-of()</code> and <code>sublist()</code>.</li>
+<li>Added <code>not3()</code> (three-valued not() function)</li>
+<li>Added <code>string-pad()</code> function</li>
+<li>Removed <code>saxon:exists()</code> and <code>saxon:for-all()</code>: 
+these are superseded by the <code>some</code> and <code>every</code>
+constructs in XPath 2.0</li>
+<li>Added the <code>compare()</code> function: the third argument (collation) is initially mandatory, and must
+be a QName matching a <code>saxon:collation</code> element</li>
+<li>Added <code>base-uri()</code> function replacing the undocumented
+ <code>saxon:base-uri()</code> extension function</li>
+<li>Added constructor functions as described in the XPath Functions and Operators specification: 
+some of them don't do much yet, but <code>float()</code> is the only way of creating a single-precision
+floating point number.</li>
+</ul>
+
+<h3>Significant Omissions</h3>
+
+<p>In general, features of XSLT 2.0 and XPath 2.0 not listed above have not been implemented.
+In particular, these include:</p>
+
+<ul>
+<li>Backwards compatibility mode in XSLT</li>
+
+<li>The <code>type</code> attribute of <code>xsl:variable</code>, etc.</li>
+
+<li>Uniform handling of the empty sequence by functions and operators in XPath expressions</li>
+
+<li>XPath constructs related to types, for example <code>instance of</code> and
+ <code>cast as</code>.</li>
+</ul>
+
+
+<h3>Internal changes</h3>
+
+<p>As might be expected, the Saxon code has undergone major change internally, which
+will affect any application making significant use of internal interfaces. Here are
+some of the highlights:</p>
+
+<ul>
+<li>The NodeEnumeration class is replaced with <b>SequenceIterator</b>. 
+This is modelled on the JDK 1.2
+Iterator interface, and can return any sequence of Items. An Item is either
+a SimpleValue or a NodeInfo.</li>
+
+<li>Added the <b>getAnother()</b> method to the SequenceIterator interface. This means all 
+SequenceIterators can clone themselves to produce another SequenceIterator of the same
+nodes. (But it's not a pure Java clone, because the new iterator is positioned at the
+start of the sequence.) The implementation of <b>last()</b> has changed: 
+if the SequenceIterator doesn't know
+how many nodes there are in the sequence, the iterator is cloned and the items are counted,
+without being saved in memory as previously. This should only happen once for any given
+iterator, so in general calling last() causes a node-set to be scanned twice.</li>
+
+<li>The <b>Step</b> class has been removed. A step that is a simple unfiltered
+axis expression is now represented by an AxisExpression; a step with filters is 
+represented by a FilterExpression, and any other kind of expression may also now be 
+used in a PathExpression.</li>
+
+<li>An important new internal class is the <b>MappingIterator</b>. This maps one sequence to
+another sequence by invoking a MapppingFunction on each member of the first sequence.
+This capability is now used to implement both path expressions and <code>for</code>
+expressions. It is also used in various other contexts, e.g. in the implementation of
+the document(), key() and id() functions.</li>
+
+<li>The <b>asString</b> method on Value is renamed <code>getStringValue</code>,
+this allows both SimpleValues and Nodes to implement the new Item interface, which
+represents a member of a sequence.</li>
+
+<li>Internal changes in support of datatypes: I removed evaluateAsDouble(), etc,
+ and replaced them with a generic method 
+<b>evaluate(context, requiredType)</b>, which always returns a Value. A new
+package, <code>net.sf.saxon.value</code>, now contains all the data-type related classes. </li>
+
+
+<li>The functions key(), id(), and document() are now fully pipelined, that is, they deliver an
+iterator over the result nodes.</li>
+
+<li>The classes that handle sorting have been totally rewritten, partly to handle general
+sequences, and partly to use collations.</li>
+
+<li>The <b>Context</b> class has changed. There are now two separate classes,
+XSLTContext and XPathContext. There is only one XSLTContext object used during a transformation
+(the information could have been held in the Controller itself). Stacking of values
+in the XSLT context uses the Java program execution stack, in the sense that any routine
+that sets a new value has to remember the old value and reset it on completion. The
+XPath context, by contrast, still creates a new instance every time a new value is stacked.
+This essentially just wraps the SequenceIterator that represents the context node list.
+The SequenceIterator itself is responsible for returning current item and current
+position.</li>
+
+</ul>
+
+<p>I have removed documentation of the <b>saxon:trace</b> extension attribute; 
+it seems this hasn't been working for some time.</p>
+
+<h3>API changes</h3>
+
+<ul>
+
+<li>The <code>Context</code> class no longer implements the XSLT 1.1 WD interface
+org.w3c.xsl.XSLTContext.</li> 
+
+<li>Dropped the classes in <code>com.icl.saxon.handlers</code> (ElementHandler etc). It is still
+possible for a Java application to register a NodeHandler to receive events; this
+must now be written as an implementation of the net.sf.saxon.NodeHandler interface.
+See the <b>ShowBooks.java</b> sample application to see how.</li>
+
+<li>It is no longer possible to specify a user-defined collation using the <code>data-type</code>
+or <code>lang</code> attribute of xsl:sort; instead, it must be specified using the 
+<code>collation</code> attribute,
+with a <code>saxon:collation</code> element that maps the named collation to a Java
+class that implements the JDK <code>java.util.Comparator</code> interface.</li>
+
+</ul>
+
+<h3>SQL extension elements</h3>
+
+<p>A new <code>sql:query</code> instruction has been added, to accompany the
+ existing <code>sql:connect</code>, <code>sql:insert</code>, etc.</p>
+
+<p>Attributes:</p>
+
+<table>
+<tr><td valign="top">table</td>
+<td>The table to be queried (the contents of the FROM clause of the select statement).
+This is mandatory, the value is an attribute value template.</td></tr>
+<tr><td valign="top">column</td>
+<td>The columns to be retrieved (the contents of the SELECT clause of the select statement).
+May be "*" to retrieve all columns. This is mandatory, the value is an attribute value template.</td></tr>  
+<tr><td valign="top">where</td>
+<td>The conditions to be applied (the contents of the WHERE clause of the select statement).
+This is optional, if present the value is an attribute value template.</td></tr>
+<tr><td valign="top">row-tag</td>
+<td>The element name to be used to contain each row. Must be a simple name (no colon
+allowed). Default is "row".</td></tr>
+<tr><td valign="top">column-tag</td>
+<td>The element name to be used to contain each column. Must be a simple name (no colon
+allowed). Default is "col".</td></tr>
+</table>
+
+<p>The <code>xsl:query</code> instruction writes zero or more row elements to the current
+result tree, each containing zero or more column elements, which contain the data values.</p>
+
+<p>Thanks to Claudio Thomas [claudio.thomas@web.de] who supplied the original version
+of this code.</p>
+
+<p>The SQL extensions are now contained in a separate JAR file, <code>saxon7-sql.jar</code>,
+which must be on the class path if these extensions are used.</p>  
+
+
+<P align=center>Michael H. Kay<BR>18 November 2002</P>
+</BODY></HTML>
